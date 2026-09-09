@@ -4,6 +4,7 @@ import "./global.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import Preloader from "@/components/Preloader";
 
 const jakartaSans = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -37,6 +38,7 @@ export default function RootLayout({
         />
       </head>
       <body className={jakartaSans.className}>
+        <Preloader />
         <ScrollReveal />
         <Navbar />
         {children}
