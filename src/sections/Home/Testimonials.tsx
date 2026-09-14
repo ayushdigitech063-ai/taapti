@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const reviews = [
+const defaultReviews = [
   {
     name: "Rohit Sharma",
     date: "2 weeks ago",
@@ -24,7 +24,7 @@ const reviews = [
   {
     name: "Amit Verma",
     date: "3 weeks ago",
-    avatar: "/testimonials/rohit.jpg", // fallback photo avatar
+    avatar: "/testimonials/rohit.jpg",
     rating: 5,
     review:
       "Excellent service and support. The team is very professional and delivers high-quality work on time. Would definitely work with them again!",
@@ -50,14 +50,66 @@ const reviews = [
 ];
 
 export default function Testimonials() {
+  const [data, setData] = useState({
+    eyebrow: "Google Reviews Official Badge",
+    headingNormal: "Loved by Our",
+    headingHighlight: "Clients",
+    subtitle: "Real feedback from real people on Google.",
+    reviews: defaultReviews,
+  });
+
   const [activePage, setActivePage] = useState(0);
 
+  const fetchTestimonials = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/testimonials").catch(() => null);
+      if (res && res.ok) {
+        const json = await res.json();
+        if (json && json.success && json.data) {
+          const d = json.data;
+          setData({
+            eyebrow: d.eyebrow || "Google Reviews Official Badge",
+            headingNormal: d.headingNormal || "Loved by Our",
+            headingHighlight: d.headingHighlight || "Clients",
+            subtitle: d.subtitle || "Real feedback from real people on Google.",
+            reviews: d.reviews && d.reviews.length > 0 ? d.reviews : defaultReviews,
+          });
+        }
+      }
+    } catch {
+      /* silent */
+    }
+  };
+
+  useEffect(() => {
+    fetchTestimonials();
+
+    let channel: BroadcastChannel | null = null;
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      channel = new BroadcastChannel("taapti_cms_updates");
+      channel.onmessage = (event) => {
+        if (event.data === "TESTIMONIALS_UPDATED" || event.data === "CMS_UPDATED") {
+          fetchTestimonials();
+        }
+      };
+    }
+
+    const interval = setInterval(() => {
+      fetchTestimonials();
+    }, 4000);
+
+    return () => {
+      if (channel) channel.close();
+      clearInterval(interval);
+    };
+  }, []);
+
   const handlePrev = () => {
-    setActivePage((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
+    setActivePage((prev) => (prev === 0 ? data.reviews.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setActivePage((prev) => (prev >= reviews.length - 1 ? 0 : prev + 1));
+    setActivePage((prev) => (prev >= data.reviews.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -79,11 +131,11 @@ export default function Testimonials() {
           </div>
 
           <h2>
-            Loved by Our <span>Clients</span>
+            {data.headingNormal} <span style={{ color: "#10243E" }}>{data.headingHighlight}</span>
           </h2>
 
           <p className="google-reviews__subtitle">
-            Real feedback from real people on Google.
+            {data.subtitle}
           </p>
 
           <div className="google-reviews__divider-line" aria-hidden="true"></div>
@@ -104,8 +156,7 @@ export default function Testimonials() {
 
           {/* VISIBLE CARDS TRACK */}
           <div className="google-reviews__cards-track">
-            {reviews.map((review, index) => {
-              // On desktop show 3 consecutive cards from activePage; on mobile show active card
+            {data.reviews.map((review, index) => {
               const isVisibleDesktop = index >= activePage && index < activePage + 3;
               const isVisibleMobile = index === activePage;
 
@@ -114,26 +165,25 @@ export default function Testimonials() {
                   className={`google-review-card ${
                     isVisibleDesktop ? "google-review-card--desktop-visible" : "google-review-card--desktop-hidden"
                   } ${isVisibleMobile ? "google-review-card--mobile-active" : "google-review-card--mobile-hidden"}`}
-                  key={review.name}
+                  key={`${review.name}-${index}`}
                 >
                   {/* CARD HEADER */}
                   <div className="google-review-card__header">
                     <div className="google-review-card__user">
                       {review.avatar ? (
-                        <div className="google-review-card__avatar">
-                          <Image
+                        <div className="google-review-card__avatar" style={{ position: "relative", width: "44px", height: "44px", borderRadius: "50%", overflow: "hidden" }}>
+                          <img
                             src={review.avatar}
                             alt={review.name}
-                            fill
-                            sizes="44px"
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
                           />
                         </div>
                       ) : (
                         <div
                           className="google-review-card__avatar-initial"
-                          style={{ backgroundColor: review.avatarBg }}
+                          style={{ backgroundColor: review.avatarBg || "#2563eb" }}
                         >
-                          {review.initial}
+                          {review.initial || review.name.charAt(0).toUpperCase()}
                         </div>
                       )}
 
@@ -156,7 +206,7 @@ export default function Testimonials() {
 
                   {/* 5 GOLDEN STARS */}
                   <div className="google-review-card__stars" aria-label="5 out of 5 stars">
-                    {"★".repeat(review.rating)}
+                    {"★".repeat(review.rating || 5)}
                   </div>
 
                   {/* REVIEW TEXT BODY */}
@@ -179,7 +229,7 @@ export default function Testimonials() {
 
         {/* DOTS PAGINATION INDICATOR */}
         <div className="google-reviews__dots">
-          {reviews.map((_, index) => (
+          {data.reviews.map((_, index) => (
             <button
               key={index}
               className={`google-reviews__dot ${index === activePage ? "google-reviews__dot--active" : ""}`}

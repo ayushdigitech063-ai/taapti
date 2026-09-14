@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const companyLinks = [
   { label: "About", href: "/about" },
@@ -12,13 +15,15 @@ const serviceLinks = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer__top">
           <div className="footer__brand">
             <Link href="/" className="footer__logo">
-              Taapti
+              <img src="/logo-icon.png" alt="Taapti Icon" className="footer__logo-icon" />
             </Link>
 
             <p>

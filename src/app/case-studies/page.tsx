@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const caseStudies = [
@@ -67,6 +67,14 @@ const caseStudies = [
 ];
 
 export default function CaseStudiesPage() {
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const categories = ["All", "FinTech", "Healthcare", "SaaS", "AI & Data", "E-commerce"];
+
+  const filteredStudies = activeCategory === "All"
+    ? caseStudies
+    : caseStudies.filter((s) => s.category.toLowerCase() === activeCategory.toLowerCase());
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -89,38 +97,99 @@ export default function CaseStudiesPage() {
 
   return (
     <main>
-      {/* Hero (EXACT SCREENSHOT & BG IMAGE DESIGN) */}
-      <section className="cs-hero-section">
-        {/* Full Background Graphic Image */}
-        <div className="cs-hero-bg-layer" aria-hidden="true">
-          <img
-            src="/case_studies_hero_bg.png"
-            alt="Case Studies Hero Background"
-            className="cs-hero-bg-img"
-          />
+      {/* Dynamic Light Hero Banner */}
+      <section
+        style={{
+          position: "relative",
+          background: "linear-gradient(120deg, #f0f7ff 0%, #e0f0ff 45%, #eff6ff 80%, #f8fafc 100%)",
+          padding: "140px 0 90px",
+          borderBottom: "1px solid #e2e8f0",
+          overflow: "hidden",
+        }}
+      >
+        {/* Soft Decorative Background SVG Curved Lines */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1 }}>
+          <svg
+            viewBox="0 0 1440 600"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ width: "100%", height: "100%", opacity: 0.85 }}
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M750 -100 C 950 150, 1150 450, 1600 650"
+              stroke="#10243E"
+              strokeWidth="1.5"
+              strokeOpacity="0.25"
+            />
+            <circle cx="1130" cy="130" r="6" fill="#00875A" />
+            <path
+              d="M600 -50 Q 1000 250 1500 450"
+              stroke="#00875A"
+              strokeWidth="1"
+              strokeDasharray="4 4"
+              strokeOpacity="0.3"
+            />
+          </svg>
         </div>
 
-        <div className="container cs-hero-container">
-          {/* Left Text Content */}
-          <div className="cs-hero-content reveal-left">
-            <span className="cs-hero-eyebrow">CASE STUDIES</span>
+        <div className="container" style={{ position: "relative", zIndex: 2 }}>
+          <div style={{ maxWidth: "780px" }} className="animate-from-left">
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "7px 16px",
+                borderRadius: "999px",
+                background: "#ffffff",
+                border: "1px solid #a7f3d0",
+                boxShadow: "0 4px 15px rgba(0,135,90,0.06)",
+                fontSize: "13px",
+                fontWeight: "700",
+                color: "#00875A",
+                marginBottom: "24px",
+              }}
+            >
+              <span
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  backgroundColor: "#00875A",
+                  boxShadow: "0 0 8px #00875A",
+                }}
+              />
+              Proven Engineering Deliveries
+            </div>
 
-            <h1 className="cs-hero-title">
-              Work that <span className="cs-hero-title-blue">creates <br />impact.</span>
+            <h1
+              style={{
+                fontSize: "clamp(38px, 5vw, 64px)",
+                fontWeight: "800",
+                lineHeight: "1.12",
+                letterSpacing: "-0.035em",
+                color: "#0a0d14",
+                marginBottom: "24px",
+              }}
+            >
+              Work that creates{" "}
+              <span style={{ color: "#10243E", display: "inline-block" }}>
+                real impact.
+              </span>
             </h1>
 
-            <p className="cs-hero-desc">
-              Explore how we solve complex technology challenges, build digital products and help businesses move forward.
+            <p
+              style={{
+                fontSize: "clamp(16px, 1.2vw, 19px)",
+                lineHeight: "1.7",
+                color: "#475569",
+                marginBottom: "36px",
+                maxWidth: "680px",
+              }}
+            >
+              Explore how we solve complex technology challenges, build scalable digital products, and help ambitious businesses move forward.
             </p>
-          </div>
-
-          {/* Top Right Handwriting Annotation */}
-          <div className="cs-hero-handwriting" aria-hidden="true">
-            <span>Real <br />Problems <br />Real Results</span>
-            <svg className="cs-hero-arrow-svg" viewBox="0 0 30 35" fill="none">
-              <path d="M 15 5 Q 5 20, 20 28" stroke="#60a5fa" strokeWidth="1.5" strokeDasharray="3 3" fill="none"/>
-              <path d="M 14 25 L 20 28 L 22 22" stroke="#60a5fa" strokeWidth="1.5" fill="none"/>
-            </svg>
           </div>
         </div>
       </section>
@@ -133,26 +202,32 @@ export default function CaseStudiesPage() {
             <span className="cs-eyebrow">SELECTED WORK</span>
 
             <h2 className="cs-heading-title-single">
-              Real problems. <span className="cs-title-blue">Real solutions.</span>
+              Real problems. <span style={{ color: "#10243E" }}>Real solutions.</span>
             </h2>
 
             <p className="cs-heading-subtitle">
               Take a look at some of the technology challenges we have helped businesses solve through engineering, product development and modern digital solutions.
             </p>
 
-            {/* Filter Tabs Underneath Subheading */}
+            {/* Interactive Filter Tabs */}
             <div className="case-studies-filter cs-filter-centered reveal-up">
-              <button className="case-filter case-filter--active">All</button>
-              <button className="case-filter">FinTech</button>
-              <button className="case-filter">Healthcare</button>
-              <button className="case-filter">SaaS</button>
-              <button className="case-filter">AI & Data</button>
+              {categories.map((cat) => (
+                <button
+                  type="button"
+                  key={cat}
+                  className={`case-filter ${activeCategory === cat ? "case-filter--active" : ""}`}
+                  onClick={() => setActiveCategory(cat)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* 6 Cards Grid in 2 Rows (3 Cards per Row) */}
+          {/* Filtered Cards Grid */}
           <div className="case-studies-page-grid cs-grid-6cards">
-            {caseStudies.map((study, index) => (
+            {filteredStudies.map((study, index) => (
               <article
                 className={`case-study-page-card cs-card-compact reveal-up`}
                 key={study.slug}

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import ServiceDetailClient from "./ServiceDetailClient";
 
 const services = {
   "software-engineering": {
@@ -7,10 +7,8 @@ const services = {
     title: "Software Engineering",
     shortDescription:
       "Build reliable, scalable and high-performance software products tailored to your business needs.",
-
     overview:
       "We design and build dependable software systems that solve real business problems and are ready to evolve as your business grows.",
-
     capabilities: [
       "Custom software development",
       "Scalable backend systems",
@@ -19,10 +17,8 @@ const services = {
       "Performance optimisation",
       "Maintenance & technical improvements",
     ],
-
     engagement:
       "We work closely with your team to understand your goals, define the right delivery approach and build technology that creates measurable value.",
-
     testimonials: [
       {
         quote:
@@ -43,7 +39,6 @@ const services = {
         role: "Technology Director, Company Name",
       },
     ],
-
     faqs: [
       {
         question: "What does your engagement process look like?",
@@ -67,16 +62,13 @@ const services = {
       },
     ],
   },
-
   "ai-machine-learning": {
     number: "02",
     title: "AI & Machine Learning",
     shortDescription:
       "Turn AI opportunities into practical solutions that improve products, operations and customer experiences.",
-
     overview:
       "We help businesses identify practical AI opportunities and turn them into useful, reliable solutions that support real business outcomes.",
-
     capabilities: [
       "AI solution development",
       "Machine learning systems",
@@ -85,10 +77,8 @@ const services = {
       "AI integrations",
       "Model implementation & optimisation",
     ],
-
     engagement:
       "We work with your team to identify the right AI opportunity, define the solution and develop technology that can create measurable business value.",
-
     testimonials: [
       {
         quote:
@@ -109,7 +99,6 @@ const services = {
         role: "Technology Director, Company Name",
       },
     ],
-
     faqs: [
       {
         question: "Can you help identify AI opportunities for our business?",
@@ -133,16 +122,13 @@ const services = {
       },
     ],
   },
-
   "web-development": {
     number: "03",
     title: "Web Development",
     shortDescription:
       "Modern, responsive web applications built for performance, usability and long-term scalability.",
-
     overview:
       "We build modern web experiences and applications that combine strong user experience with reliable engineering and scalable architecture.",
-
     capabilities: [
       "Responsive web development",
       "Modern frontend applications",
@@ -151,10 +137,8 @@ const services = {
       "Third-party integrations",
       "Scalable web architecture",
     ],
-
     engagement:
       "From a new website to a complex web application, we work with your team to define the requirements and deliver a reliable digital experience.",
-
     testimonials: [
       {
         quote:
@@ -175,7 +159,6 @@ const services = {
         role: "Technology Director, Company Name",
       },
     ],
-
     faqs: [
       {
         question: "Do you build responsive websites?",
@@ -199,16 +182,13 @@ const services = {
       },
     ],
   },
-
   "product-development": {
     number: "04",
     title: "Product Development",
     shortDescription:
       "From idea to launch, we help businesses design, develop and scale digital products.",
-
     overview:
       "We help businesses transform product ideas into reliable digital experiences, from initial requirements through development and future improvements.",
-
     capabilities: [
       "Product discovery & planning",
       "MVP development",
@@ -217,10 +197,8 @@ const services = {
       "Scalable architecture",
       "Product improvement & support",
     ],
-
     engagement:
       "We collaborate with founders, product teams and business stakeholders to define priorities, build the product and support its evolution after launch.",
-
     testimonials: [
       {
         quote:
@@ -241,7 +219,6 @@ const services = {
         role: "Technology Director, Company Name",
       },
     ],
-
     faqs: [
       {
         question: "Can you help with an MVP?",
@@ -265,6 +242,186 @@ const services = {
       },
     ],
   },
+  "mobile-development": {
+    number: "05",
+    title: "Mobile Development",
+    shortDescription:
+      "Native and cross-platform iOS & Android mobile applications built for high performance and reliability.",
+    overview:
+      "We design and build high-performance mobile applications with seamless user experience, offline capabilities, and robust API integrations across iOS and Android platforms.",
+    capabilities: [
+      "React Native & Cross-Platform",
+      "Native iOS & Android Engineering",
+      "Mobile App Architecture",
+      "Offline Synchronization",
+      "Push Notifications & Real-time Sync",
+      "App Store & Play Store Deployment",
+    ],
+    engagement:
+      "Whether launching a new mobile app or scaling an existing mobile product, our team delivers production-ready mobile applications optimized for performance and growth.",
+    testimonials: [
+      {
+        quote:
+          "Taapti built our cross-platform mobile app seamlessly. The smooth performance and offline-first capabilities exceeded our expectations.",
+        name: "Mobile Lead",
+        role: "Head of Product, Tech App",
+      },
+      {
+        quote:
+          "Their engineering team ensured high app stability, fast loading times, and zero-downtime release cycles across both app stores.",
+        name: "Engineering Manager",
+        role: "CTO, Digital Platform",
+      },
+      {
+        quote:
+          "Direct communication with senior mobile engineers made feature rollouts smooth and predictable.",
+        name: "Product Manager",
+        role: "Founder, Consumer App",
+      },
+    ],
+    faqs: [
+      {
+        question: "Do you build for both iOS and Android?",
+        answer:
+          "Yes. We specialize in cross-platform development using React Native as well as native iOS/Android development depending on your project requirements.",
+      },
+      {
+        question: "Can you handle app store submissions?",
+        answer:
+          "Yes. We take care of end-to-end publishing, store compliance, certificate management, and updates for Apple App Store and Google Play Store.",
+      },
+      {
+        question: "How do you ensure mobile app performance?",
+        answer:
+          "We implement clean state management, efficient asset caching, lazy loading, and thorough testing across physical devices.",
+      },
+      {
+        question: "Can you integrate our existing backend APIs?",
+        answer:
+          "Yes. We integrate RESTful APIs, WebSockets, and GraphQL backends seamlessly into your mobile application.",
+      },
+    ],
+  },
+  "cloud-devops": {
+    number: "06",
+    title: "Cloud & DevOps",
+    shortDescription:
+      "Infrastructure automation, CI/CD pipelines, containerization and cloud scaling for production apps.",
+    overview:
+      "We design, build, and automate resilient cloud infrastructure that scales effortlessly, reduces downtime, and accelerates your release cycles with strict DevOps practices.",
+    capabilities: [
+      "AWS & Multi-Cloud Architecture",
+      "Docker & Kubernetes Containerization",
+      "CI/CD Pipeline Automation",
+      "Infrastructure as Code (Terraform)",
+      "System Monitoring & Observability",
+      "Security Audits & SLA Guarantee",
+    ],
+    engagement:
+      "We partner with your team to automate manual server provisioning, build self-healing cloud setups, and maintain 99.9% uptime SLAs for your core applications.",
+    testimonials: [
+      {
+        quote:
+          "Taapti automated our deployment pipelines completely. We went from weekly manual builds to zero-downtime continuous deployments.",
+        name: "DevOps Lead",
+        role: "VP of Engineering, SaaS Platform",
+      },
+      {
+        quote:
+          "Their cloud infrastructure refactoring cut our monthly AWS server costs by 35% while increasing system reliability.",
+        name: "Operations Director",
+        role: "COO, E-Commerce Infrastructure",
+      },
+      {
+        quote:
+          "The team set up Datadog monitoring and self-healing Kubernetes clusters that keep our services up 24/7.",
+        name: "Infrastructure Architect",
+        role: "Tech Lead, Enterprise Cloud",
+      },
+    ],
+    faqs: [
+      {
+        question: "Which cloud providers do you support?",
+        answer:
+          "We primarily work with AWS, Google Cloud Platform (GCP), Azure, and specialized cloud hosts like Vercel, DigitalOcean, and Supabase.",
+      },
+      {
+        question: "Can you migrate our monolithic infrastructure to the cloud?",
+        answer:
+          "Yes. We execute zero-downtime migration strategies by containerizing applications and moving databases safely to managed cloud services.",
+      },
+      {
+        question: "Do you build automated CI/CD deployment pipelines?",
+        answer:
+          "Yes. We configure GitHub Actions, GitLab CI, or Jenkins pipelines for automated testing, linting, building, and deployment.",
+      },
+      {
+        question: "Can you help optimize our monthly cloud infrastructure costs?",
+        answer:
+          "Yes. We audit resource utilization, implement auto-scaling, rightsized instances, and caching to significantly lower cloud bills.",
+      },
+    ],
+  },
+  "ui-ux-product-design": {
+    number: "07",
+    title: "UI/UX & Product Design",
+    shortDescription:
+      "User-centered design systems, modern visual interfaces, and interactive digital prototypes.",
+    overview:
+      "We craft intuitive user journeys, high-converting visual interfaces, and robust design systems that connect user needs directly with business goals.",
+    capabilities: [
+      "User Research & Wireframing",
+      "Interactive Prototyping (Figma)",
+      "Design Systems & Component Libraries",
+      "Mobile & Web Interface Design",
+      "Usability Testing & UX Audits",
+      "Frontend Developer Handoff",
+    ],
+    engagement:
+      "We collaborate closely with product managers and engineers to turn complex user requirements into elegant, accessible, and high-performing design experiences.",
+    testimonials: [
+      {
+        quote:
+          "Taapti transformed our clunky enterprise platform into a sleek, intuitive product that our users love using daily.",
+        name: "Product Design Lead",
+        role: "Chief Product Officer, Enterprise SaaS",
+      },
+      {
+        quote:
+          "Their Figma design system made engineering handoff instantaneous and reduced frontend implementation bugs dramatically.",
+        name: "Frontend Lead",
+        role: "Engineering Director, Web Platform",
+      },
+      {
+        quote:
+          "The modern aesthetic and user flow redesign boosted our landing page conversion by over 40%.",
+        name: "Growth Lead",
+        role: "Co-Founder, Startup Platform",
+      },
+    ],
+    faqs: [
+      {
+        question: "What tools do you use for UI/UX design?",
+        answer:
+          "We work primarily with Figma for visual interface design, interactive prototyping, and component-based design systems.",
+      },
+      {
+        question: "Do you deliver developer-ready design systems?",
+        answer:
+          "Yes. All designs include complete design tokens, color variables, typography scales, responsive layouts, and interactive state specs.",
+      },
+      {
+        question: "Can you redesign an existing digital product?",
+        answer:
+          "Yes. We perform UX audits, gather user feedback, and restructure navigation and visual hierarchy to improve usability and retention.",
+      },
+      {
+        question: "Do you assist during frontend implementation?",
+        answer:
+          "Yes. Our designers work alongside frontend developers to ensure pixel-perfect fidelity and smooth UI micro-animations.",
+      },
+    ],
+  },
 };
 
 type ServiceSlug = keyof typeof services;
@@ -275,325 +432,11 @@ export default async function ServiceDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
   const service = services[slug as ServiceSlug];
 
   if (!service) {
     notFound();
   }
 
-  return (
-    <main>
-
-      {/* =========================
-          Hero
-      ========================= */}
-
-      <section className="service-detail-hero">
-        <div className="container">
-
-          <Link
-            href="/services"
-            className="service-detail-hero__back"
-          >
-            ← Back to Services
-          </Link>
-
-          <span className="service-detail-hero__number">
-            {service.number}
-          </span>
-
-          <h1>{service.title}</h1>
-
-          <p>{service.shortDescription}</p>
-
-          <Link
-            href="/contact"
-            className="btn btn-primary"
-          >
-            Enquire Now
-          </Link>
-
-        </div>
-      </section>
-
-
-      {/* =========================
-          Overview
-      ========================= */}
-
-      <section className="section service-overview">
-        <div className="container service-overview__grid">
-
-          <div>
-            <span className="service-section__eyebrow">
-              Overview
-            </span>
-
-            <h2>
-              Engineering built around
-              <span> your needs.</span>
-            </h2>
-          </div>
-
-          <div>
-            <p className="service-overview__text">
-              {service.overview}
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-
-      {/* =========================
-          Capabilities
-      ========================= */}
-
-      <section className="section service-capabilities">
-        <div className="container">
-
-          <div className="service-section__heading">
-
-            <span className="service-section__eyebrow">
-              What We Deliver
-            </span>
-
-            <h2>
-              Our capabilities
-              <span> within {service.title}.</span>
-            </h2>
-
-          </div>
-
-
-          <div className="service-capabilities__grid">
-
-            {service.capabilities.map(
-              (capability, index) => (
-                <div
-                  className="capability-card"
-                  key={capability}
-                >
-                  <span>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-
-                  <h3>{capability}</h3>
-                </div>
-              )
-            )}
-
-          </div>
-
-        </div>
-      </section>
-
-
-      {/* =========================
-          Engagement Model
-      ========================= */}
-
-      <section className="section engagement">
-        <div className="container engagement__box">
-
-          <div>
-
-            <span className="service-section__eyebrow">
-              Engagement Model
-            </span>
-
-            <h2>
-              A flexible way to
-              <span> work together.</span>
-            </h2>
-
-          </div>
-
-
-          <div className="engagement__content">
-
-            <p>{service.engagement}</p>
-
-            <Link
-              href="/contact"
-              className="btn btn-primary"
-            >
-              Book a Consultation
-            </Link>
-
-          </div>
-
-        </div>
-      </section>
-
-
-      {/* =========================
-          Testimonials
-      ========================= */}
-
-      <section className="section service-testimonials">
-        <div className="container">
-
-          <div className="service-testimonials__heading">
-
-            <span className="service-section__eyebrow">
-              Client Feedback
-            </span>
-
-            <h2>
-              What our clients
-              <span> say about us.</span>
-            </h2>
-
-          </div>
-
-
-          <div className="service-testimonials__grid">
-
-            {service.testimonials.map(
-              (testimonial) => (
-
-                <article
-                  className="service-testimonial-card"
-                  key={testimonial.quote}
-                >
-
-                  <span className="service-testimonial-card__quote">
-                    “
-                  </span>
-
-                  <p>{testimonial.quote}</p>
-
-
-                  <div className="service-testimonial-card__author">
-
-                    <div className="service-testimonial-card__avatar">
-                      {testimonial.name.charAt(0)}
-                    </div>
-
-                    <div>
-
-                      <strong>
-                        {testimonial.name}
-                      </strong>
-
-                      <span>
-                        {testimonial.role}
-                      </span>
-
-                    </div>
-
-                  </div>
-
-                </article>
-
-              )
-            )}
-
-          </div>
-
-        </div>
-      </section>
-
-
-      {/* =========================
-          FAQs
-      ========================= */}
-
-      <section className="section service-faqs">
-        <div className="container service-faqs__grid">
-
-          <div className="service-faqs__intro">
-
-            <span className="service-section__eyebrow">
-              FAQs
-            </span>
-
-            <h2>
-              Frequently asked
-              <span> questions.</span>
-            </h2>
-
-            <p>
-              Find answers to common questions about our
-              services, engagement process and technical
-              approach.
-            </p>
-
-          </div>
-
-
-          <div className="service-faqs__list">
-
-            {service.faqs.map((faq, index) => (
-
-              <details
-                className="service-faq"
-                key={faq.question}
-              >
-
-                <summary>
-
-                  <span>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-
-                  <strong>
-                    {faq.question}
-                  </strong>
-
-                  <b>+</b>
-
-                </summary>
-
-
-                <div className="service-faq__answer">
-
-                  <p>{faq.answer}</p>
-
-                </div>
-
-              </details>
-
-            ))}
-
-          </div>
-
-        </div>
-      </section>
-
-
-      {/* =========================
-          Final CTA
-      ========================= */}
-
-      <section className="section service-detail-cta">
-        <div className="container">
-
-          <div className="service-detail-cta__box">
-
-            <span>
-              Ready to get started?
-            </span>
-
-            <h2>
-              Let&apos;s build your
-              <span> next solution.</span>
-            </h2>
-
-            <Link
-              href="/contact"
-              className="btn btn-primary"
-            >
-              Start a Conversation
-            </Link>
-
-          </div>
-
-        </div>
-      </section>
-
-    </main>
-  );
+  return <ServiceDetailClient service={service} />;
 }

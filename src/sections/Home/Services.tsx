@@ -3,8 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import EnquireModal from "@/components/EnquireModal";
 
-const services = [
+const defaultServicesList = [
   {
     number: "01",
     tag: "BUILD",
@@ -49,7 +50,63 @@ const services = [
 
 export default function Services() {
   const [isVisible, setIsVisible] = useState(false);
+  const [selectedServiceTitle, setSelectedServiceTitle] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  const [sectionData, setSectionData] = useState({
+    badgeText: "WHAT WE DO",
+    headingLine1: "Engineering solutions",
+    headingHighlight: "built for impact.",
+    subheading:
+      "We help ambitious businesses build, improve and scale digital products with modern software engineering and AI.",
+    services: defaultServicesList,
+  });
+
+  const fetchServicesData = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/services-section?_t=${Date.now()}`, {
+        cache: "no-store",
+      }).catch(() => null);
+      if (res && res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          setSectionData({
+            badgeText: json.data.badgeText || "WHAT WE DO",
+            headingLine1: json.data.headingLine1 || "Engineering solutions",
+            headingHighlight: json.data.headingHighlight || "built for impact.",
+            subheading: json.data.subheading || "",
+            services: json.data.services && json.data.services.length > 0 ? json.data.services : defaultServicesList,
+          });
+        }
+      }
+    } catch {
+      // Silent fallback if backend is temporarily unreachable
+    }
+  };
+
+  useEffect(() => {
+    fetchServicesData();
+
+    // BroadcastChannel real-time sync
+    let bc: BroadcastChannel | null = null;
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      bc = new BroadcastChannel("taapti_cms_updates");
+      bc.onmessage = (event) => {
+        if (event.data === "SERVICES_SECTION_UPDATED" || event.data === "CMS_UPDATED") {
+          console.log("⚡ Real-time Services section update received!");
+          fetchServicesData();
+        }
+      };
+    }
+
+    const interval = setInterval(fetchServicesData, 3000);
+
+    return () => {
+      clearInterval(interval);
+      if (bc) bc.close();
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -65,6 +122,11 @@ export default function Services() {
 
     return () => observer.disconnect();
   }, []);
+
+  const handleOpenModal = (title: string) => {
+    setSelectedServiceTitle(title);
+    setIsModalOpen(true);
+  };
 
   return (
     <section ref={sectionRef} className={`section services ${isVisible ? "services--animated" : ""}`}>
@@ -97,28 +159,23 @@ export default function Services() {
         <div className="services__header services__header--center reveal-down">
           <div className="services__heading-left">
             <div className="services__eyebrow">
-              WHAT WE DO <span></span>
+              {sectionData.badgeText} <span></span>
             </div>
 
             <h2>
-              Engineering solutions{" "}
-              <span className="services__blue-title">built for impact.</span>
+              {sectionData.headingLine1}{" "}
+              <span className="services__blue-title">{sectionData.headingHighlight}</span>
             </h2>
 
             <p className="services__desc">
-              We help ambitious businesses build, improve and scale digital products
-              with modern software engineering and AI.
+              {sectionData.subheading}
             </p>
           </div>
         </div>
 
         {/* 2x2 CARDS GRID */}
         <div className="services__grid">
-          {services.map((service, idx) => {
-            // Card 01 (top-left): comes from top (reveal-down)
-            // Card 02 (top-right): comes from right (reveal-right)
-            // Card 03 (bottom-left): comes from left (reveal-left)
-            // Card 04 (bottom-right): comes from bottom (reveal-up)
+          {sectionData.services.map((service, idx) => {
             const revealClass =
               idx === 0
                 ? "reveal-down"
@@ -131,18 +188,27 @@ export default function Services() {
             return (
               <article
                 className={`service-card ${service.active ? "service-card--active" : ""} ${revealClass} delay-${(idx + 1) * 100}`}
-                key={service.number}
+                key={service.number || idx}
               >
                 {/* LEFT SIDE IMAGE PREVIEW */}
                 <div className="service-card__left-image">
                   <div className="service-card__left-image-inner">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 220px"
-                      className="service-card__img"
-                    />
+                    {service.image?.startsWith("http") ? (
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="service-card__img"
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                    ) : (
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 220px"
+                        className="service-card__img"
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -157,14 +223,16 @@ export default function Services() {
 
                   <p>{service.description}</p>
 
-                  <div className="service-card__bottom">
-                    <Link href={service.link} className="service-card__link">
-                      Learn more <span>→</span>
-                    </Link>
-
-                    <Link href={service.link} className="service-card__btn-circle" aria-label={service.title}>
+                  <div className="service-card__bottom" style={{ justifyContent: "flex-end" }}>
+                    <button
+                      type="button"
+                      className="service-card__btn-circle"
+                      aria-label={`Enquire about ${service.title}`}
+                      onClick={() => handleOpenModal(service.title)}
+                      style={{ border: "none", cursor: "pointer" }}
+                    >
                       →
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </article>
@@ -173,6 +241,13 @@ export default function Services() {
         </div>
 
       </div>
+
+      {/* Interactive Enquire Lead Modal */}
+      <EnquireModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        serviceTitle={selectedServiceTitle}
+      />
     </section>
   );
 }

@@ -153,14 +153,14 @@ export default function AboutPage() {
           >
             <path
               d="M750 -100 C 950 150, 1150 450, 1600 650"
-              stroke="#2563eb"
+              stroke="#10243E"
               strokeWidth="1.5"
-              strokeOpacity="0.4"
+              strokeOpacity="0.25"
             />
-            <circle cx="1130" cy="130" r="6" fill="#2563eb" />
+            <circle cx="1130" cy="130" r="6" fill="#00875A" />
             <path
               d="M600 -50 Q 1000 250 1500 450"
-              stroke="#60a5fa"
+              stroke="#00875A"
               strokeWidth="1"
               strokeDasharray="4 4"
               strokeOpacity="0.3"
@@ -202,11 +202,11 @@ export default function AboutPage() {
                 padding: "7px 16px",
                 borderRadius: "999px",
                 background: "#ffffff",
-                border: "1px solid #bfdbfe",
-                boxShadow: "0 4px 15px rgba(37,99,235,0.06)",
+                border: "1px solid #a7f3d0",
+                boxShadow: "0 4px 15px rgba(0,135,90,0.06)",
                 fontSize: "13px",
                 fontWeight: "700",
-                color: "#1d4ed8",
+                color: "#00875A",
                 marginBottom: "24px",
               }}
             >
@@ -215,8 +215,8 @@ export default function AboutPage() {
                   width: "8px",
                   height: "8px",
                   borderRadius: "50%",
-                  backgroundColor: "#2563eb",
-                  boxShadow: "0 0 8px #2563eb",
+                  backgroundColor: "#00875A",
+                  boxShadow: "0 0 8px #00875A",
                 }}
               />
               About Taapti Technologies
@@ -233,7 +233,7 @@ export default function AboutPage() {
               }}
             >
               Senior engineers building{" "}
-              <span style={{ color: "#2563eb", display: "block" }}>
+              <span style={{ color: "#10243E", display: "block" }}>
                 production-ready software.
               </span>
             </h1>
@@ -258,8 +258,8 @@ export default function AboutPage() {
                   height: "52px",
                   padding: "0 30px",
                   borderRadius: "999px",
-                  background: "linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%)",
-                  boxShadow: "0 8px 20px rgba(29,78,216,0.3)",
+                  background: "#00875A",
+                  boxShadow: "0 8px 20px rgba(0,135,90,0.3)",
                 }}
               >
                 Start a Conversation <span>→</span>
@@ -304,7 +304,7 @@ export default function AboutPage() {
                   paddingRight: "20px",
                 }}
               >
-                <div style={{ fontSize: "36px", fontWeight: "800", color: "#1d4ed8", letterSpacing: "-0.03em" }}>
+                <div style={{ fontSize: "36px", fontWeight: "800", color: "#10243E", letterSpacing: "-0.03em" }}>
                   {stat.value}
                 </div>
                 <div style={{ fontSize: "15px", fontWeight: "700", color: "#0f172a", marginTop: "4px" }}>
@@ -331,7 +331,7 @@ export default function AboutPage() {
             <div className="animate-from-left">
               <span
                 style={{
-                  color: "#1d4ed8",
+                  color: "#00875A",
                   fontSize: "13px",
                   fontWeight: "800",
                   letterSpacing: "0.1em",
@@ -352,7 +352,7 @@ export default function AboutPage() {
                   marginBottom: "20px",
                 }}
               >
-                A technical partner, <span style={{ color: "#1d4ed8" }}>not just an agency.</span>
+                A technical partner, <span style={{ color: "#10243E" }}>not just an agency.</span>
               </h2>
               <p style={{ fontSize: "17px", lineHeight: "1.8", color: "#64748b", marginBottom: "20px" }}>
                 We partner with engineering leaders, CTOs, and founders who need high-velocity engineering teams to solve hard technical problems or launch ambitious products.
@@ -380,7 +380,7 @@ export default function AboutPage() {
                 style={{
                   fontSize: "12px",
                   fontWeight: "800",
-                  color: "#38bdf8",
+                  color: "#00875A",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
                   marginBottom: "16px",
@@ -413,9 +413,9 @@ export default function AboutPage() {
                     </div>
                     <span
                       style={{
-                        background: "rgba(56,189,248,0.15)",
-                        color: "#38bdf8",
-                        border: "1px solid rgba(56,189,248,0.3)",
+                        background: "#E3FCEF",
+                        color: "#00875A",
+                        border: "1px solid #A7F3D0",
                         padding: "6px 12px",
                         borderRadius: "999px",
                         fontSize: "11px",
@@ -439,7 +439,7 @@ export default function AboutPage() {
           <div style={{ textAlign: "center", maxWidth: "720px", margin: "0 auto 60px" }}>
             <span
               style={{
-                color: "#1d4ed8",
+                color: "#00875A",
                 fontSize: "13px",
                 fontWeight: "800",
                 letterSpacing: "0.1em",
@@ -459,7 +459,7 @@ export default function AboutPage() {
                 marginBottom: "16px",
               }}
             >
-              How we think about <span style={{ color: "#1d4ed8" }}>software engineering.</span>
+              How we think about <span style={{ color: "#10243E" }}>software engineering.</span>
             </h2>
             <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
               Great software isn&apos;t created by writing more code—it&apos;s created by making smart decisions that save months of technical debt down the line.
@@ -497,8 +497,8 @@ export default function AboutPage() {
                         width: "48px",
                         height: "48px",
                         borderRadius: "14px",
-                        background: "#eff6ff",
-                        color: "#1d4ed8",
+                        background: "#E3FCEF",
+                        color: "#00875A",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -509,7 +509,7 @@ export default function AboutPage() {
                     <span style={{ fontSize: "20px", fontWeight: "800", color: "#cbd5e1" }}>{val.number}</span>
                   </div>
 
-                  <div style={{ fontSize: "12px", fontWeight: "800", color: "#1d4ed8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>
+                  <div style={{ fontSize: "12px", fontWeight: "800", color: "#00875A", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>
                     {val.subtitle}
                   </div>
                   <h3 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", marginBottom: "12px" }}>
@@ -549,7 +549,7 @@ export default function AboutPage() {
           <div style={{ textAlign: "center", maxWidth: "740px", margin: "0 auto 60px" }}>
             <span
               style={{
-                color: "#1d4ed8",
+                color: "#00875A",
                 fontSize: "13px",
                 fontWeight: "800",
                 letterSpacing: "0.1em",
@@ -569,7 +569,7 @@ export default function AboutPage() {
                 marginBottom: "16px",
               }}
             >
-              Full-spectrum technology <span style={{ color: "#1d4ed8" }}>execution.</span>
+              Full-spectrum technology <span style={{ color: "#10243E" }}>execution.</span>
             </h2>
             <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
               From initial system architecture to production rollout, we bring specialized technical capabilities across the software development lifecycle.
@@ -591,13 +591,13 @@ export default function AboutPage() {
                   onClick={() => setActiveCapability(idx)}
                   className={idx % 2 === 0 ? "animate-from-left" : "animate-from-right"}
                   style={{
-                    background: isActive ? "linear-gradient(135deg, #eff6ff 0%, #ffffff 100%)" : "#ffffff",
-                    border: isActive ? "2px solid #2563eb" : "1px solid #e2e8f0",
+                    background: isActive ? "linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%)" : "#ffffff",
+                    border: isActive ? "2px solid #00875A" : "1px solid #e2e8f0",
                     borderRadius: "20px",
                     padding: "32px",
                     cursor: "pointer",
                     transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                    boxShadow: isActive ? "0 20px 40px rgba(37,99,235,0.12)" : "0 4px 15px rgba(0,0,0,0.02)",
+                    boxShadow: isActive ? "0 20px 40px rgba(0,135,90,0.12)" : "0 4px 15px rgba(0,0,0,0.02)",
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
@@ -605,15 +605,15 @@ export default function AboutPage() {
                       style={{
                         fontSize: "13px",
                         fontWeight: "800",
-                        color: isActive ? "#2563eb" : "#94a3b8",
-                        background: isActive ? "#dbeafe" : "#f1f5f9",
+                        color: isActive ? "#00875A" : "#94a3b8",
+                        background: isActive ? "#E3FCEF" : "#f1f5f9",
                         padding: "4px 10px",
                         borderRadius: "999px",
                       }}
                     >
                       0{idx + 1}
                     </span>
-                    <span style={{ color: isActive ? "#2563eb" : "#cbd5e1", fontSize: "18px", fontWeight: "700" }}>
+                    <span style={{ color: isActive ? "#00875A" : "#cbd5e1", fontSize: "18px", fontWeight: "700" }}>
                       ↗
                     </span>
                   </div>
@@ -633,7 +633,7 @@ export default function AboutPage() {
                         style={{
                           background: isActive ? "#ffffff" : "#f8fafc",
                           border: "1px solid #e2e8f0",
-                          color: isActive ? "#1d4ed8" : "#475569",
+                          color: isActive ? "#00875A" : "#475569",
                           fontSize: "12px",
                           fontWeight: "700",
                           padding: "4px 10px",
@@ -669,7 +669,7 @@ export default function AboutPage() {
           >
             <span
               style={{
-                color: "#38bdf8",
+                color: "#00875A",
                 fontSize: "12px",
                 fontWeight: "800",
                 letterSpacing: "0.12em",
@@ -691,7 +691,7 @@ export default function AboutPage() {
               }}
             >
               Have a technical challenge or product idea?{" "}
-              <span style={{ color: "#38bdf8" }}>Let&apos;s talk.</span>
+              <span style={{ color: "#00875A" }}>Let&apos;s talk.</span>
             </h2>
 
             <p
@@ -713,8 +713,8 @@ export default function AboutPage() {
                 height: "56px",
                 padding: "0 36px",
                 fontSize: "16px",
-                background: "linear-gradient(135deg, #0070f3 0%, #0051cb 100%)",
-                boxShadow: "0 8px 30px rgba(0,112,243,0.4)",
+                background: "#00875A",
+                boxShadow: "0 8px 30px rgba(0,135,90,0.4)",
               }}
             >
               Schedule Technical Discovery <span>→</span>

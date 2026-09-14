@@ -710,24 +710,33 @@ function TechStackGrid() {
     },
   ];
 
+  const doubleRow1 = [...row1, ...row1, ...row1];
+  const doubleRow2 = [...row2, ...row2, ...row2];
+
   return (
-    <div className="srv-tech-grid-wrapper">
-      <div className="srv-tech-row">
-        {row1.map((item) => (
-          <div key={item.name} className="srv-tech-card-pill">
-            {item.svg}
-            <span>{item.name}</span>
-          </div>
-        ))}
+    <div className="srv-tech-grid-wrapper srv-tech-marquee-container">
+      {/* Row 1: Left to Right Marquee */}
+      <div className="srv-tech-marquee-track srv-tech-marquee-track--ltr">
+        <div className="srv-tech-marquee-content">
+          {doubleRow1.map((item, idx) => (
+            <div key={`${item.name}-ltr-${idx}`} className="srv-tech-card-pill">
+              {item.svg}
+              <span>{item.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="srv-tech-row">
-        {row2.map((item) => (
-          <div key={item.name} className="srv-tech-card-pill">
-            {item.svg}
-            <span>{item.name}</span>
-          </div>
-        ))}
+      {/* Row 2: Right to Left Marquee */}
+      <div className="srv-tech-marquee-track srv-tech-marquee-track--rtl">
+        <div className="srv-tech-marquee-content">
+          {doubleRow2.map((item, idx) => (
+            <div key={`${item.name}-rtl-${idx}`} className="srv-tech-card-pill">
+              {item.svg}
+              <span>{item.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -745,7 +754,7 @@ const coreServices = [
       "API Architecture",
       "Java / Spring Boot",
       "Node.js / Python",
-      "Cloud & Infrastructure",
+      "Cloud Infrastructure",
       "Legacy Modernization",
     ],
     ctaText: "Explore Software Engineering",
@@ -762,7 +771,7 @@ const coreServices = [
       "AI Integration",
       "Intelligent Automation",
       "Machine Learning",
-      "AI-powered Workflows",
+      "AI Workflows",
     ],
     ctaText: "Explore AI & Machine Learning",
   },
@@ -773,12 +782,12 @@ const coreServices = [
     description:
       "Modern web products built for usability, performance and long-term scalability.",
     capabilities: [
-      "React",
-      "Next.js",
-      "Full-stack Development",
+      "React & Next.js",
+      "Full-stack Apps",
       "Frontend Engineering",
       "API Integration",
-      "Performance Optimization",
+      "Performance Tuning",
+      "Scalable Web Arch",
     ],
     ctaText: "Explore Web Development",
   },
@@ -792,11 +801,59 @@ const coreServices = [
       "Product Discovery",
       "MVP Development",
       "UX/UI Implementation",
-      "Web & Mobile Products",
+      "Web & Mobile",
       "Product Scaling",
       "Ongoing Engineering",
     ],
     ctaText: "Explore Product Development",
+  },
+  {
+    id: "05",
+    slug: "mobile-development",
+    title: "Mobile Development",
+    description:
+      "Native and cross-platform iOS & Android mobile applications built for high performance and reliability.",
+    capabilities: [
+      "React Native",
+      "iOS & Android",
+      "Mobile Architecture",
+      "Offline Sync",
+      "Push Notifications",
+      "App Store Launch",
+    ],
+    ctaText: "Explore Mobile Development",
+  },
+  {
+    id: "06",
+    slug: "cloud-devops",
+    title: "Cloud & DevOps",
+    description:
+      "Infrastructure automation, CI/CD pipelines, containerization and cloud scaling for production apps.",
+    capabilities: [
+      "AWS & Cloud Ops",
+      "Docker & Kubernetes",
+      "CI/CD Automation",
+      "Terraform / IaC",
+      "System Reliability",
+      "Security & SLAs",
+    ],
+    ctaText: "Explore Cloud & DevOps",
+  },
+  {
+    id: "07",
+    slug: "ui-ux-product-design",
+    title: "UI/UX & Product Design",
+    description:
+      "User-centered design systems, modern visual interfaces, and interactive digital prototypes.",
+    capabilities: [
+      "User Research",
+      "Figma Prototypes",
+      "Design Systems",
+      "Web & Mobile UI",
+      "UX Audits",
+      "Developer Handoff",
+    ],
+    ctaText: "Explore UI/UX & Product Design",
   },
 ];
 
@@ -869,6 +926,7 @@ const faqs = [
 export default function ServicesPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [cmapKey, setCmapKey] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(5);
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -1118,7 +1176,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* 3. CORE SERVICES */}
+      {/* 3. CORE SERVICES (3-COLUMN GRID OF VERTICAL CARDS WITH ANIMATED CODE TERMINALS) */}
       <section className="section srv-core-section">
         <div className="container">
           <div className="srv-section-header text-center reveal-down">
@@ -1126,41 +1184,50 @@ export default function ServicesPage() {
             <h2>Engineered for Scale and Precision</h2>
           </div>
 
-          <div className="srv-core-list">
-            {coreServices.map((service, idx) => {
-              const isEven = idx % 2 === 1;
-              const revealClass = isEven ? "reveal-right" : "reveal-left";
-              return (
-                <div
-                  key={service.id}
-                  className={`srv-core-item ${isEven ? "srv-core-item--reverse" : ""} ${revealClass}`}
-                >
-                  <div className="srv-core-item__info">
-                    <span className="srv-core-item__num">{service.id}</span>
-                    <h3>{service.title}</h3>
-                    <p className="srv-core-item__desc">{service.description}</p>
-
-                    <div className="srv-core-item__chips">
-                      {service.capabilities.map((cap) => (
-                        <span key={cap} className="srv-chip">
-                          {cap}
-                        </span>
-                      ))}
-                    </div>
-
-                    <Link href={`/services/${service.slug}`} className="srv-core-item__cta">
-                      <span>{service.ctaText}</span>
-                      <span className="cta-arrow">→</span>
-                    </Link>
-                  </div>
-
-                  <div className="srv-core-item__visual">
-                    <TypewriterCodeVisual service={service} />
-                  </div>
+          <div className="srv-core-grid-3col">
+            {coreServices.slice(0, visibleCount).map((service) => (
+              <div key={service.id} className="srv-card-vertical reveal-up">
+                {/* Top Section: Animated Code Terminal Visual */}
+                <div className="srv-card-top-visual">
+                  <TypewriterCodeVisual service={service} />
                 </div>
-              );
-            })}
+
+                {/* Bottom Section: Content & Tags */}
+                <div className="srv-card-bottom-info">
+                  <span className="srv-card-num">{service.id}</span>
+                  <h3 className="srv-card-title">{service.title}</h3>
+                  <p className="srv-card-desc">{service.description}</p>
+
+                  <div className="srv-card-chips">
+                    {service.capabilities.map((cap) => (
+                      <span key={cap} className="srv-chip">
+                        {cap}
+                      </span>
+                    ))}
+                  </div>
+
+                  <Link href={`/services/${service.slug}`} className="srv-card-cta">
+                    <span>{service.ctaText}</span>
+                    <span className="cta-arrow">→</span>
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
+
+          {/* VIEW ALL SERVICES BUTTON */}
+          {visibleCount < coreServices.length && (
+            <div className="srv-view-all-wrapper text-center">
+              <button
+                type="button"
+                className="btn btn-primary srv-view-all-btn"
+                onClick={() => setVisibleCount(coreServices.length)}
+              >
+                <span>View All Services ({coreServices.length})</span>
+                <span className="arrow">↓</span>
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

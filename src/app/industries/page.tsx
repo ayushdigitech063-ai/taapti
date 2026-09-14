@@ -6,6 +6,7 @@ import Link from "next/link";
 const industries = [
   {
     number: "01",
+    slug: "fintech",
     title: "FinTech",
     description:
       "Technology solutions for financial businesses that need secure, reliable and scalable digital systems.",
@@ -17,6 +18,7 @@ const industries = [
   },
   {
     number: "02",
+    slug: "healthcare",
     title: "Healthcare",
     description:
       "Digital products and technology solutions designed to improve accessibility, efficiency and user experiences.",
@@ -28,6 +30,7 @@ const industries = [
   },
   {
     number: "03",
+    slug: "saas-technology",
     title: "SaaS & Technology",
     description:
       "Engineering support for technology companies building and scaling modern software products.",
@@ -39,6 +42,7 @@ const industries = [
   },
   {
     number: "04",
+    slug: "ecommerce",
     title: "E-commerce",
     description:
       "Reliable digital commerce experiences built to support growing businesses and their customers.",
@@ -133,34 +137,39 @@ export default function IndustriesPage() {
               const animClass = animClasses[index % 4];
 
               return (
-                <article
-                  className={`industry-card ${animClass}`}
+                <Link
+                  href={`/industries/${industry.slug}`}
                   key={industry.number}
-                  style={{ animationDelay: `${index * 0.15}s` }}
+                  style={{ textDecoration: "none", color: "inherit", display: "block" }}
                 >
-                  <div className="industry-card__top">
-                    <span>{industry.number}</span>
-                    <span className="industry-card__arrow">
-                      ↗
-                    </span>
-                  </div>
+                  <article
+                    className={`industry-card ${animClass}`}
+                    style={{ animationDelay: `${index * 0.15}s`, cursor: "pointer" }}
+                  >
+                    <div className="industry-card__top">
+                      <span>{industry.number}</span>
+                      <span className="industry-card__arrow">
+                        ↗
+                      </span>
+                    </div>
 
-                  <div>
-                    <h3>{industry.title}</h3>
+                    <div>
+                      <h3>{industry.title}</h3>
 
-                    <p>{industry.description}</p>
-                  </div>
+                      <p>{industry.description}</p>
+                    </div>
 
-                  <div className="industry-card__problems">
-                    <span>Common Challenges</span>
+                    <div className="industry-card__problems">
+                      <span>Common Challenges</span>
 
-                    <ul>
-                      {industry.problems.map((problem) => (
-                        <li key={problem}>{problem}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </article>
+                      <ul>
+                        {industry.problems.map((problem) => (
+                          <li key={problem}>{problem}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </article>
+                </Link>
               );
             })}
           </div>

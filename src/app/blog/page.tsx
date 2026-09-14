@@ -170,11 +170,11 @@ export default function BlogPage() {
                 padding: "7px 16px",
                 borderRadius: "999px",
                 background: "#ffffff",
-                border: "1px solid #bfdbfe",
-                boxShadow: "0 4px 15px rgba(37,99,235,0.06)",
+                border: "1px solid #a7f3d0",
+                boxShadow: "0 4px 15px rgba(0,135,90,0.06)",
                 fontSize: "13px",
                 fontWeight: "700",
-                color: "#1d4ed8",
+                color: "#00875A",
                 marginBottom: "24px",
               }}
             >
@@ -183,8 +183,8 @@ export default function BlogPage() {
                   width: "8px",
                   height: "8px",
                   borderRadius: "50%",
-                  backgroundColor: "#2563eb",
-                  boxShadow: "0 0 8px #2563eb",
+                  backgroundColor: "#00875A",
+                  boxShadow: "0 0 8px #00875A",
                 }}
               />
               Engineering Insights & Code
@@ -201,7 +201,7 @@ export default function BlogPage() {
               }}
             >
               Practical ideas for building{" "}
-              <span style={{ color: "#2563eb", display: "block" }}>
+              <span style={{ color: "#00875A", display: "block" }}>
                 better software.
               </span>
             </h1>
@@ -298,12 +298,12 @@ export default function BlogPage() {
                     borderRadius: "999px",
                     fontSize: "13.5px",
                     fontWeight: "700",
-                    border: isActive ? "2px solid #2563eb" : "1px solid #cbd5e1",
-                    background: isActive ? "#2563eb" : "#ffffff",
+                    border: isActive ? "none" : "1px solid #cbd5e1",
+                    background: isActive ? "linear-gradient(135deg, #10243E 0%, #00875A 100%)" : "#ffffff",
                     color: isActive ? "#ffffff" : "#475569",
                     cursor: "pointer",
                     transition: "all 0.2s ease",
-                    boxShadow: isActive ? "0 4px 15px rgba(37,99,235,0.25)" : "none",
+                    boxShadow: isActive ? "0 8px 24px rgba(0, 135, 90, 0.28)" : "none",
                   }}
                 >
                   {cat}
@@ -690,7 +690,7 @@ export default function BlogPage() {
                     style={{
                       height: "52px",
                       padding: "0 28px",
-                      background: "linear-gradient(135deg, #0070f3 0%, #0051cb 100%)",
+                      background: "linear-gradient(135deg, #10243E 0%, #00875A 100%)",
                     }}
                   >
                     Subscribe

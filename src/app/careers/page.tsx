@@ -185,14 +185,14 @@ export default function CareersPage() {
           >
             <path
               d="M750 -100 C 950 150, 1150 450, 1600 650"
-              stroke="#2563eb"
+              stroke="#10243E"
               strokeWidth="1.5"
-              strokeOpacity="0.4"
+              strokeOpacity="0.25"
             />
-            <circle cx="1130" cy="130" r="6" fill="#2563eb" />
+            <circle cx="1130" cy="130" r="6" fill="#00875A" />
             <path
               d="M600 -50 Q 1000 250 1500 450"
-              stroke="#60a5fa"
+              stroke="#00875A"
               strokeWidth="1"
               strokeDasharray="4 4"
               strokeOpacity="0.3"
@@ -210,11 +210,11 @@ export default function CareersPage() {
                 padding: "7px 16px",
                 borderRadius: "999px",
                 background: "#ffffff",
-                border: "1px solid #bfdbfe",
-                boxShadow: "0 4px 15px rgba(37,99,235,0.06)",
+                border: "1px solid #a7f3d0",
+                boxShadow: "0 4px 15px rgba(0,135,90,0.06)",
                 fontSize: "13px",
                 fontWeight: "700",
-                color: "#1d4ed8",
+                color: "#00875A",
                 marginBottom: "24px",
               }}
             >
@@ -223,8 +223,8 @@ export default function CareersPage() {
                   width: "8px",
                   height: "8px",
                   borderRadius: "50%",
-                  backgroundColor: "#2563eb",
-                  boxShadow: "0 0 8px #2563eb",
+                  backgroundColor: "#00875A",
+                  boxShadow: "0 0 8px #00875A",
                 }}
               />
               We Are Hiring — Join Our Engineering Team
@@ -241,7 +241,7 @@ export default function CareersPage() {
               }}
             >
               Build high-impact software.{" "}
-              <span style={{ color: "#2563eb", display: "block" }}>
+              <span style={{ color: "#10243E", display: "block" }}>
                 Accelerate your career.
               </span>
             </h1>
@@ -259,10 +259,31 @@ export default function CareersPage() {
             </p>
 
             <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
-              <a href="#open-roles" className="btn btn-primary" style={{ height: "54px", padding: "0 32px" }}>
+              <a
+                href="#open-roles"
+                className="btn btn-primary"
+                style={{
+                  height: "54px",
+                  padding: "0 32px",
+                  borderRadius: "999px",
+                  background: "#00875A",
+                  boxShadow: "0 8px 20px rgba(0,135,90,0.3)",
+                }}
+              >
                 View Open Positions <span>↓</span>
               </a>
-              <Link href="/about" className="btn btn-outline" style={{ height: "54px", padding: "0 28px" }}>
+              <Link
+                href="/about"
+                className="btn btn-outline"
+                style={{
+                  height: "54px",
+                  padding: "0 28px",
+                  borderRadius: "999px",
+                  background: "#ffffff",
+                  borderColor: "#cbd5e1",
+                  color: "#0f172a",
+                }}
+              >
                 Learn About Our Culture
               </Link>
             </div>
@@ -276,7 +297,7 @@ export default function CareersPage() {
           <div style={{ textAlign: "center", maxWidth: "720px", margin: "0 auto 60px" }}>
             <span
               style={{
-                color: "#1d4ed8",
+                color: "#00875A",
                 fontSize: "13px",
                 fontWeight: "800",
                 letterSpacing: "0.1em",
@@ -296,7 +317,7 @@ export default function CareersPage() {
                 marginBottom: "16px",
               }}
             >
-              Why engineers love <span style={{ color: "#1d4ed8" }}>working here.</span>
+              Why engineers love <span style={{ color: "#10243E" }}>working here.</span>
             </h2>
             <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
               We build an environment where engineering ownership, rapid growth, and work-life balance go hand in hand.
@@ -333,8 +354,8 @@ export default function CareersPage() {
                         width: "50px",
                         height: "50px",
                         borderRadius: "16px",
-                        background: "#eff6ff",
-                        color: "#1d4ed8",
+                        background: "#E3FCEF",
+                        color: "#00875A",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -345,7 +366,7 @@ export default function CareersPage() {
                     <span style={{ fontSize: "18px", fontWeight: "800", color: "#cbd5e1" }}>{benefit.number}</span>
                   </div>
 
-                  <div style={{ fontSize: "12px", fontWeight: "800", color: "#1d4ed8", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>
+                  <div style={{ fontSize: "12px", fontWeight: "800", color: "#00875A", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>
                     {benefit.subtitle}
                   </div>
                   <h3 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", marginBottom: "12px" }}>
@@ -367,7 +388,7 @@ export default function CareersPage() {
           <div style={{ textAlign: "center", maxWidth: "720px", margin: "0 auto 50px" }}>
             <span
               style={{
-                color: "#1d4ed8",
+                color: "#00875A",
                 fontSize: "13px",
                 fontWeight: "800",
                 letterSpacing: "0.1em",
@@ -387,7 +408,7 @@ export default function CareersPage() {
                 marginBottom: "16px",
               }}
             >
-              Open <span style={{ color: "#1d4ed8" }}>positions.</span>
+              Open <span style={{ color: "#10243E" }}>positions.</span>
             </h2>
             <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
               Explore our current technical roles. We are always hiring talent passionate about software engineering excellence.
@@ -415,9 +436,10 @@ export default function CareersPage() {
                     borderRadius: "999px",
                     fontSize: "14px",
                     fontWeight: "700",
-                    border: isActive ? "2px solid #2563eb" : "1px solid #cbd5e1",
-                    background: isActive ? "#2563eb" : "#ffffff",
+                    border: isActive ? "none" : "1px solid #cbd5e1",
+                    background: isActive ? "#00875A" : "#ffffff",
                     color: isActive ? "#ffffff" : "#475569",
+                    boxShadow: isActive ? "0 8px 24px rgba(0, 135, 90, 0.28)" : "none",
                     cursor: "pointer",
                     transition: "all 0.2s ease",
                   }}
@@ -451,8 +473,8 @@ export default function CareersPage() {
                   <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "12px" }}>
                     <span
                       style={{
-                        background: "#eff6ff",
-                        color: "#1d4ed8",
+                        background: "#E3FCEF",
+                        color: "#00875A",
                         fontSize: "11.5px",
                         fontWeight: "800",
                         padding: "4px 12px",
@@ -500,7 +522,14 @@ export default function CareersPage() {
                   <Link
                     href="/contact"
                     className="btn btn-primary"
-                    style={{ height: "48px", padding: "0 28px", fontSize: "14px" }}
+                    style={{
+                      height: "48px",
+                      padding: "0 28px",
+                      fontSize: "14px",
+                      borderRadius: "999px",
+                      background: "#00875A",
+                      boxShadow: "0 8px 20px rgba(0,135,90,0.3)",
+                    }}
                   >
                     Apply For Role <span>→</span>
                   </Link>
@@ -517,7 +546,7 @@ export default function CareersPage() {
           <div style={{ textAlign: "center", maxWidth: "720px", margin: "0 auto 60px" }}>
             <span
               style={{
-                color: "#1d4ed8",
+                color: "#00875A",
                 fontSize: "13px",
                 fontWeight: "800",
                 letterSpacing: "0.1em",
@@ -537,7 +566,7 @@ export default function CareersPage() {
                 marginBottom: "16px",
               }}
             >
-              Fast, practical <span style={{ color: "#1d4ed8" }}>hiring pipeline.</span>
+              Fast, practical <span style={{ color: "#10243E" }}>hiring pipeline.</span>
             </h2>
             <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
               No 8-stage algorithmic puzzles. We focus on real-world engineering discussions and practical code.
@@ -568,7 +597,7 @@ export default function CareersPage() {
                     width: "44px",
                     height: "44px",
                     borderRadius: "12px",
-                    background: "#2563eb",
+                    background: "#00875A",
                     color: "#ffffff",
                     fontWeight: "800",
                     fontSize: "16px",
@@ -576,7 +605,7 @@ export default function CareersPage() {
                     alignItems: "center",
                     justifyContent: "center",
                     marginBottom: "20px",
-                    boxShadow: "0 8px 20px rgba(37,99,235,0.3)",
+                    boxShadow: "0 8px 20px rgba(0,135,90,0.3)",
                   }}
                 >
                   {proc.step}
@@ -613,7 +642,7 @@ export default function CareersPage() {
             <div>
               <span
                 style={{
-                  color: "#38bdf8",
+                  color: "#00875A",
                   fontSize: "12px",
                   fontWeight: "800",
                   letterSpacing: "0.12em",
@@ -640,7 +669,9 @@ export default function CareersPage() {
                   height: "56px",
                   padding: "0 36px",
                   fontSize: "16px",
-                  background: "linear-gradient(135deg, #0070f3 0%, #0051cb 100%)",
+                  borderRadius: "999px",
+                  background: "#00875A",
+                  boxShadow: "0 8px 30px rgba(0,135,90,0.4)",
                 }}
               >
                 Send General Application <span>→</span>

@@ -5,6 +5,7 @@ import Process from "@/sections/Home/Process";
 import Partners from "@/sections/Home/Partners";
 import CaseStudies from "@/sections/Home/CaseStudies";
 import Testimonials from "@/sections/Home/Testimonials";
+import Gallery from "@/sections/Home/Gallery";
 import CTA from "@/sections/Home/CTA";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -19,6 +20,7 @@ export default function Home() {
       <Partners />
       <CaseStudies />
       <Testimonials />
+      <Gallery />
       <CTA />
     </main>
   );

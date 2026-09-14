@@ -1,65 +1,128 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import EnquireModal from "@/components/EnquireModal";
 
 export default function CTA() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState({
+    eyebrow: "HAVE A PROJECT IN MIND?",
+    titleNormal: "Let's build something",
+    titleHighlight: "that matters.",
+    description:
+      "Tell us what you're building, what you're trying to solve, or where you want to go next. We'll help you figure out the right technology approach.",
+    primaryBtnText: "Start a Conversation",
+    secondaryBtnText: "Explore Services",
+    bannerImage: "",
+    centerCardTitle: "From ideas to impact",
+    trustItems: [
+      { title: "Free Consultation" },
+      { title: "Quick Response" },
+      { title: "Confidential & Secure" },
+    ],
+  });
+
+  const fetchCta = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/cta").catch(() => null);
+      if (res && res.ok) {
+        const json = await res.json();
+        if (json && json.success && json.data) {
+          const d = json.data;
+          setData({
+            eyebrow: d.eyebrow || "HAVE A PROJECT IN MIND?",
+            titleNormal: d.titleNormal || "Let's build something",
+            titleHighlight: d.titleHighlight || "that matters.",
+            description: d.description || "Tell us what you're building...",
+            primaryBtnText: d.primaryBtnText || "Start a Conversation",
+            secondaryBtnText: d.secondaryBtnText || "Explore Services",
+            bannerImage: d.bannerImage || "",
+            centerCardTitle: d.centerCardTitle || "From ideas to impact",
+            trustItems: d.trustItems && d.trustItems.length > 0 ? d.trustItems : [
+              { title: "Free Consultation" },
+              { title: "Quick Response" },
+              { title: "Confidential & Secure" },
+            ],
+          });
+        }
+      }
+    } catch {
+      /* silent */
+    }
+  };
+
+  useEffect(() => {
+    fetchCta();
+
+    let channel: BroadcastChannel | null = null;
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      channel = new BroadcastChannel("taapti_cms_updates");
+      channel.onmessage = (event) => {
+        if (event.data === "CTA_UPDATED" || event.data === "CMS_UPDATED") {
+          fetchCta();
+        }
+      };
+    }
+
+    const interval = setInterval(() => {
+      fetchCta();
+    }, 4000);
+
+    return () => {
+      if (channel) channel.close();
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <section className="section cta-section">
       <div className="container cta-container">
-        <div className="cta-box">
+        <div className="cta-box" style={data.bannerImage ? { backgroundImage: `linear-gradient(to right, rgba(15,23,42,0.95), rgba(15,23,42,0.85)), url(${data.bannerImage})`, backgroundSize: "cover", backgroundPosition: "center" } : {}}>
           
           {/* LEFT CONTENT AREA */}
           <div className="cta-left reveal-left">
             <div className="cta-eyebrow">
-              <span className="cta-eyebrow-dot"></span>
-              <span>HAVE A PROJECT IN MIND?</span>
+              <span className="cta-eyebrow-dot" style={{ background: "#00875A" }}></span>
+              <span style={{ color: "#00875A" }}>{data.eyebrow}</span>
             </div>
 
             <h2 className="cta-title">
-              Let&apos;s build something <span className="cta-title-highlight">that matters.</span>
+              {data.titleNormal} <span className="cta-title-highlight" style={{ color: "#10243E" }}>{data.titleHighlight}</span>
             </h2>
 
             <p className="cta-desc">
-              Tell us what you&apos;re building, what you&apos;re trying to solve, or where you want to go next. We&apos;ll help you figure out the right technology approach.
+              {data.description}
             </p>
 
             <div className="cta-buttons">
-              <Link href="/contact" className="cta-btn-primary">
-                <span>Start a Conversation</span>
+              <button
+                type="button"
+                className="cta-btn-primary"
+                onClick={() => setIsModalOpen(true)}
+                style={{ border: "none", cursor: "pointer", background: "#00875A", boxShadow: "0 8px 24px rgba(0,135,90,0.3)" }}
+              >
+                <span>{data.primaryBtnText}</span>
                 <span className="cta-btn-arrow">→</span>
-              </Link>
+              </button>
 
               <Link href="/services" className="cta-btn-outline">
-                Explore Services
+                {data.secondaryBtnText}
               </Link>
             </div>
 
             {/* BOTTOM TRUST FEATURES BAR */}
             <div className="cta-trust-bar">
-              <div className="cta-trust-item">
-                <div className="cta-trust-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                  </svg>
+              {data.trustItems.map((item, idx) => (
+                <div key={idx} className="cta-trust-item">
+                  <div className="cta-trust-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                  </div>
+                  <span>{item.title}</span>
                 </div>
-                <span>Free Consultation</span>
-              </div>
-
-              <div className="cta-trust-item">
-                <div className="cta-trust-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                  </svg>
-                </div>
-                <span>Quick Response</span>
-              </div>
-
-              <div className="cta-trust-item">
-                <div className="cta-trust-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                  </svg>
-                </div>
-                <span>Confidential &amp; Secure</span>
-              </div>
+              ))}
             </div>
           </div>
 
@@ -118,14 +181,18 @@ export default function CTA() {
                 </div>
 
                 {/* CARD 2 (MAIN CENTER FRONT CARD) */}
-                <div className="cta-3d-card cta-3d-card--center">
+                <div
+                  className="cta-3d-card cta-3d-card--center"
+                  onClick={() => setIsModalOpen(true)}
+                  style={{ cursor: "pointer" }}
+                >
                   <div className="cta-card-inner">
                     <div className="cta-card-bulb-icon">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M9 18h6M10 22h4M15 9A6 6 0 0 0 9 9c0 2.38 1.19 4.47 3 5.74V17h0v0h0a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74z"></path>
                       </svg>
                     </div>
-                    <h3>From ideas to impact</h3>
+                    <h3>{data.centerCardTitle}</h3>
                     <div className="cta-card-line"></div>
                     <div className="cta-card-line short"></div>
                     
@@ -156,6 +223,13 @@ export default function CTA() {
 
         </div>
       </div>
+
+      {/* Enquire Lead Modal */}
+      <EnquireModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        serviceTitle="General Project Consultation"
+      />
     </section>
   );
-}
+}
