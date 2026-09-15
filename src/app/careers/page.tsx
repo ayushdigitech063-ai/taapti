@@ -258,6 +258,20 @@ export default function CareersPage() {
     setIsApplyModalOpen(true);
   };
 
+  useEffect(() => {
+    if (isApplyModalOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [isApplyModalOpen]);
+
   const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -731,20 +745,20 @@ export default function CareersPage() {
       {/* CANDIDATE JOB APPLICATION MODAL FORM WITH RESUME UPLOAD */}
       {/* ------------------------------------------------------------- */}
       {isApplyModalOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 99999, background: "rgba(15, 23, 42, 0.7)", backdropFilter: "blur(6px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
-          <div style={{ background: "#FFF", borderRadius: "24px", width: "100%", maxWidth: "760px", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.3)", display: "flex", flexDirection: "column" }}>
+        <div style={{ position: "fixed", inset: 0, zIndex: 999999, background: "rgba(15, 23, 42, 0.75)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
+          <div style={{ background: "#FFF", borderRadius: "20px", width: "100%", maxWidth: "720px", maxHeight: "90dvh", overflowY: "auto", boxShadow: "0 25px 60px rgba(0, 0, 0, 0.35)", display: "flex", flexDirection: "column" }}>
             
             {/* Modal Header */}
-            <div style={{ padding: "24px 30px", borderBottom: "1px solid #E2E8F0", background: "#F8FAFC", borderTopLeftRadius: "24px", borderTopRightRadius: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ padding: "18px 22px", borderBottom: "1px solid #E2E8F0", background: "#F8FAFC", borderTopLeftRadius: "20px", borderTopRightRadius: "20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
                 <span style={{ fontSize: "11px", fontWeight: "800", color: "#00875A", textTransform: "uppercase", letterSpacing: "0.08em" }}>CANDIDATE APPLICATION</span>
-                <h2 style={{ fontSize: "20px", fontWeight: "800", color: "#0F172A", margin: "2px 0 0 0" }}>
+                <h2 style={{ fontSize: "17px", fontWeight: "800", color: "#0F172A", margin: "2px 0 0 0", lineHeight: "1.3" }}>
                   Applying for: {selectedJob?.title}
                 </h2>
               </div>
               <button
                 onClick={() => setIsApplyModalOpen(false)}
-                style={{ background: "#E2E8F0", color: "#475569", border: "none", width: "34px", height: "34px", borderRadius: "50%", cursor: "pointer", fontWeight: "800", fontSize: "16px", display: "flex", alignItems: "center", justifyContent: "center" }}
+                style={{ background: "#E2E8F0", color: "#475569", border: "none", width: "32px", height: "32px", borderRadius: "50%", cursor: "pointer", fontWeight: "800", fontSize: "15px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
               >
                 ✕
               </button>
@@ -792,8 +806,8 @@ export default function CareersPage() {
                 />
               </div>
 
-              {/* Row 2.5: Dynamic Country, State & City Selectors */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px", background: "#F8FAFC", padding: "16px", borderRadius: "14px", border: "1px solid #E2E8F0" }}>
+              {/* Location Selectors: Country, State, City */}
+              <div style={{ background: "#F8FAFC", padding: "16px", borderRadius: "14px", border: "1px solid #E2E8F0", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "12px" }}>
                 <div>
                   <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Country *</label>
                   <select
@@ -806,7 +820,7 @@ export default function CareersPage() {
                       const cObj = Country.getCountryByCode(cCode);
                       setApplyForm((prev) => ({ ...prev, location: cObj ? cObj.name : "" }));
                     }}
-                    style={{ width: "100%", padding: "10px 12px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                    style={{ width: "100%", padding: "10px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
                   >
                     {Country.getAllCountries().map((c) => (
                       <option key={c.isoCode} value={c.isoCode}>
@@ -829,9 +843,9 @@ export default function CareersPage() {
                       const locStr = `${sObj ? sObj.name + ", " : ""}${cObj ? cObj.name : ""}`;
                       setApplyForm((prev) => ({ ...prev, location: locStr }));
                     }}
-                    style={{ width: "100%", padding: "10px 12px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                    style={{ width: "100%", padding: "10px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
                   >
-                    <option value="">Select State (Optional)</option>
+                    <option value="">Select State</option>
                     {State.getStatesOfCountry(selectedCountryCode).map((s) => (
                       <option key={s.isoCode} value={s.isoCode}>
                         {s.name}
@@ -853,7 +867,7 @@ export default function CareersPage() {
                         const locStr = `${cName ? cName + ", " : ""}${sObj ? sObj.name + ", " : ""}${cObj ? cObj.name : ""}`;
                         setApplyForm((prev) => ({ ...prev, location: locStr }));
                       }}
-                      style={{ width: "100%", padding: "10px 12px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                      style={{ width: "100%", padding: "10px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
                     >
                       <option value="">Select City</option>
                       {City.getCitiesOfState(selectedCountryCode, selectedStateCode).map((city, idx) => (
@@ -979,9 +993,9 @@ export default function CareersPage() {
                 <button
                   type="submit"
                   disabled={isSubmittingApply || isUploadingResume}
-                  style={{ padding: "11px 28px", background: "#00875A", color: "#FFF", border: "none", borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer", boxShadow: "0 4px 14px rgba(0, 135, 90, 0.3)" }}
+                  style={{ padding: "11px 24px", background: "#00875A", color: "#FFF", border: "none", borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer", whiteSpace: "nowrap", boxShadow: "0 4px 14px rgba(0, 135, 90, 0.3)" }}
                 >
-                  {isSubmittingApply ? "Submitting Application..." : "Submit Job Application 🚀"}
+                  {isSubmittingApply ? "Submitting..." : "Submit Application 🚀"}
                 </button>
               </div>
 

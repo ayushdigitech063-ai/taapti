@@ -22,10 +22,26 @@ export default function EnquireModal({ isOpen, onClose, serviceTitle = "Software
         onClose();
       }
     };
+
     if (isOpen) {
       window.addEventListener("keydown", handleKeyDown);
+      const originalOverflow = document.body.style.overflow;
+      const originalPosition = document.body.style.position;
+      const originalWidth = document.body.style.width;
+
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.documentElement.style.overflow = "hidden";
+
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = originalOverflow;
+        document.body.style.position = originalPosition;
+        document.body.style.width = originalWidth;
+        document.documentElement.style.overflow = "";
+      };
     }
-    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
