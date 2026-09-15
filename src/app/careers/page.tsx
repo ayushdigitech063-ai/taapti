@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import Swal from "sweetalert2";
+import { Country, State, City } from "country-state-city";
 
 const benefits = [
   {
@@ -54,7 +56,7 @@ const benefits = [
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="12" cy="12" r="10" />
         <line x1="2" y1="12" x2="22" y2="12" />
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z" />
       </svg>
     ),
   },
@@ -157,8 +159,180 @@ const openRoles = [
 
 export default function CareersPage() {
   const [selectedDepartment, setSelectedDepartment] = useState("All");
+  const [jobs, setJobs] = useState<any[]>(openRoles);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<any>(null);
+  const [isSubmittingApply, setIsSubmittingApply] = useState(false);
+  const [isUploadingResume, setIsUploadingResume] = useState(false);
 
-  const filteredRoles = openRoles.filter((role) => {
+  // Country State City selectors
+  const [selectedCountryCode, setSelectedCountryCode] = useState("IN");
+  const [selectedStateCode, setSelectedStateCode] = useState("");
+  const [selectedCityName, setSelectedCityName] = useState("");
+
+  const [applyForm, setApplyForm] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    location: "",
+    experienceYears: "3 Years",
+    currentCompany: "",
+    expectedCtc: "",
+    noticePeriod: "Immediate / 15 Days",
+    linkedinUrl: "",
+    portfolioUrl: "",
+    resumeUrl: "",
+    coverLetter: "",
+  });
+
+  // Editable page content state
+  const [pageContent, setPageContent] = useState<any>(null);
+
+  const fetchJobs = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/careers/jobs?status=Open").catch(() => null);
+      if (res && res.ok) {
+        const json = await res.json();
+        if (json.success && json.data && json.data.length > 0) {
+          const mapped = json.data.map((j: any) => ({
+            id: j._id,
+            department: j.department || "Engineering",
+            title: j.title,
+            type: j.type || "Full-Time",
+            location: j.location || "Surat, India / Remote",
+            experience: j.experience || "3+ Years",
+            salaryRange: j.salaryRange || "Competitive",
+            description: j.description || "",
+            stack: j.requirements && j.requirements.length > 0 ? j.requirements : ["React", "Node.js", "TypeScript", "Next.js"],
+          }));
+          setJobs(mapped);
+        }
+      }
+    } catch { /* silent */ }
+  };
+
+  const fetchPageContent = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/careers/page").catch(() => null);
+      if (res && res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          setPageContent(json.data);
+        }
+      }
+    } catch { /* silent */ }
+  };
+
+  useEffect(() => {
+    fetchJobs();
+    fetchPageContent();
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      const bc = new BroadcastChannel("taapti_cms_updates");
+      bc.onmessage = () => {
+        fetchJobs();
+        fetchPageContent();
+      };
+      return () => bc.close();
+    }
+  }, []);
+
+  const handleOpenApplyModal = (job: any) => {
+    setSelectedJob(job);
+    setSelectedCountryCode("IN");
+    setSelectedStateCode("");
+    setSelectedCityName("");
+    setApplyForm({
+      fullName: "",
+      email: "",
+      phone: "",
+      location: "",
+      experienceYears: job.experience || "3 Years",
+      currentCompany: "",
+      expectedCtc: "",
+      noticePeriod: "Immediate / 15 Days",
+      linkedinUrl: "",
+      portfolioUrl: "",
+      resumeUrl: "",
+      coverLetter: "",
+    });
+    setIsApplyModalOpen(true);
+  };
+
+  const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploadingResume(true);
+    const fd = new FormData();
+    fd.append("image", file); // api/upload takes image/file
+
+    try {
+      const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setApplyForm((prev) => ({ ...prev, resumeUrl: data.url }));
+        Swal.fire({ icon: "success", title: "Resume Uploaded!", text: `${file.name} uploaded successfully.`, timer: 1500, showConfirmButton: false });
+      } else {
+        Swal.fire("Upload Error", data.message || "Could not upload resume", "error");
+      }
+    } catch {
+      Swal.fire("Upload Error", "Could not connect to server for file upload", "error");
+    } finally {
+      setIsUploadingResume(false);
+    }
+  };
+
+  const handleSubmitApplication = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!applyForm.fullName.trim() || !applyForm.email.trim() || !applyForm.phone.trim()) {
+      Swal.fire("Required Fields", "Please enter your Full Name, Email, and Phone Number.", "warning");
+      return;
+    }
+    if (!applyForm.resumeUrl) {
+      Swal.fire("Resume Required", "Please upload your resume file before submitting.", "warning");
+      return;
+    }
+
+    setIsSubmittingApply(true);
+    try {
+      const payload = {
+        jobId: selectedJob?.id,
+        jobTitle: selectedJob?.title || "General Application",
+        ...applyForm,
+      };
+
+      const res = await fetch("http://localhost:5000/api/careers/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+          const bc = new BroadcastChannel("taapti_cms_updates");
+          bc.postMessage("JOB_APPLICATION_SUBMITTED");
+          bc.close();
+        }
+
+        Swal.fire({
+          icon: "success",
+          title: "Application Submitted! 🎉",
+          text: `Thank you ${applyForm.fullName}! Your resume for '${selectedJob?.title}' has been sent to our recruitment team.`,
+          confirmButtonColor: "#00875A",
+        });
+
+        setIsApplyModalOpen(false);
+      } else {
+        Swal.fire("Error", data.message || "Failed to submit application", "error");
+      }
+    } catch {
+      Swal.fire("Error", "Could not connect to server", "error");
+    } finally {
+      setIsSubmittingApply(false);
+    }
+  };
+
+  const filteredRoles = jobs.filter((role) => {
     return selectedDepartment === "All" || role.department === selectedDepartment;
   });
 
@@ -227,7 +401,7 @@ export default function CareersPage() {
                   boxShadow: "0 0 8px #00875A",
                 }}
               />
-              We Are Hiring — Join Our Engineering Team
+              {pageContent?.heroBadge || "We Are Hiring — Join Our Engineering Team"}
             </div>
 
             <h1
@@ -240,9 +414,9 @@ export default function CareersPage() {
                 marginBottom: "24px",
               }}
             >
-              Build high-impact software.{" "}
+              {pageContent?.heroTitleNormal || "Build high-impact software."}{" "}
               <span style={{ color: "#10243E", display: "block" }}>
-                Accelerate your career.
+                {pageContent?.heroTitleHighlight || "Accelerate your career."}
               </span>
             </h1>
 
@@ -255,7 +429,7 @@ export default function CareersPage() {
                 maxWidth: "700px",
               }}
             >
-              Taapti Technologies is looking for senior developers and architects passionate about clean code, high availability systems, and modern AI engineering.
+              {pageContent?.heroDescription || "Taapti Technologies is looking for senior developers and architects passionate about clean code, high availability systems, and modern AI engineering."}
             </p>
 
             <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
@@ -302,80 +476,84 @@ export default function CareersPage() {
                 fontWeight: "800",
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
-                marginBottom: "12px",
-                display: "inline-block",
               }}
             >
-              Life At Taapti
+              PERKS & BENEFITS
             </span>
             <h2
               style={{
-                fontSize: "clamp(32px, 3.8vw, 48px)",
+                fontSize: "clamp(30px, 3.5vw, 44px)",
                 fontWeight: "800",
-                color: "#0a0d14",
-                letterSpacing: "-0.03em",
-                marginBottom: "16px",
+                color: "#0f172a",
+                marginTop: "8px",
               }}
             >
-              Why engineers love <span style={{ color: "#10243E" }}>working here.</span>
+              Why engineers thrive at Taapti
             </h2>
-            <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
-              We build an environment where engineering ownership, rapid growth, and work-life balance go hand in hand.
-            </p>
           </div>
 
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: "24px",
+              gap: "28px",
             }}
           >
-            {benefits.map((benefit, idx) => (
+            {(pageContent?.benefitsList && pageContent.benefitsList.length > 0 ? pageContent.benefitsList : benefits).map((b: any, idx: number) => (
               <div
-                key={benefit.number}
+                key={b.number || idx}
                 className={idx % 2 === 0 ? "animate-from-left" : "animate-from-right"}
                 style={{
-                  background: "#ffffff",
+                  background: "#f8fafc",
                   borderRadius: "24px",
-                  padding: "36px",
                   border: "1px solid #e2e8f0",
-                  boxShadow: "0 10px 30px rgba(0,0,0,0.03)",
+                  padding: "36px",
                   transition: "all 0.3s ease",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
                 }}
               >
-                <div>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-                    <div
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        borderRadius: "16px",
-                        background: "#E3FCEF",
-                        color: "#00875A",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {benefit.icon}
-                    </div>
-                    <span style={{ fontSize: "18px", fontWeight: "800", color: "#cbd5e1" }}>{benefit.number}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "24px",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "52px",
+                      height: "52px",
+                      borderRadius: "16px",
+                      background: "#00875A",
+                      color: "#ffffff",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 8px 20px rgba(0,135,90,0.25)",
+                    }}
+                  >
+                    {b.icon}
                   </div>
-
-                  <div style={{ fontSize: "12px", fontWeight: "800", color: "#00875A", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>
-                    {benefit.subtitle}
-                  </div>
-                  <h3 style={{ fontSize: "22px", fontWeight: "800", color: "#0f172a", marginBottom: "12px" }}>
-                    {benefit.title}
-                  </h3>
-                  <p style={{ fontSize: "14.5px", color: "#64748b", lineHeight: "1.65" }}>
-                    {benefit.description}
-                  </p>
+                  <span
+                    style={{
+                      fontSize: "24px",
+                      fontWeight: "800",
+                      color: "#cbd5e1",
+                    }}
+                  >
+                    {b.number}
+                  </span>
                 </div>
+
+                <div style={{ fontSize: "12px", fontWeight: "800", color: "#00875A", textTransform: "uppercase", marginBottom: "6px" }}>
+                  {b.subtitle}
+                </div>
+                <h3 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", marginBottom: "12px" }}>
+                  {b.title}
+                </h3>
+                <p style={{ fontSize: "14.5px", color: "#64748b", lineHeight: "1.65" }}>
+                  {b.description}
+                </p>
               </div>
             ))}
           </div>
@@ -385,7 +563,7 @@ export default function CareersPage() {
       {/* Open Positions Section */}
       <section id="open-roles" style={{ padding: "100px 0", background: "#f8fafc" }}>
         <div className="container">
-          <div style={{ textAlign: "center", maxWidth: "720px", margin: "0 auto 50px" }}>
+          <div style={{ textAlign: "center", maxWidth: "720px", margin: "0 auto 40px" }}>
             <span
               style={{
                 color: "#00875A",
@@ -393,58 +571,55 @@ export default function CareersPage() {
                 fontWeight: "800",
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
-                marginBottom: "12px",
-                display: "inline-block",
               }}
             >
-              Current Hiring
+              ACTIVE HIRING
             </span>
             <h2
               style={{
-                fontSize: "clamp(32px, 3.8vw, 48px)",
+                fontSize: "clamp(30px, 3.5vw, 44px)",
                 fontWeight: "800",
-                color: "#0a0d14",
-                letterSpacing: "-0.03em",
-                marginBottom: "16px",
+                color: "#0f172a",
+                marginTop: "8px",
               }}
             >
-              Open <span style={{ color: "#10243E" }}>positions.</span>
+              Current Job Openings ({jobs.length})
             </h2>
-            <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
-              Explore our current technical roles. We are always hiring talent passionate about software engineering excellence.
+            <p style={{ color: "#64748b", fontSize: "16px", marginTop: "8px" }}>
+              Explore our active engineering positions and submit your resume directly.
             </p>
           </div>
 
-          {/* Department Filter */}
+          {/* Department Filter Pills */}
           <div
             style={{
               display: "flex",
+              alignItems: "center",
               justifyContent: "center",
               gap: "10px",
               flexWrap: "wrap",
               marginBottom: "40px",
             }}
           >
-            {["All", "Engineering", "AI & Data"].map((dept) => {
+            {["All", "Engineering", "AI & Data", "DevOps & Security"].map((dept) => {
               const isActive = selectedDepartment === dept;
               return (
                 <button
                   key={dept}
                   onClick={() => setSelectedDepartment(dept)}
                   style={{
-                    padding: "10px 24px",
+                    padding: "9px 20px",
                     borderRadius: "999px",
-                    fontSize: "14px",
+                    fontSize: "13px",
                     fontWeight: "700",
                     border: isActive ? "none" : "1px solid #cbd5e1",
                     background: isActive ? "#00875A" : "#ffffff",
                     color: isActive ? "#ffffff" : "#475569",
-                    boxShadow: isActive ? "0 8px 24px rgba(0, 135, 90, 0.28)" : "none",
                     cursor: "pointer",
-                    transition: "all 0.2s ease",
+                    boxShadow: isActive ? "0 4px 14px rgba(0,135,90,0.25)" : "none",
                   }}
                 >
-                  {dept === "All" ? "All Departments" : dept}
+                  {dept}
                 </button>
               );
             })}
@@ -454,7 +629,7 @@ export default function CareersPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {filteredRoles.map((role, idx) => (
               <div
-                key={role.id}
+                key={role.id || idx}
                 className={idx % 2 === 0 ? "animate-from-left" : "animate-from-right"}
                 style={{
                   background: "#ffffff",
@@ -470,7 +645,7 @@ export default function CareersPage() {
                 }}
               >
                 <div>
-                  <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "12px" }}>
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "12px", flexWrap: "wrap" }}>
                     <span
                       style={{
                         background: "#E3FCEF",
@@ -486,6 +661,11 @@ export default function CareersPage() {
                     </span>
                     <span style={{ fontSize: "13px", color: "#64748b", fontWeight: "600" }}>{role.location}</span>
                     <span style={{ fontSize: "13px", color: "#94a3b8" }}>• {role.type}</span>
+                    {role.salaryRange && (
+                      <span style={{ fontSize: "12px", background: "#FEF3C7", color: "#92400E", fontWeight: "700", padding: "3px 8px", borderRadius: "6px" }}>
+                        💰 {role.salaryRange}
+                      </span>
+                    )}
                   </div>
 
                   <h3 style={{ fontSize: "24px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>
@@ -497,9 +677,9 @@ export default function CareersPage() {
                   </p>
 
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                    {role.stack.map((tech, idx) => (
+                    {role.stack.map((tech: string, i: number) => (
                       <span
-                        key={idx}
+                        key={i}
                         style={{
                           background: "#f1f5f9",
                           color: "#475569",
@@ -519,8 +699,8 @@ export default function CareersPage() {
                   <div style={{ fontSize: "13px", color: "#64748b", fontWeight: "600" }}>
                     Exp Required: <strong style={{ color: "#0f172a" }}>{role.experience}</strong>
                   </div>
-                  <Link
-                    href="/contact"
+                  <button
+                    onClick={() => handleOpenApplyModal(role)}
                     className="btn btn-primary"
                     style={{
                       height: "48px",
@@ -528,17 +708,288 @@ export default function CareersPage() {
                       fontSize: "14px",
                       borderRadius: "999px",
                       background: "#00875A",
+                      border: "none",
+                      cursor: "pointer",
                       boxShadow: "0 8px 20px rgba(0,135,90,0.3)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      color: "#FFF",
+                      fontWeight: "700"
                     }}
                   >
-                    Apply For Role <span>→</span>
-                  </Link>
+                    Apply Now <span>→</span>
+                  </button>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* CANDIDATE JOB APPLICATION MODAL FORM WITH RESUME UPLOAD */}
+      {/* ------------------------------------------------------------- */}
+      {isApplyModalOpen && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 99999, background: "rgba(15, 23, 42, 0.7)", backdropFilter: "blur(6px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+          <div style={{ background: "#FFF", borderRadius: "24px", width: "100%", maxWidth: "760px", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.3)", display: "flex", flexDirection: "column" }}>
+            
+            {/* Modal Header */}
+            <div style={{ padding: "24px 30px", borderBottom: "1px solid #E2E8F0", background: "#F8FAFC", borderTopLeftRadius: "24px", borderTopRightRadius: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <span style={{ fontSize: "11px", fontWeight: "800", color: "#00875A", textTransform: "uppercase", letterSpacing: "0.08em" }}>CANDIDATE APPLICATION</span>
+                <h2 style={{ fontSize: "20px", fontWeight: "800", color: "#0F172A", margin: "2px 0 0 0" }}>
+                  Applying for: {selectedJob?.title}
+                </h2>
+              </div>
+              <button
+                onClick={() => setIsApplyModalOpen(false)}
+                style={{ background: "#E2E8F0", color: "#475569", border: "none", width: "34px", height: "34px", borderRadius: "50%", cursor: "pointer", fontWeight: "800", fontSize: "16px", display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Body / Form */}
+            <form onSubmit={handleSubmitApplication} style={{ padding: "28px 30px", display: "flex", flexDirection: "column", gap: "20px" }}>
+              
+              {/* Row 1: Full Name & Email */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Full Name *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Vikramaditya Singh"
+                    value={applyForm.fullName}
+                    onChange={(e) => setApplyForm({ ...applyForm, fullName: e.target.value })}
+                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Email Address *</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="e.g. vikram@gmail.com"
+                    value={applyForm.email}
+                    onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })}
+                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                  />
+                </div>
+              </div>
+
+              {/* Row 2: Phone Number */}
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Phone Number *</label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="+91 98765 43210"
+                  value={applyForm.phone}
+                  onChange={(e) => setApplyForm({ ...applyForm, phone: e.target.value })}
+                  style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                />
+              </div>
+
+              {/* Row 2.5: Dynamic Country, State & City Selectors */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px", background: "#F8FAFC", padding: "16px", borderRadius: "14px", border: "1px solid #E2E8F0" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Country *</label>
+                  <select
+                    value={selectedCountryCode}
+                    onChange={(e) => {
+                      const cCode = e.target.value;
+                      setSelectedCountryCode(cCode);
+                      setSelectedStateCode("");
+                      setSelectedCityName("");
+                      const cObj = Country.getCountryByCode(cCode);
+                      setApplyForm((prev) => ({ ...prev, location: cObj ? cObj.name : "" }));
+                    }}
+                    style={{ width: "100%", padding: "10px 12px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                  >
+                    {Country.getAllCountries().map((c) => (
+                      <option key={c.isoCode} value={c.isoCode}>
+                        {c.flag} {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>State / Region</label>
+                  <select
+                    value={selectedStateCode}
+                    onChange={(e) => {
+                      const sCode = e.target.value;
+                      setSelectedStateCode(sCode);
+                      setSelectedCityName("");
+                      const cObj = Country.getCountryByCode(selectedCountryCode);
+                      const sObj = State.getStateByCodeAndCountry(sCode, selectedCountryCode);
+                      const locStr = `${sObj ? sObj.name + ", " : ""}${cObj ? cObj.name : ""}`;
+                      setApplyForm((prev) => ({ ...prev, location: locStr }));
+                    }}
+                    style={{ width: "100%", padding: "10px 12px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                  >
+                    <option value="">Select State (Optional)</option>
+                    {State.getStatesOfCountry(selectedCountryCode).map((s) => (
+                      <option key={s.isoCode} value={s.isoCode}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>City / District</label>
+                  {selectedStateCode ? (
+                    <select
+                      value={selectedCityName}
+                      onChange={(e) => {
+                        const cName = e.target.value;
+                        setSelectedCityName(cName);
+                        const cObj = Country.getCountryByCode(selectedCountryCode);
+                        const sObj = State.getStateByCodeAndCountry(selectedStateCode, selectedCountryCode);
+                        const locStr = `${cName ? cName + ", " : ""}${sObj ? sObj.name + ", " : ""}${cObj ? cObj.name : ""}`;
+                        setApplyForm((prev) => ({ ...prev, location: locStr }));
+                      }}
+                      style={{ width: "100%", padding: "10px 12px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                    >
+                      <option value="">Select City</option>
+                      {City.getCitiesOfState(selectedCountryCode, selectedStateCode).map((city, idx) => (
+                        <option key={`${city.name}-${idx}`} value={city.name}>
+                          {city.name}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      placeholder="Enter City name"
+                      value={selectedCityName}
+                      onChange={(e) => {
+                        const cName = e.target.value;
+                        setSelectedCityName(cName);
+                        const cObj = Country.getCountryByCode(selectedCountryCode);
+                        const locStr = `${cName ? cName + ", " : ""}${cObj ? cObj.name : ""}`;
+                        setApplyForm((prev) => ({ ...prev, location: locStr }));
+                      }}
+                      style={{ width: "100%", padding: "9px 12px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {/* Row 3: Total Experience & Notice Period */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Total Experience (Years)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 4.5 Years"
+                    value={applyForm.experienceYears}
+                    onChange={(e) => setApplyForm({ ...applyForm, experienceYears: e.target.value })}
+                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Notice Period / Availability</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Immediate / 15 Days / 30 Days"
+                    value={applyForm.noticePeriod}
+                    onChange={(e) => setApplyForm({ ...applyForm, noticePeriod: e.target.value })}
+                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                  />
+                </div>
+              </div>
+
+              {/* Row 4: LinkedIn & Portfolio URL */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>LinkedIn Profile / GitHub</label>
+                  <input
+                    type="url"
+                    placeholder="https://linkedin.in/in/username"
+                    value={applyForm.linkedinUrl}
+                    onChange={(e) => setApplyForm({ ...applyForm, linkedinUrl: e.target.value })}
+                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Portfolio / Website (Optional)</label>
+                  <input
+                    type="url"
+                    placeholder="https://yourportfolio.com"
+                    value={applyForm.portfolioUrl}
+                    onChange={(e) => setApplyForm({ ...applyForm, portfolioUrl: e.target.value })}
+                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                  />
+                </div>
+              </div>
+
+              {/* Resume File Upload Field */}
+              <div style={{ background: "#F8FAFC", padding: "18px", borderRadius: "14px", border: "1.5px dashed #CBD5E1", textAlign: "center" }}>
+                <label style={{ display: "block", fontSize: "13px", fontWeight: "800", color: "#0F172A", marginBottom: "4px" }}>
+                  Upload Resume / CV Document (.PDF, .DOC, .DOCX) *
+                </label>
+                <p style={{ fontSize: "12px", color: "#64748B", margin: "0 0 12px 0" }}>Upload your updated resume file for HR screening</p>
+
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px" }}>
+                  <label style={{ background: "#00875A", color: "#FFF", padding: "10px 20px", borderRadius: "10px", fontSize: "13px", fontWeight: "700", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                    {isUploadingResume ? "Uploading Resume..." : "📄 Select & Upload Resume"}
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx,image/*"
+                      style={{ display: "none" }}
+                      onChange={handleResumeUpload}
+                    />
+                  </label>
+                </div>
+
+                {applyForm.resumeUrl && (
+                  <div style={{ marginTop: "12px", padding: "8px 14px", background: "#DCFCE7", color: "#166534", borderRadius: "8px", fontSize: "12px", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                    <span>✓ Resume Uploaded Successfully!</span>
+                    <a href={applyForm.resumeUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#15803D", textDecoration: "underline" }}>View File</a>
+                  </div>
+                )}
+              </div>
+
+              {/* Cover Letter */}
+              <div>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Cover Letter / Brief Pitch (Optional)</label>
+                <textarea
+                  rows={3}
+                  placeholder="Tell us why you are a great fit for this position..."
+                  value={applyForm.coverLetter}
+                  onChange={(e) => setApplyForm({ ...applyForm, coverLetter: e.target.value })}
+                  style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                />
+              </div>
+
+              {/* Modal Actions */}
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", paddingTop: "12px", borderTop: "1px solid #E2E8F0" }}>
+                <button
+                  type="button"
+                  onClick={() => setIsApplyModalOpen(false)}
+                  style={{ padding: "11px 22px", background: "#E2E8F0", color: "#475569", border: "none", borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer" }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmittingApply || isUploadingResume}
+                  style={{ padding: "11px 28px", background: "#00875A", color: "#FFF", border: "none", borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer", boxShadow: "0 4px 14px rgba(0, 135, 90, 0.3)" }}
+                >
+                  {isSubmittingApply ? "Submitting Application..." : "Submit Job Application 🚀"}
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      )}
 
       {/* Hiring Process */}
       <section style={{ padding: "100px 0", background: "#ffffff" }}>
@@ -551,70 +1002,57 @@ export default function CareersPage() {
                 fontWeight: "800",
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
-                marginBottom: "12px",
-                display: "inline-block",
               }}
             >
-              Transparent Process
+              HOW WE HIRE
             </span>
             <h2
               style={{
-                fontSize: "clamp(32px, 3.8vw, 48px)",
+                fontSize: "clamp(30px, 3.5vw, 44px)",
                 fontWeight: "800",
-                color: "#0a0d14",
-                letterSpacing: "-0.03em",
-                marginBottom: "16px",
+                color: "#0f172a",
+                marginTop: "8px",
               }}
             >
-              Fast, practical <span style={{ color: "#10243E" }}>hiring pipeline.</span>
+              Our straightforward hiring process
             </h2>
-            <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
-              No 8-stage algorithmic puzzles. We focus on real-world engineering discussions and practical code.
-            </p>
           </div>
 
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: "20px",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "24px",
             }}
           >
-            {hiringProcess.map((proc, idx) => (
+            {hiringProcess.map((item, idx) => (
               <div
-                key={proc.step}
+                key={item.step}
                 className={idx % 2 === 0 ? "animate-from-left" : "animate-from-right"}
                 style={{
                   background: "#f8fafc",
                   borderRadius: "20px",
-                  padding: "32px",
                   border: "1px solid #e2e8f0",
+                  padding: "32px",
                   position: "relative",
                 }}
               >
                 <div
                   style={{
-                    width: "44px",
-                    height: "44px",
-                    borderRadius: "12px",
-                    background: "#00875A",
-                    color: "#ffffff",
+                    fontSize: "32px",
                     fontWeight: "800",
-                    fontSize: "16px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: "20px",
-                    boxShadow: "0 8px 20px rgba(0,135,90,0.3)",
+                    color: "#00875A",
+                    marginBottom: "16px",
                   }}
                 >
-                  {proc.step}
+                  {item.step}
                 </div>
-
-                <h3 style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>
-                  {proc.title}
+                <h3 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>
+                  {item.title}
                 </h3>
-                <p style={{ fontSize: "14px", color: "#64748b", lineHeight: "1.6" }}>{proc.desc}</p>
+                <p style={{ fontSize: "14px", color: "#64748b", lineHeight: "1.6" }}>
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>

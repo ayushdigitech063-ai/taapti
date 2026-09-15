@@ -282,21 +282,23 @@ textarea {
 }
 
 .navbar {
-  z-index: 1000;
-  background: transparent;
+  z-index: 100000;
+  background: #FFFFFF;
   border-bottom: 1px solid rgba(37,99,235,0.08);
   width: 100%;
   transition: background-color .3s ease, border-color .3s ease, box-shadow .3s ease, -webkit-backdrop-filter .3s ease, backdrop-filter .3s ease;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
 }
 
 .navbar--scrolled {
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.95) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
   border-bottom: 1px solid #e2e8f0 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
 }
 
 .navbar__inner {
@@ -672,7 +674,63 @@ textarea {
   flex-shrink: 0;
 }
 
-/* MOBILE ACCORDION STYLES */
+/* MOBILE NAVIGATION DRAWER & ACCORDION STYLES */
+.navbar__mobile-menu {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .navbar__mobile-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    max-height: calc(85vh - 70px);
+    background: #FFFFFF;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 12px 24px 28px;
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+    border-top: 1px solid #E2E8F0;
+    border-bottom: 2px solid #E2E8F0;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+  }
+
+  .navbar__mobile-menu--open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .navbar__mobile-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0F172A;
+    border-bottom: 1px solid #F1F5F9;
+    text-decoration: none;
+  }
+}
+
+.nav-ind-mobile-list {
+  padding: 12px 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .navbar__mobile-accordion {
   border-bottom: 1px solid #F1F5F9;
 }
@@ -14087,6 +14145,135 @@ textarea {
   transform: translateY(-2px);
 }
 
+/* Case Studies Compact Responsive Card Grid */
+.case-studies-page-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 28px !important;
+  margin-top: 30px !important;
+}
+
+.case-study-page-card {
+  background: #FFFFFF !important;
+  border-radius: 20px !important;
+  border: 1px solid #E2E8F0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+}
+
+.case-study-page-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 35px rgba(0, 135, 90, 0.12) !important;
+  border-color: #A7F3D0 !important;
+}
+
+.case-study-page-card__visual {
+  height: 200px !important;
+  min-height: 200px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  display: block !important;
+  background: linear-gradient(135deg, #10243E 0%, #00875A 100%) !important;
+}
+
+.case-study-page-card__bg-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.4s ease !important;
+}
+
+.case-study-page-card:hover .case-study-page-card__bg-img {
+  transform: scale(1.05) !important;
+}
+
+.case-study-page-card__visual-label {
+  position: absolute !important;
+  top: 14px !important;
+  left: 14px !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  color: #38BDF8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  padding: 4px 10px !important;
+  border-radius: 99px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+.case-study-page-card__content {
+  padding: 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  flex: 1 !important;
+}
+
+.case-study-page-card__content h2 {
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+  line-height: 1.35 !important;
+  margin: 8px 0 10px 0 !important;
+}
+
+.case-study-page-card__content p {
+  font-size: 14px !important;
+  color: #64748B !important;
+  line-height: 1.6 !important;
+  margin-bottom: 18px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.case-study-page-card__link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  color: #00875A !important;
+  font-weight: 800 !important;
+  font-size: 13.5px !important;
+  text-decoration: none !important;
+  margin-top: auto !important;
+}
+
+@media (max-width: 992px) {
+  .case-studies-page-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .case-studies-page-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .case-study-page-card__visual {
+    height: 180px !important;
+    min-height: 180px !important;
+  }
+
+  .case-study-page-card__content {
+    padding: 18px !important;
+  }
+
+  .case-study-page-card__content h2 {
+    font-size: 16.5px !important;
+  }
+
+  .case-study-page-card__content p {
+    font-size: 13.5px !important;
+  }
+}
+
 /* Action Circle Buttons in Case Studies cards */
 .tp-action-circle {
   width: 36px;
@@ -14118,4 +14305,286 @@ textarea {
 .our-company__badge-inner strong,
 .our-company__badge-inner span {
   color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   SUPER ADMIN COMMAND CENTER — FULLY RESPONSIVE BREAKPOINTS (MOBILE & TABLET)
+   ========================================================================== */
+
+.cmd-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F8FAFC;
+  font-family: var(--font-jakarta), "Plus Jakarta Sans", sans-serif;
+  color: #0F172A;
+  position: relative;
+}
+
+.cmd-sidebar {
+  width: 270px;
+  background: #FFFFFF;
+  border-right: 1px solid #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s ease;
+  overflow-y: auto;
+}
+
+.cmd-sidebar--collapsed {
+  width: 76px;
+}
+
+.cmd-main {
+  flex: 1;
+  margin-left: 270px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.cmd-container--collapsed .cmd-main {
+  margin-left: 76px;
+}
+
+.cmd-header {
+  height: 68px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E2E8F0;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+
+.cmd-mobile-toggle-btn {
+  display: none;
+  background: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  color: #0F172A;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: all 0.2s ease;
+}
+
+.cmd-mobile-toggle-btn:hover {
+  background: #E2E8F0;
+  color: #00875A;
+}
+
+.cmd-content {
+  padding: 28px;
+  flex: 1;
+  overflow-x: hidden;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+.cmd-mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 998;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+/* RESPONSIVE BREAKPOINTS FOR TABLETS & MOBILES */
+
+@media (max-width: 1024px) {
+  .cmd-main {
+    margin-left: 0 !important;
+  }
+
+  .cmd-sidebar {
+    transform: translateX(-100%);
+    width: 280px !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  }
+
+  .cmd-sidebar--open {
+    transform: translateX(0) !important;
+  }
+
+  .cmd-mobile-toggle-btn {
+    display: inline-flex !important;
+  }
+
+  .cmd-mobile-overlay {
+    display: block !important;
+  }
+
+  .cmd-header {
+    padding: 0 16px !important;
+  }
+
+  .cmd-content {
+    padding: 16px 12px !important;
+  }
+
+  /* KPI Grid responsive */
+  .ov-kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  .ov-analytics-row {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .cmd-header-left .cmd-breadcrumb-title {
+    font-size: 14px !important;
+    white-space: nowrap !important;
+  }
+
+  .ov-hero {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 16px !important;
+  }
+
+  .ov-kpi-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Universal Admin Card Containers Responsive Fix */
+  .cmd-content > div,
+  .cmd-content > div > div {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Responsive Header Action Cards in CMS Manager (e.g. Dynamic Industries Directory, Dynamic Services, Case Studies, Blogs, Hiring) */
+  .ov-card-head {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .ov-card-head > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Force top card headers with title on left and button on right to flex-wrap / stack */
+  .cmd-content div[style*="justify-content: space-between"],
+  .cmd-content div[style*="justifyContent: space-between"],
+  .cmd-content div[style*="justify-content:space-between"],
+  .cmd-content div[style*="justifyContent:space-between"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .ov-card-title,
+  .cmd-content h2,
+  .cmd-content h3 {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+
+  /* Force ALL action buttons in CMS panels to fit full width on mobile */
+  .cmd-top-action-btn,
+  .cmd-content button[style*="background"],
+  .cmd-content button[style*="linear-gradient"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-content: center !important;
+    align-self: stretch !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+    text-align: center !important;
+  }
+
+  /* Force ALL multi-column grids inside Admin CMS to single column on mobile */
+  .cmd-content div[style*="grid"],
+  .cmd-content div[style*="grid-template-columns"],
+  .cmd-content div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Fix input fields & select dropdown widths */
+  .cmd-content input,
+  .cmd-content select,
+  .cmd-content textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Table overflow & scroll - FORCE FULL SCROLLABILITY */
+  .ov-table-wrap,
+  .cmd-content div[style*="overflow"],
+  .cmd-content div.ov-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  .ov-table,
+  .cmd-content table {
+    min-width: 600px !important;
+    width: 100% !important;
+  }
+
+  .ov-table th,
+  .ov-table td {
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  /* Modal Popups on mobile screens */
+  div[style*="position: fixed"] > div,
+  div[style*="position:fixed"] > div {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    max-height: 92vh !important;
+    border-radius: 16px !important;
+    box-sizing: border-box !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+}
+
+@media (max-width: 440px) {
+  .cmd-header-right {
+    gap: 6px !important;
+  }
+
+  .cmd-profile-trigger {
+    padding: 4px 8px !important;
+  }
+
+  .cmd-profile-role {
+    display: none !important;
+  }
+
+  .cmd-content {
+    padding: 12px 8px !important;
+  }
 }

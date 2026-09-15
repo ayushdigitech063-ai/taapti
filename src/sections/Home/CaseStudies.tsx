@@ -3,7 +3,19 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-const defaultCaseStudies = [
+interface CaseStudyItem {
+  id: string;
+  category: string;
+  categoryTheme: string;
+  title: string;
+  description: string;
+  link: string;
+  isDark: boolean;
+  image?: string;
+  metrics: { value: string; label: string }[];
+}
+
+const defaultCaseStudies: CaseStudyItem[] = [
   {
     id: "01",
     category: "FINTECH",

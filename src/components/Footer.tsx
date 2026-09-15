@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,7 +17,36 @@ const serviceLinks = [
 
 export default function Footer() {
   const pathname = usePathname();
+  const [contactEmail, setContactEmail] = useState("hello@taapti.com");
+
+  const fetchContactDetails = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/contact-page").catch(() => null);
+      if (res && res.ok) {
+        const json = await res.json();
+        if (json.success && json.data && json.data.email) {
+          setContactEmail(json.data.email);
+        }
+      }
+    } catch { /* silent */ }
+  };
+
+  useEffect(() => {
+    fetchContactDetails();
+
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      const bc = new BroadcastChannel("taapti_cms_updates");
+      bc.onmessage = (event) => {
+        if (event.data === "CONTACT_PAGE_UPDATED" || event.data === "CMS_UPDATED") {
+          fetchContactDetails();
+        }
+      };
+      return () => bc.close();
+    }
+  }, []);
+
   if (pathname?.startsWith("/admin")) return null;
+
   return (
     <footer className="footer">
       <div className="container">
@@ -56,7 +86,7 @@ export default function Footer() {
               <h3>Contact</h3>
 
               <Link href="/contact">Let&apos;s Talk</Link>
-              <a href="mailto:hello@taapti.com">hello@taapti.com</a>
+              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
             </div>
           </div>
         </div>

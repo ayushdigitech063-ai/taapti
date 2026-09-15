@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 export default function ContactPage() {
@@ -12,6 +12,58 @@ export default function ContactPage() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [contactData, setContactData] = useState({
+    heroBadge: "GET IN TOUCH",
+    heroTitleNormal: "Let's Build Something",
+    heroTitleHighlight: "Great Together",
+    heroDescription: "Have a project idea, architecture requirement, or looking to scale your engineering team? Reach out to us directly.",
+    phone: "+91 98765 43210",
+    email: "hello@taapti.com",
+    address: "Surat, Gujarat, India",
+    slaResponseTime: "Under 2 Hours (Mon - Sat)",
+    trustBadgeText: "100% Confidentiality & Non-Disclosure Guarantee",
+  });
+
+  const fetchContactData = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/contact-page").catch(() => null);
+      if (res && res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          const d = json.data;
+          setContactData({
+            heroBadge: d.heroBadge || "GET IN TOUCH",
+            heroTitleNormal: d.heroTitleNormal || "Let's Build Something",
+            heroTitleHighlight: d.heroTitleHighlight || "Great Together",
+            heroDescription: d.heroDescription || "",
+            phone: d.phone || "+91 98765 43210",
+            email: d.email || "hello@taapti.com",
+            address: d.address || "Surat, Gujarat, India",
+            slaResponseTime: d.slaResponseTime || "Under 2 Hours (Mon - Sat)",
+            trustBadgeText: d.trustBadgeText || "100% Confidentiality & Non-Disclosure Guarantee",
+          });
+        }
+      }
+    } catch { /* silent fallback */ }
+  };
+
+  useEffect(() => {
+    fetchContactData();
+
+    let channel: BroadcastChannel | null = null;
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      channel = new BroadcastChannel("taapti_cms_updates");
+      channel.onmessage = (event) => {
+        if (event.data === "CONTACT_PAGE_UPDATED") {
+          fetchContactData();
+        }
+      };
+    }
+    return () => {
+      if (channel) channel.close();
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,9 +118,9 @@ export default function ContactPage() {
       {/* HERO BANNER */}
       <section className="contact-hero">
         <div className="container text-center">
-          <span className="contact-hero-badge">GET IN TOUCH</span>
-          <h1>Let&apos;s Build Something <span style={{ color: "#10243E" }}>Great Together</span></h1>
-          <p>Have a project idea, architecture requirement, or looking to scale your engineering team? Reach out to us directly.</p>
+          <span className="contact-hero-badge">{contactData.heroBadge}</span>
+          <h1>{contactData.heroTitleNormal} <span style={{ color: "#10243E" }}>{contactData.heroTitleHighlight}</span></h1>
+          <p>{contactData.heroDescription}</p>
         </div>
       </section>
 
@@ -86,7 +138,7 @@ export default function ContactPage() {
                 <div className="contact-info-icon">📞</div>
                 <div>
                   <strong>Call or WhatsApp</strong>
-                  <a href="tel:+919876543210">+91 98765 43210</a>
+                  <a href={`tel:${contactData.phone.replace(/[^0-9+]/g, "")}`}>{contactData.phone}</a>
                 </div>
               </div>
 
@@ -94,7 +146,7 @@ export default function ContactPage() {
                 <div className="contact-info-icon">✉️</div>
                 <div>
                   <strong>Email Inquiry</strong>
-                  <a href="mailto:hello@taapti.com">hello@taapti.com</a>
+                  <a href={`mailto:${contactData.email}`}>{contactData.email}</a>
                 </div>
               </div>
 
@@ -102,7 +154,7 @@ export default function ContactPage() {
                 <div className="contact-info-icon">📍</div>
                 <div>
                   <strong>Engineering Hub</strong>
-                  <span>Surat, Gujarat, India</span>
+                  <span>{contactData.address}</span>
                 </div>
               </div>
 
@@ -110,7 +162,7 @@ export default function ContactPage() {
                 <div className="contact-info-icon">⚡</div>
                 <div>
                   <strong>SLA Response Time</strong>
-                  <span>Under 2 Hours (Mon - Sat)</span>
+                  <span>{contactData.slaResponseTime}</span>
                 </div>
               </div>
             </div>
@@ -118,7 +170,7 @@ export default function ContactPage() {
             {/* TRUST BADGE */}
             <div className="contact-trust-box">
               <span className="trust-dot" />
-              <span>100% Confidentiality & Non-Disclosure Guarantee</span>
+              <span>{contactData.trustBadgeText}</span>
             </div>
           </div>
 

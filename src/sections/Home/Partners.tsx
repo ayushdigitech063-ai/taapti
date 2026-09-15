@@ -97,7 +97,7 @@ export default function Partners() {
         {/* STATS BAR */}
         <div className="partners-section__stats-bar reveal-up">
           {sectionData.stats.map((stat, idx) => (
-            <Fragment key={stat._id || idx}>
+            <Fragment key={(stat as any)._id || idx}>
               <div className="partners-stat-item">
                 <div className="partners-stat-icon">{stat.icon}</div>
                 <div>

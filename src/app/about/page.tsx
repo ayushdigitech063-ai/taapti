@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const stats = [
@@ -129,6 +129,47 @@ const techPillars = [
 
 export default function AboutPage() {
   const [activeCapability, setActiveCapability] = useState(0);
+  const [aboutData, setAboutData] = useState<any>(null);
+
+  const fetchAboutData = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/about-page").catch(() => null);
+      if (res && res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          setAboutData(json.data);
+        }
+      }
+    } catch { /* silent fallback */ }
+  };
+
+  useEffect(() => {
+    fetchAboutData();
+
+    let channel: BroadcastChannel | null = null;
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      channel = new BroadcastChannel("taapti_cms_updates");
+      channel.onmessage = (event) => {
+        if (event.data === "ABOUT_PAGE_UPDATED") {
+          fetchAboutData();
+        }
+      };
+    }
+    return () => {
+      if (channel) channel.close();
+    };
+  }, []);
+
+  const hero = aboutData?.hero || {};
+  const partner = aboutData?.partner || {};
+  const valuesData = aboutData?.values || {};
+  const capabilitiesData = aboutData?.capabilities || {};
+  const ctaData = aboutData?.cta || {};
+
+  const statsList = hero.stats && hero.stats.length > 0 ? hero.stats : stats;
+  const valuesList = valuesData.items && valuesData.items.length > 0 ? valuesData.items : values;
+  const capabilitiesList = capabilitiesData.items && capabilitiesData.items.length > 0 ? capabilitiesData.items : capabilities;
+  const pillarsList = partner.pillars && partner.pillars.length > 0 ? partner.pillars : techPillars;
 
   return (
     <main style={{ backgroundColor: "#f8fafc", color: "#0f172a" }}>
@@ -219,7 +260,7 @@ export default function AboutPage() {
                   boxShadow: "0 0 8px #00875A",
                 }}
               />
-              About Taapti Technologies
+              {hero.eyebrow || "About Taapti Technologies"}
             </div>
 
             <h1
@@ -232,9 +273,9 @@ export default function AboutPage() {
                 marginBottom: "24px",
               }}
             >
-              Senior engineers building{" "}
+              {hero.headingNormal || "Senior engineers building"}{" "}
               <span style={{ color: "#10243E", display: "block" }}>
-                production-ready software.
+                {hero.headingHighlight || "production-ready software."}
               </span>
             </h1>
 
@@ -247,7 +288,8 @@ export default function AboutPage() {
                 marginBottom: "36px",
               }}
             >
-              Taapti Technologies is a founder-led software engineering firm. We design, modernize, and scale mission-critical digital products for ambitious enterprises and high-growth startups.
+              {hero.description ||
+                "Taapti Technologies is a founder-led software engineering firm. We design, modernize, and scale mission-critical digital products for ambitious enterprises and high-growth startups."}
             </p>
 
             <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
@@ -296,11 +338,11 @@ export default function AboutPage() {
               boxShadow: "0 20px 40px rgba(11,59,130,0.06)",
             }}
           >
-            {stats.map((stat, i) => (
+            {statsList.map((stat: any, i: number) => (
               <div
                 key={i}
                 style={{
-                  borderRight: i < stats.length - 1 ? "1px solid #e2e8f0" : "none",
+                  borderRight: i < statsList.length - 1 ? "1px solid #e2e8f0" : "none",
                   paddingRight: "20px",
                 }}
               >
@@ -340,7 +382,7 @@ export default function AboutPage() {
                   display: "inline-block",
                 }}
               >
-                Who We Are
+                {partner.eyebrow || "Who We Are"}
               </span>
               <h2
                 style={{
@@ -352,13 +394,16 @@ export default function AboutPage() {
                   marginBottom: "20px",
                 }}
               >
-                A technical partner, <span style={{ color: "#10243E" }}>not just an agency.</span>
+                {partner.headingNormal || "A technical partner,"}{" "}
+                <span style={{ color: "#10243E" }}>{partner.headingHighlight || "not just an agency."}</span>
               </h2>
               <p style={{ fontSize: "17px", lineHeight: "1.8", color: "#64748b", marginBottom: "20px" }}>
-                We partner with engineering leaders, CTOs, and founders who need high-velocity engineering teams to solve hard technical problems or launch ambitious products.
+                {partner.paragraph1 ||
+                  "We partner with engineering leaders, CTOs, and founders who need high-velocity engineering teams to solve hard technical problems or launch ambitious products."}
               </p>
               <p style={{ fontSize: "17px", lineHeight: "1.8", color: "#64748b" }}>
-                Unlike traditional outsourced agencies that push junior talent and heavy account management, our team consists of senior engineers who write clean, battle-tested code and communicate directly with your team.
+                {partner.paragraph2 ||
+                  "Unlike traditional outsourced agencies that push junior talent and heavy account management, our team consists of senior engineers who write clean, battle-tested code and communicate directly with your team."}
               </p>
             </div>
 
@@ -389,11 +434,11 @@ export default function AboutPage() {
                 The Taapti Benchmark
               </div>
               <h3 style={{ fontSize: "24px", fontWeight: "800", color: "#ffffff", marginBottom: "24px" }}>
-                Built around production standards.
+                {partner.benchmarkTitle || "Built around production standards."}
               </h3>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-                {techPillars.map((pillar, idx) => (
+                {pillarsList.map((pillar: any, idx: number) => (
                   <div
                     key={idx}
                     style={{
@@ -448,7 +493,7 @@ export default function AboutPage() {
                 display: "inline-block",
               }}
             >
-              Our Core Principles
+              {valuesData.eyebrow || "Our Core Principles"}
             </span>
             <h2
               style={{
@@ -459,7 +504,8 @@ export default function AboutPage() {
                 marginBottom: "16px",
               }}
             >
-              How we think about <span style={{ color: "#10243E" }}>software engineering.</span>
+              {valuesData.headingNormal || "How we think about"}{" "}
+              <span style={{ color: "#10243E" }}>{valuesData.headingHighlight || "software engineering."}</span>
             </h2>
             <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
               Great software isn&apos;t created by writing more code—it&apos;s created by making smart decisions that save months of technical debt down the line.
@@ -473,9 +519,9 @@ export default function AboutPage() {
               gap: "24px",
             }}
           >
-            {values.map((val, idx) => (
+            {valuesList.map((val: any, idx: number) => (
               <div
-                key={val.number}
+                key={val.number || idx}
                 className={idx % 2 === 0 ? "animate-from-left" : "animate-from-right"}
                 style={{
                   background: "#ffffff",
@@ -504,9 +550,13 @@ export default function AboutPage() {
                         justifyContent: "center",
                       }}
                     >
-                      {val.icon}
+                      {val.icon || (
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                        </svg>
+                      )}
                     </div>
-                    <span style={{ fontSize: "20px", fontWeight: "800", color: "#cbd5e1" }}>{val.number}</span>
+                    <span style={{ fontSize: "20px", fontWeight: "800", color: "#cbd5e1" }}>{val.number || `0${idx + 1}`}</span>
                   </div>
 
                   <div style={{ fontSize: "12px", fontWeight: "800", color: "#00875A", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "6px" }}>
@@ -520,23 +570,25 @@ export default function AboutPage() {
                   </p>
                 </div>
 
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", borderTop: "1px solid #f1f5f9", paddingTop: "16px" }}>
-                  {val.tags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      style={{
-                        background: "#f1f5f9",
-                        color: "#475569",
-                        padding: "4px 10px",
-                        borderRadius: "999px",
-                        fontSize: "11.5px",
-                        fontWeight: "600",
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                {val.tags && val.tags.length > 0 && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", borderTop: "1px solid #f1f5f9", paddingTop: "16px" }}>
+                    {val.tags.map((tag: string, i: number) => (
+                      <span
+                        key={i}
+                        style={{
+                          background: "#f1f5f9",
+                          color: "#475569",
+                          padding: "4px 10px",
+                          borderRadius: "999px",
+                          fontSize: "11.5px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -558,7 +610,7 @@ export default function AboutPage() {
                 display: "inline-block",
               }}
             >
-              Our Engineering Capabilities
+              {capabilitiesData.eyebrow || "Our Engineering Capabilities"}
             </span>
             <h2
               style={{
@@ -569,10 +621,12 @@ export default function AboutPage() {
                 marginBottom: "16px",
               }}
             >
-              Full-spectrum technology <span style={{ color: "#10243E" }}>execution.</span>
+              {capabilitiesData.headingNormal || "Full-spectrum technology"}{" "}
+              <span style={{ color: "#10243E" }}>{capabilitiesData.headingHighlight || "execution."}</span>
             </h2>
             <p style={{ fontSize: "16px", color: "#64748b", lineHeight: "1.7" }}>
-              From initial system architecture to production rollout, we bring specialized technical capabilities across the software development lifecycle.
+              {capabilitiesData.description ||
+                "From initial system architecture to production rollout, we bring specialized technical capabilities across the software development lifecycle."}
             </p>
           </div>
 
@@ -583,11 +637,11 @@ export default function AboutPage() {
               gap: "20px",
             }}
           >
-            {capabilities.map((item, idx) => {
+            {capabilitiesList.map((item: any, idx: number) => {
               const isActive = activeCapability === idx;
               return (
                 <div
-                  key={item.id}
+                  key={item.id || idx}
                   onClick={() => setActiveCapability(idx)}
                   className={idx % 2 === 0 ? "animate-from-left" : "animate-from-right"}
                   style={{
@@ -626,24 +680,26 @@ export default function AboutPage() {
                     {item.desc}
                   </p>
 
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                    {item.tech.map((t, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          background: isActive ? "#ffffff" : "#f8fafc",
-                          border: "1px solid #e2e8f0",
-                          color: isActive ? "#00875A" : "#475569",
-                          fontSize: "12px",
-                          fontWeight: "700",
-                          padding: "4px 10px",
-                          borderRadius: "6px",
-                        }}
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
+                  {item.tech && item.tech.length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                      {item.tech.map((t: string, i: number) => (
+                        <span
+                          key={i}
+                          style={{
+                            background: isActive ? "#ffffff" : "#f8fafc",
+                            border: "1px solid #e2e8f0",
+                            color: isActive ? "#00875A" : "#475569",
+                            fontSize: "12px",
+                            fontWeight: "700",
+                            padding: "4px 10px",
+                            borderRadius: "6px",
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -678,7 +734,7 @@ export default function AboutPage() {
                 display: "inline-block",
               }}
             >
-              Let&apos;s Build Together
+              {ctaData.eyebrow || "Let's Build Together"}
             </span>
 
             <h2
@@ -690,8 +746,8 @@ export default function AboutPage() {
                 letterSpacing: "-0.03em",
               }}
             >
-              Have a technical challenge or product idea?{" "}
-              <span style={{ color: "#00875A" }}>Let&apos;s talk.</span>
+              {ctaData.headingNormal || "Have a technical challenge or product idea?"}{" "}
+              <span style={{ color: "#00875A" }}>{ctaData.headingHighlight || "Let's talk."}</span>
             </h2>
 
             <p
@@ -703,11 +759,12 @@ export default function AboutPage() {
                 lineHeight: "1.65",
               }}
             >
-              Schedule a 30-minute discovery call directly with our engineering founders to discuss your architecture, tech stack, and goals.
+              {ctaData.description ||
+                "Schedule a 30-minute discovery call directly with our engineering founders to discuss your architecture, tech stack, and goals."}
             </p>
 
             <Link
-              href="/contact"
+              href={ctaData.buttonLink || "/contact"}
               className="btn btn-primary"
               style={{
                 height: "56px",
@@ -717,7 +774,7 @@ export default function AboutPage() {
                 boxShadow: "0 8px 30px rgba(0,135,90,0.4)",
               }}
             >
-              Schedule Technical Discovery <span>→</span>
+              {ctaData.buttonText || "Schedule Technical Discovery"} <span>→</span>
             </Link>
           </div>
         </div>

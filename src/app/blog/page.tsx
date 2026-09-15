@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const blogPosts = [
@@ -94,22 +94,61 @@ const categories = [
 ];
 
 export default function BlogPage() {
+  const [posts, setPosts] = useState<any[]>(blogPosts);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [visibleLimit, setVisibleLimit] = useState(5);
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
-  const filteredPosts = blogPosts.filter((post) => {
+  const fetchBlogs = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/blogs?status=Published").catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json();
+        if (data.success && data.data && data.data.length > 0) {
+          const mapped = data.data.map((b: any) => ({
+            category: b.category || "Engineering",
+            date: new Date(b.createdAt || Date.now()).toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" }),
+            title: b.title,
+            description: b.summary,
+            slug: b.slug,
+            readTime: b.readTime || "5 min read",
+            author: b.authorName || "Admin",
+            role: b.authorRole || "Senior Engineer",
+            tags: b.tags && b.tags.length > 0 ? b.tags : ["#SoftwareEngineering"],
+            featured: false,
+            coverImage: b.coverImage,
+            contentHtml: b.contentHtml
+          }));
+          setPosts(mapped);
+        }
+      }
+    } catch { /* silent */ }
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      const bc = new BroadcastChannel("taapti_cms_updates");
+      bc.onmessage = () => {
+        fetchBlogs();
+      };
+      return () => bc.close();
+    }
+  }, []);
+
+  const filteredPosts = posts.filter((post) => {
     const matchesCategory =
       selectedCategory === "All" || post.category === selectedCategory;
     const matchesSearch =
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      post.tags.some((t: string) => t.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
-  const featuredPost = blogPosts[0];
+  const featuredPost = posts[0] || blogPosts[0];
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -312,157 +351,7 @@ export default function BlogPage() {
             })}
           </div>
 
-          {/* Featured Article Card */}
-          {selectedCategory === "All" && !searchQuery && (
-            <div style={{ marginBottom: "60px" }} className="animate-from-left">
-              <div
-                style={{
-                  fontSize: "12px",
-                  fontWeight: "800",
-                  color: "#1d4ed8",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  marginBottom: "16px",
-                }}
-              >
-                Featured Insight
-              </div>
-              <article
-                style={{
-                  background: "#ffffff",
-                  borderRadius: "28px",
-                  border: "1px solid #e2e8f0",
-                  boxShadow: "0 20px 45px rgba(0,0,0,0.05)",
-                  overflow: "hidden",
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-                  gap: "0",
-                }}
-              >
-                <div
-                  style={{
-                    background: "linear-gradient(135deg, #0b0f19 0%, #0a1324 100%)",
-                    padding: "48px",
-                    color: "#ffffff",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div>
-                    <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "20px" }}>
-                      <span
-                        style={{
-                          background: "rgba(56,189,248,0.15)",
-                          color: "#38bdf8",
-                          border: "1px solid rgba(56,189,248,0.3)",
-                          padding: "6px 14px",
-                          borderRadius: "999px",
-                          fontSize: "12px",
-                          fontWeight: "800",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {featuredPost.category}
-                      </span>
-                      <span style={{ fontSize: "13px", color: "#94a3b8" }}>{featuredPost.readTime}</span>
-                    </div>
 
-                    <h2
-                      style={{
-                        fontSize: "clamp(26px, 3vw, 36px)",
-                        fontWeight: "800",
-                        color: "#ffffff",
-                        lineHeight: "1.25",
-                        marginBottom: "18px",
-                        letterSpacing: "-0.02em",
-                      }}
-                    >
-                      {featuredPost.title}
-                    </h2>
-
-                    <p style={{ fontSize: "16px", color: "#94a3b8", lineHeight: "1.7", marginBottom: "28px" }}>
-                      {featuredPost.description}
-                    </p>
-                  </div>
-
-                  <div>
-                    <div style={{ display: "flex", gap: "8px", marginBottom: "24px", flexWrap: "wrap" }}>
-                      {featuredPost.tags.map((t, idx) => (
-                        <span
-                          key={idx}
-                          style={{
-                            background: "rgba(255,255,255,0.08)",
-                            color: "#cbd5e1",
-                            padding: "4px 10px",
-                            borderRadius: "6px",
-                            fontSize: "12px",
-                            fontWeight: "600",
-                          }}
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "20px" }}>
-                      <div>
-                        <div style={{ fontSize: "14px", fontWeight: "700", color: "#ffffff" }}>{featuredPost.author}</div>
-                        <div style={{ fontSize: "12px", color: "#64748b" }}>{featuredPost.role}</div>
-                      </div>
-
-                      <Link
-                        href={`/blog/${featuredPost.slug}`}
-                        className="btn btn-primary"
-                        style={{ height: "46px", padding: "0 22px", fontSize: "14px" }}
-                      >
-                        Read Article <span>→</span>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    background: "radial-gradient(circle at center, #eff6ff 0%, #dbeafe 100%)",
-                    padding: "48px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    textAlign: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "120px",
-                      height: "120px",
-                      borderRadius: "50%",
-                      background: "#ffffff",
-                      boxShadow: "0 20px 40px rgba(37,99,235,0.15)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginBottom: "24px",
-                    }}
-                  >
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <line x1="16" y1="13" x2="8" y2="13" />
-                      <line x1="16" y1="17" x2="8" y2="17" />
-                    </svg>
-                  </div>
-                  <div style={{ fontSize: "20px", fontWeight: "800", color: "#0f172a", marginBottom: "8px" }}>
-                    Production System Engineering
-                  </div>
-                  <div style={{ fontSize: "14px", color: "#64748b" }}>
-                    Published on {featuredPost.date} by {featuredPost.author}
-                  </div>
-                </div>
-              </article>
-            </div>
-          )}
 
           {/* Grid of Filtered Posts */}
           <div style={{ marginBottom: "30px" }}>
@@ -502,106 +391,102 @@ export default function BlogPage() {
                 </button>
               </div>
             ) : (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
-                  gap: "28px",
-                }}
-              >
-                {filteredPosts.map((post, idx) => (
-                  <article
-                    key={post.slug}
-                    className={idx % 2 === 0 ? "animate-from-left" : "animate-from-right"}
-                    style={{
-                      background: "#ffffff",
-                      borderRadius: "24px",
-                      border: "1px solid #e2e8f0",
-                      padding: "32px",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      transition: "all 0.3s ease",
-                      boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
-                    }}
-                  >
-                    <div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px" }}>
-                        <span
-                          style={{
-                            background: "#eff6ff",
-                            color: "#1d4ed8",
-                            padding: "4px 12px",
-                            borderRadius: "999px",
-                            fontSize: "11.5px",
-                            fontWeight: "800",
-                            textTransform: "uppercase",
-                          }}
-                        >
+              <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+                {/* UNIFORM GRID: 3 BLOG CARDS PER ROW */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                    gap: "28px",
+                  }}
+                >
+                  {filteredPosts.slice(0, visibleLimit).map((post) => (
+                    <article
+                      key={post.slug}
+                      style={{
+                        background: "#ffffff",
+                        borderRadius: "20px",
+                        border: "1px solid #e2e8f0",
+                        overflow: "hidden",
+                        display: "flex",
+                        flexDirection: "column",
+                        boxShadow: "0 4px 18px rgba(0,0,0,0.03)",
+                        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                      }}
+                    >
+                      {/* Top Image Banner */}
+                      <div style={{ height: "200px", background: "linear-gradient(135deg, #0b0f19 0%, #1e293b 100%)", position: "relative", overflow: "hidden" }}>
+                        {post.coverImage ? (
+                          <img src={post.coverImage} alt={post.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        ) : (
+                          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "radial-gradient(circle, #1e293b 0%, #0f172a 100%)", color: "#94a3b8", fontSize: "38px" }}>
+                            💻
+                          </div>
+                        )}
+                        <span style={{ position: "absolute", top: "12px", left: "12px", background: "rgba(15, 23, 42, 0.85)", color: "#38bdf8", border: "1px solid rgba(56,189,248,0.3)", padding: "4px 10px", borderRadius: "999px", fontSize: "10.5px", fontWeight: "800", textTransform: "uppercase", backdropFilter: "blur(4px)" }}>
                           {post.category}
                         </span>
-                        <span style={{ fontSize: "12.5px", color: "#94a3b8", fontWeight: "600" }}>{post.readTime}</span>
                       </div>
 
-                      <h3
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: "800",
-                          color: "#0f172a",
-                          lineHeight: "1.35",
-                          marginBottom: "12px",
-                        }}
-                      >
-                        {post.title}
-                      </h3>
-
-                      <p style={{ fontSize: "14.5px", color: "#64748b", lineHeight: "1.65", marginBottom: "20px" }}>
-                        {post.description}
-                      </p>
-                    </div>
-
-                    <div>
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "20px" }}>
-                        {post.tags.map((t, idx) => (
-                          <span
-                            key={idx}
-                            style={{
-                              background: "#f1f5f9",
-                              color: "#475569",
-                              fontSize: "11.5px",
-                              padding: "3px 8px",
-                              borderRadius: "4px",
-                              fontWeight: "600",
-                            }}
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #f1f5f9", paddingTop: "18px" }}>
+                      {/* Content Below */}
+                      <div style={{ padding: "24px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                         <div>
-                          <div style={{ fontSize: "13px", fontWeight: "700", color: "#0f172a" }}>{post.author}</div>
-                          <div style={{ fontSize: "11.5px", color: "#94a3b8" }}>{post.date}</div>
+                          <div style={{ fontSize: "12px", color: "#94a3b8", fontWeight: "600", marginBottom: "8px" }}>
+                            {post.readTime} • Published on {post.date}
+                          </div>
+                          <h3 style={{ fontSize: "19px", fontWeight: "800", color: "#0f172a", lineHeight: "1.35", marginBottom: "10px" }}>
+                            {post.title}
+                          </h3>
+                          <p style={{ fontSize: "14px", color: "#64748b", lineHeight: "1.6", marginBottom: "18px", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                            {post.description}
+                          </p>
                         </div>
 
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          style={{
-                            color: "#1d4ed8",
-                            fontWeight: "700",
-                            fontSize: "14px",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "6px",
-                          }}
-                        >
-                          Read <span>→</span>
-                        </Link>
+                        <div>
+                          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "16px" }}>
+                            {post.tags.map((t: string, i: number) => (
+                              <span key={i} style={{ background: "#f1f5f9", color: "#475569", fontSize: "11px", padding: "3px 8px", borderRadius: "4px", fontWeight: "600" }}>
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #f1f5f9", paddingTop: "14px" }}>
+                            <div>
+                              <div style={{ fontSize: "12.5px", fontWeight: "700", color: "#0f172a" }}>{post.author}</div>
+                              <div style={{ fontSize: "11px", color: "#64748b" }}>{post.role || "Senior Architect"}</div>
+                            </div>
+                            <Link href={`/blog/${post.slug}`} style={{ color: "#00875A", fontWeight: "700", fontSize: "13.5px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                              Read Article →
+                            </Link>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  ))}
+                </div>
+
+                {/* VIEW MORE / LOAD MORE BUTTON */}
+                {filteredPosts.length > visibleLimit && (
+                  <div style={{ textAlign: "center", marginTop: "20px" }}>
+                    <button
+                      onClick={() => setVisibleLimit((prev) => prev + 6)}
+                      style={{
+                        padding: "14px 36px",
+                        background: "linear-gradient(135deg, #10243E 0%, #00875A 100%)",
+                        color: "#FFF",
+                        border: "none",
+                        borderRadius: "99px",
+                        fontSize: "15px",
+                        fontWeight: "800",
+                        cursor: "pointer",
+                        boxShadow: "0 8px 25px rgba(0, 135, 90, 0.3)",
+                        transition: "transform 0.2s ease",
+                      }}
+                    >
+                      View More Articles ({filteredPosts.length - visibleLimit} remaining) ↓
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>

@@ -927,6 +927,36 @@ export default function ServicesPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [cmapKey, setCmapKey] = useState(0);
   const [visibleCount, setVisibleCount] = useState(5);
+  const [dynamicServices, setDynamicServices] = useState<any[]>([]);
+
+  const fetchServicesData = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/services?status=Published");
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          setDynamicServices(json.data);
+        }
+      }
+    } catch { /* silent fallback */ }
+  };
+
+  useEffect(() => {
+    fetchServicesData();
+
+    let channel: BroadcastChannel | null = null;
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      channel = new BroadcastChannel("taapti_cms_updates");
+      channel.onmessage = (event) => {
+        if (event.data === "SERVICES_UPDATED") {
+          fetchServicesData();
+        }
+      };
+    }
+    return () => {
+      if (channel) channel.close();
+    };
+  }, []);
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);

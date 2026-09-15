@@ -84,8 +84,78 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
+  const [servicesList, setServicesList] = useState<EditorialItem[]>(editorialServices);
+  const [industriesList, setIndustriesList] = useState<EditorialItem[]>(editorialIndustries);
   const pathname = usePathname();
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const fetchServices = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/services?status=Published").catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json();
+        if (data.success && data.data && data.data.length > 0) {
+          const formatted: EditorialItem[] = data.data.map((srv: any, idx: number) => ({
+            num: (idx + 1).toString().padStart(2, "0"),
+            label: srv.name,
+            href: `/services/${srv.slug}`,
+            sub: srv.shortDescription,
+          }));
+          setServicesList(formatted);
+        }
+      }
+    } catch {
+      /* fallback to editorialServices silently */
+    }
+  };
+
+  const fetchIndustries = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/industries?status=Published").catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json();
+        if (data.success && data.data && data.data.length > 0) {
+          const formatted: EditorialItem[] = data.data.map((ind: any, idx: number) => ({
+            num: (idx + 1).toString().padStart(2, "0"),
+            label: ind.name,
+            href: `/industries/${ind.slug}`,
+            sub: ind.shortDescription,
+          }));
+          setIndustriesList(formatted);
+        }
+      }
+    } catch {
+      /* fallback to editorialIndustries silently */
+    }
+  };
+
+  useEffect(() => {
+    fetchServices();
+    fetchIndustries();
+
+    let channel: BroadcastChannel | null = null;
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      channel = new BroadcastChannel("taapti_cms_updates");
+      channel.onmessage = (event) => {
+        if (event.data === "SERVICES_UPDATED" || event.data === "CMS_UPDATED") {
+          fetchServices();
+        }
+        if (event.data === "INDUSTRIES_UPDATED" || event.data === "CMS_UPDATED") {
+          fetchIndustries();
+        }
+      };
+    }
+
+    const interval = setInterval(() => {
+      fetchServices();
+      fetchIndustries();
+    }, 4000);
+
+    return () => {
+      if (channel) channel.close();
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,6 +176,21 @@ export default function Navbar() {
     setActiveDropdown(null);
     setMenuOpen(false);
   }, [pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   const handleMouseEnter = (label: string) => {
     if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
@@ -198,7 +283,7 @@ export default function Navbar() {
 
                 {/* NUMBERED EDITORIAL LIST */}
                 <div className="nav-ind-list">
-                  {editorialServices.map((srv, idx) => (
+                  {servicesList.map((srv, idx) => (
                     <div key={srv.href} className="nav-ind-row-wrapper">
                       <Link
                         href={srv.href}
@@ -212,7 +297,7 @@ export default function Navbar() {
                         </div>
                         <span className="nav-ind-arrow">→</span>
                       </Link>
-                      {idx < editorialServices.length - 1 && <div className="nav-ind-row-divider" />}
+                      {idx < servicesList.length - 1 && <div className="nav-ind-row-divider" />}
                     </div>
                   ))}
                 </div>
@@ -270,7 +355,7 @@ export default function Navbar() {
 
                 {/* NUMBERED EDITORIAL LIST */}
                 <div className="nav-ind-list">
-                  {editorialIndustries.map((ind, idx) => (
+                  {industriesList.map((ind, idx) => (
                     <div key={ind.href} className="nav-ind-row-wrapper">
                       <Link
                         href={ind.href}
@@ -284,7 +369,7 @@ export default function Navbar() {
                         </div>
                         <span className="nav-ind-arrow">→</span>
                       </Link>
-                      {idx < editorialIndustries.length - 1 && <div className="nav-ind-row-divider" />}
+                      {idx < industriesList.length - 1 && <div className="nav-ind-row-divider" />}
                     </div>
                   ))}
                 </div>
@@ -384,19 +469,19 @@ export default function Navbar() {
 
           {/* Services Mobile */}
           <div className="navbar__mobile-accordion">
-            <div className="navbar__mobile-accordion-header">
-              <Link
-                href="/services"
-                className="navbar__mobile-link navbar__mobile-link--main"
-                onClick={() => setMenuOpen(false)}
-              >
-                <span>Services</span>
-              </Link>
+            <div
+              className="navbar__mobile-accordion-header"
+              onClick={() => toggleMobileAccordion("Services")}
+              style={{ cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
+            >
+              <span className="navbar__mobile-link navbar__mobile-link--main" style={{ margin: 0, padding: 0 }}>
+                Services
+              </span>
               <button
                 type="button"
                 className={`navbar__mobile-accordion-btn ${mobileExpanded === "Services" ? "open" : ""}`}
-                onClick={() => toggleMobileAccordion("Services")}
                 aria-label="Toggle Services dropdown"
+                style={{ pointerEvents: "none" }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <polyline points="6 9 12 15 18 9" />
@@ -405,7 +490,19 @@ export default function Navbar() {
             </div>
             {mobileExpanded === "Services" && (
               <div className="nav-ind-mobile-list">
-                {editorialServices.map((srv) => (
+                <Link
+                  href="/services"
+                  className="nav-ind-mobile-item"
+                  onClick={() => setMenuOpen(false)}
+                  style={{ background: "rgba(0, 135, 90, 0.08)", borderRadius: "8px", marginBottom: "6px" }}
+                >
+                  <span className="nav-ind-mobile-num" style={{ color: "#00875A" }}>→</span>
+                  <div>
+                    <div className="nav-ind-mobile-title" style={{ color: "#00875A", fontWeight: "700" }}>View All Services</div>
+                    <div className="nav-ind-mobile-sub">Explore our full suite of technical expertise</div>
+                  </div>
+                </Link>
+                {servicesList.map((srv) => (
                   <Link
                     key={srv.href}
                     href={srv.href}
@@ -423,21 +520,21 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Industries Mobile (EDITORIAL STYLE) */}
+          {/* Industries Mobile */}
           <div className="navbar__mobile-accordion">
-            <div className="navbar__mobile-accordion-header">
-              <Link
-                href="/industries"
-                className="navbar__mobile-link navbar__mobile-link--main"
-                onClick={() => setMenuOpen(false)}
-              >
-                <span>Industries</span>
-              </Link>
+            <div
+              className="navbar__mobile-accordion-header"
+              onClick={() => toggleMobileAccordion("Industries")}
+              style={{ cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
+            >
+              <span className="navbar__mobile-link navbar__mobile-link--main" style={{ margin: 0, padding: 0 }}>
+                Industries
+              </span>
               <button
                 type="button"
                 className={`navbar__mobile-accordion-btn ${mobileExpanded === "Industries" ? "open" : ""}`}
-                onClick={() => toggleMobileAccordion("Industries")}
                 aria-label="Toggle Industries dropdown"
+                style={{ pointerEvents: "none" }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <polyline points="6 9 12 15 18 9" />
@@ -446,7 +543,19 @@ export default function Navbar() {
             </div>
             {mobileExpanded === "Industries" && (
               <div className="nav-ind-mobile-list">
-                {editorialIndustries.map((ind) => (
+                <Link
+                  href="/industries"
+                  className="nav-ind-mobile-item"
+                  onClick={() => setMenuOpen(false)}
+                  style={{ background: "rgba(0, 135, 90, 0.08)", borderRadius: "8px", marginBottom: "6px" }}
+                >
+                  <span className="nav-ind-mobile-num" style={{ color: "#00875A" }}>→</span>
+                  <div>
+                    <div className="nav-ind-mobile-title" style={{ color: "#00875A", fontWeight: "700" }}>View All Industries</div>
+                    <div className="nav-ind-mobile-sub">Explore industry-tailored solutions & compliance</div>
+                  </div>
+                </Link>
+                {industriesList.map((ind) => (
                   <Link
                     key={ind.href}
                     href={ind.href}

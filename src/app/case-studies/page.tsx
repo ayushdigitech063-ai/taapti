@@ -3,77 +3,51 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-const caseStudies = [
-  {
-    number: "01",
-    category: "FinTech",
-    title: "Building a scalable digital platform",
-    description:
-      "A modern technology solution designed to simplify operations and create a better digital experience.",
-    services: "Software Engineering",
-    slug: "scalable-digital-platform",
-    image: "/case-studies/fintech.jpg",
-  },
-  {
-    number: "02",
-    category: "Healthcare",
-    title: "Transforming complex workflows with technology",
-    description:
-      "A reliable digital product built to improve efficiency, accessibility and user experience.",
-    services: "Web Development",
-    slug: "healthcare-workflow-platform",
-    image: "/case-studies/healthcare.jpg",
-  },
-  {
-    number: "03",
-    category: "SaaS",
-    title: "Scaling a product for growing businesses",
-    description:
-      "Engineering and product development focused on performance, scalability and long-term growth.",
-    services: "Product Development",
-    slug: "scaling-saas-product",
-    image: "/case-studies/saas.jpg",
-  },
-  {
-    number: "04",
-    category: "E-commerce",
-    title: "High-performance digital commerce engine",
-    description:
-      "Scalable online shopping experience with seamless checkout and automated inventory management.",
-    services: "Web & Mobile Systems",
-    slug: "digital-commerce-engine",
-    image: "/case-studies/fintech.jpg",
-  },
-  {
-    number: "05",
-    category: "AI & Data",
-    title: "Enterprise RAG & intelligent workflow automation",
-    description:
-      "Custom LLM and vector database pipeline transforming document discovery for enterprise teams.",
-    services: "AI Systems & RAG",
-    slug: "enterprise-rag-automation",
-    image: "/case-studies/saas.jpg",
-  },
-  {
-    number: "06",
-    category: "FinTech",
-    title: "Real-time payment gateway & microservices API",
-    description:
-      "Ultra-low latency transactional backend supporting thousands of concurrent financial requests.",
-    services: "API & Backend Systems",
-    slug: "payment-gateway-microservices",
-    image: "/case-studies/healthcare.jpg",
-  },
-];
-
 export default function CaseStudiesPage() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [caseStudies, setCaseStudies] = useState<any[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [loading, setLoading] = useState(true);
 
-  const categories = ["All", "FinTech", "Healthcare", "SaaS", "AI & Data", "E-commerce"];
+  useEffect(() => {
+    async function fetchCaseStudies() {
+      try {
+        const res = await fetch("http://localhost:5000/api/projects?status=Published");
+        if (res.ok) {
+          const json = await res.json();
+          const items = Array.isArray(json) ? json : (json.data || []);
+          setCaseStudies(items);
+          // extract unique categories
+          const cats = ["All", ...Array.from(new Set(items.map((item: any) => item.category))).filter(Boolean)];
+          setCategories(cats as string[]);
+        }
+      } catch (err) {
+        console.error("Failed to load dynamic case studies:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchCaseStudies();
 
-  const filteredStudies = activeCategory === "All"
-    ? caseStudies
-    : caseStudies.filter((s) => s.category.toLowerCase() === activeCategory.toLowerCase());
+    let channel: BroadcastChannel | null = null;
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      channel = new BroadcastChannel("taapti_cms_updates");
+      channel.onmessage = (event) => {
+        if (event.data === "CASE_STUDIES_UPDATED" || event.data === "PROJECTS_UPDATED") {
+          fetchCaseStudies();
+        }
+      };
+    }
+    return () => {
+      if (channel) channel.close();
+    };
+  }, []);
+
+  const filteredStudies = Array.isArray(caseStudies)
+    ? (activeCategory === "All"
+        ? caseStudies
+        : caseStudies.filter((s) => s.category?.toLowerCase() === activeCategory.toLowerCase()))
+    : [];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
