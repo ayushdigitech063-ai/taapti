@@ -360,13 +360,13 @@ export default function CustomHealthcareServiceTemplate({
         }
 
         .healthcare-page {
-          --bg: #06141c;
-          --bg-soft: #0a202b;
-          --card: #0d2632;
-          --teal: #2dd4bf;
-          --teal-dark: #14b8a6;
-          --white: #f8fafc;
-          --muted: #8da4ae;
+          --bg: #FAFCFF;
+          --bg-soft: #F1F5F9;
+          --card: #FFFFFF;
+          --teal: #00875A;
+          --teal-dark: #006C48;
+          --white: #0F172A;
+          --muted: #64748B;
           background: var(--bg);
           color: var(--white);
           min-height: 100vh;
@@ -413,10 +413,11 @@ export default function CustomHealthcareServiceTemplate({
           background:
             radial-gradient(
               ellipse at 75% 25%,
-              rgba(20, 184, 166, 0.1),
+              rgba(0, 135, 90, 0.06),
               transparent 42%
             ),
-            linear-gradient(180deg, #071923 0%, #06141c 100%);
+            linear-gradient(180deg, #F8FAFC 0%, #FAFCFF 100%);
+          border-bottom: 1px solid #E2E8F0;
         }
 
         .healthcare-hero-grid {
@@ -598,15 +599,11 @@ export default function CustomHealthcareServiceTemplate({
           border-radius: 20px;
           position: relative;
           z-index: 2;
-          background: linear-gradient(
-            145deg,
-            rgba(21, 55, 66, 0.96),
-            rgba(8, 29, 39, 0.98)
-          );
-          border: 1px solid rgba(133, 226, 214, 0.17);
+          background: #FFFFFF;
+          border: 1px solid #CBD5E1;
           box-shadow:
-            0 30px 80px rgba(0, 0, 0, 0.35),
-            inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            0 20px 60px rgba(0, 0, 0, 0.08),
+            0 1px 3px rgba(0, 0, 0, 0.05);
           transform: perspective(1200px) rotateY(-5deg) rotateX(2deg);
         }
 
@@ -706,8 +703,8 @@ export default function CustomHealthcareServiceTemplate({
 
         .dashboard-stat {
           padding: 15px;
-          background: rgba(255, 255, 255, 0.035);
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          background: #F8FAFC;
+          border: 1px solid #E2E8F0;
           border-radius: 12px;
         }
 
@@ -855,10 +852,10 @@ export default function CustomHealthcareServiceTemplate({
           align-items: center;
           gap: 10px;
           padding: 13px 15px;
-          background: rgba(12, 37, 48, 0.95);
-          border: 1px solid rgba(100, 200, 190, 0.15);
+          background: #FFFFFF;
+          border: 1px solid #CBD5E1;
           border-radius: 12px;
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
           backdrop-filter: blur(15px);
         }
 
@@ -944,8 +941,8 @@ export default function CustomHealthcareServiceTemplate({
 
         .overview-section {
           padding: 125px 0;
-          background: #081b25;
-          border-top: 1px solid rgba(255, 255, 255, 0.025);
+          background: #F8FAFC;
+          border-top: 1px solid #E2E8F0;
         }
 
         .section-label {
@@ -969,16 +966,17 @@ export default function CustomHealthcareServiceTemplate({
           letter-spacing: -2px;
           margin: 0;
           font-weight: 800;
+          color: #0F172A;
         }
 
         .overview-grid h2 span,
         .features-header h2 span {
-          color: #607e88;
+          color: #64748B;
           display: block;
         }
 
         .overview-content > p {
-          color: #91a9b1;
+          color: #334155;
           font-size: 15px;
           line-height: 1.9;
           margin: 0;
@@ -986,7 +984,7 @@ export default function CustomHealthcareServiceTemplate({
 
         .overview-line {
           height: 1px;
-          background: rgba(255, 255, 255, 0.08);
+          background: #E2E8F0;
           margin: 35px 0 25px;
         }
 
@@ -1009,7 +1007,7 @@ export default function CustomHealthcareServiceTemplate({
         }
 
         .overview-points strong {
-          color: #c2d2d6;
+          color: #0F172A;
           font-size: 13px;
           font-weight: 600;
         }
@@ -1018,7 +1016,7 @@ export default function CustomHealthcareServiceTemplate({
 
         .features-section {
           padding: 125px 0;
-          background: #06141c;
+          background: #FFFFFF;
         }
 
         .features-header {
@@ -1034,7 +1032,7 @@ export default function CustomHealthcareServiceTemplate({
         }
 
         .features-header > p {
-          color: #78939d;
+          color: #64748B;
           font-size: 14px;
           line-height: 1.8;
           max-width: 330px;
@@ -1051,13 +1049,10 @@ export default function CustomHealthcareServiceTemplate({
           position: relative;
           min-height: 300px;
           padding: 25px;
-          border: 1px solid rgba(125, 190, 190, 0.1);
+          border: 1px solid #E2E8F0;
           border-radius: 14px;
-          background: linear-gradient(
-            145deg,
-            rgba(17, 48, 59, 0.75),
-            rgba(9, 28, 37, 0.6)
-          );
+          background: #F8FAFC;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.03);
           transition: all 0.3s ease;
           overflow: hidden;
         }
@@ -1068,7 +1063,7 @@ export default function CustomHealthcareServiceTemplate({
           width: 130px;
           height: 130px;
           border-radius: 50%;
-          background: rgba(45, 212, 191, 0.04);
+          background: rgba(0, 135, 90, 0.04);
           right: -60px;
           bottom: -60px;
           transition: all 0.3s ease;
@@ -1076,12 +1071,8 @@ export default function CustomHealthcareServiceTemplate({
 
         .feature-card:hover {
           transform: translateY(-6px);
-          border-color: rgba(45, 212, 191, 0.35);
-          background: linear-gradient(
-            145deg,
-            rgba(20, 59, 68, 0.9),
-            rgba(9, 30, 39, 0.9)
-          );
+          border-color: #00875A;
+          background: #FFFFFF;
         }
 
         .feature-card:hover::after {
@@ -1124,7 +1115,7 @@ export default function CustomHealthcareServiceTemplate({
         }
 
         .feature-card h3 {
-          color: #e3eeee;
+          color: #0F172A;
           font-size: 18px;
           line-height: 1.3;
           margin: 0 0 12px;
@@ -1133,7 +1124,7 @@ export default function CustomHealthcareServiceTemplate({
         }
 
         .feature-card p {
-          color: #79949e;
+          color: #64748B;
           font-size: 12px;
           line-height: 1.8;
           margin: 0;
@@ -1158,7 +1149,7 @@ export default function CustomHealthcareServiceTemplate({
 
         .healthcare-cta-section {
           padding: 0 0 90px;
-          background: #06141c;
+          background: #FAFCFF;
         }
 
         .healthcare-cta {
@@ -1167,14 +1158,9 @@ export default function CustomHealthcareServiceTemplate({
           min-height: 390px;
           padding: 70px;
           border-radius: 20px;
-          background:
-            radial-gradient(
-              circle at 90% 50%,
-              rgba(45, 212, 191, 0.15),
-              transparent 40%
-            ),
-            linear-gradient(115deg, #0d303b, #0a222d);
-          border: 1px solid rgba(45, 212, 191, 0.14);
+          background: #00875A;
+          color: #FFFFFF;
+          border: 1px solid #006C48;
         }
 
         .cta-pattern {
