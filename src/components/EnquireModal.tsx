@@ -52,6 +52,10 @@ export default function EnquireModal({ isOpen, onClose, serviceTitle = "Software
       Swal.fire("Missing Information", "Please fill in your Name and Phone number.", "warning");
       return;
     }
+    if (phone.length !== 10) {
+      Swal.fire("Invalid Phone Number", "Please enter a valid 10-digit mobile number.", "warning");
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -119,7 +123,7 @@ export default function EnquireModal({ isOpen, onClose, serviceTitle = "Software
               required
               placeholder="e.g. Rahul Sharma"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value.replace(/[0-9]/g, ""))}
             />
           </div>
 
@@ -129,9 +133,10 @@ export default function EnquireModal({ isOpen, onClose, serviceTitle = "Software
               <input
                 type="tel"
                 required
-                placeholder="+91 98765 43210"
+                maxLength={10}
+                placeholder="10-digit mobile number"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, "").slice(0, 10))}
               />
             </div>
 

@@ -71,6 +71,10 @@ export default function ContactPage() {
       Swal.fire("Required Fields", "Please enter your Name and Phone number.", "warning");
       return;
     }
+    if (formData.phone.length !== 10) {
+      Swal.fire("Invalid Phone Number", "Please enter a valid 10-digit mobile number.", "warning");
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -187,7 +191,10 @@ export default function ContactPage() {
                   required
                   placeholder="e.g. Rohan Sharma"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => {
+                    const cleanedName = e.target.value.replace(/[0-9]/g, "");
+                    setFormData({ ...formData, name: cleanedName });
+                  }}
                 />
               </div>
 
@@ -197,9 +204,13 @@ export default function ContactPage() {
                   <input
                     type="tel"
                     required
-                    placeholder="+91 98765 43210"
+                    maxLength={10}
+                    placeholder="10-digit mobile number"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => {
+                      const cleanedPhone = e.target.value.replace(/[^0-9]/g, "").slice(0, 10);
+                      setFormData({ ...formData, phone: cleanedPhone });
+                    }}
                   />
                 </div>
 

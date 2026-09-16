@@ -174,14 +174,17 @@ export default function CareersPage() {
     fullName: "",
     email: "",
     phone: "",
+    applyingFor: "",
+    experienceYears: "0-1 Years",
+    highestQualification: "",
     location: "",
-    experienceYears: "3 Years",
     currentCompany: "",
+    noticePeriod: "Immediate",
+    currentCtc: "",
     expectedCtc: "",
-    noticePeriod: "Immediate / 15 Days",
-    linkedinUrl: "",
-    portfolioUrl: "",
     resumeUrl: "",
+    portfolioUrl: "",
+    githubUrl: "",
     coverLetter: "",
   });
 
@@ -245,14 +248,17 @@ export default function CareersPage() {
       fullName: "",
       email: "",
       phone: "",
+      applyingFor: job.title || "",
+      experienceYears: "0-1 Years",
+      highestQualification: "",
       location: "",
-      experienceYears: job.experience || "3 Years",
       currentCompany: "",
+      noticePeriod: "Immediate",
+      currentCtc: "",
       expectedCtc: "",
-      noticePeriod: "Immediate / 15 Days",
-      linkedinUrl: "",
-      portfolioUrl: "",
       resumeUrl: "",
+      portfolioUrl: "",
+      githubUrl: "",
       coverLetter: "",
     });
     setIsApplyModalOpen(true);
@@ -299,6 +305,10 @@ export default function CareersPage() {
     e.preventDefault();
     if (!applyForm.fullName.trim() || !applyForm.email.trim() || !applyForm.phone.trim()) {
       Swal.fire("Required Fields", "Please enter your Full Name, Email, and Phone Number.", "warning");
+      return;
+    }
+    if (applyForm.phone.trim().length !== 10) {
+      Swal.fire("Invalid Phone Number", "Please enter a valid 10-digit mobile number.", "warning");
       return;
     }
     if (!applyForm.resumeUrl) {
@@ -765,10 +775,10 @@ export default function CareersPage() {
             </div>
 
             {/* Modal Body / Form */}
-            <form onSubmit={handleSubmitApplication} style={{ padding: "28px 30px", display: "flex", flexDirection: "column", gap: "20px" }}>
+            <form onSubmit={handleSubmitApplication} style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: "18px" }}>
               
-              {/* Row 1: Full Name & Email */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              {/* Row 1: Full Name * & Email * */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
                 <div>
                   <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Full Name *</label>
                   <input
@@ -776,181 +786,232 @@ export default function CareersPage() {
                     required
                     placeholder="e.g. Vikramaditya Singh"
                     value={applyForm.fullName}
-                    onChange={(e) => setApplyForm({ ...applyForm, fullName: e.target.value })}
-                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                    onChange={(e) => setApplyForm({ ...applyForm, fullName: e.target.value.replace(/[0-9]/g, "") })}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
                   />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Email Address *</label>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Email *</label>
                   <input
                     type="email"
                     required
-                    placeholder="e.g. vikram@gmail.com"
+                    placeholder="e.g. vikram@company.com"
                     value={applyForm.email}
                     onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })}
-                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
                   />
                 </div>
               </div>
 
-              {/* Row 2: Phone Number */}
-              <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Phone Number *</label>
-                <input
-                  type="tel"
-                  required
-                  placeholder="+91 98765 43210"
-                  value={applyForm.phone}
-                  onChange={(e) => setApplyForm({ ...applyForm, phone: e.target.value })}
-                  style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
-                />
+              {/* Row 2: Phone Number * & Applying For * */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Phone Number *</label>
+                  <input
+                    type="tel"
+                    required
+                    maxLength={10}
+                    placeholder="10-digit mobile number"
+                    value={applyForm.phone}
+                    onChange={(e) => setApplyForm({ ...applyForm, phone: e.target.value.replace(/[^0-9]/g, "").slice(0, 10) })}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Applying For *</label>
+                  <input
+                    type="text"
+                    required
+                    readOnly
+                    value={applyForm.applyingFor || selectedJob?.title || "Engineering Role"}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px", background: "#F1F5F9", color: "#475569", fontWeight: "700" }}
+                  />
+                </div>
               </div>
 
-              {/* Location Selectors: Country, State, City */}
-              <div style={{ background: "#F8FAFC", padding: "16px", borderRadius: "14px", border: "1px solid #E2E8F0", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "12px" }}>
+              {/* Row 3: Total Experience * & Highest Qualification */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
                 <div>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Country *</label>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Total Experience *</label>
                   <select
-                    value={selectedCountryCode}
-                    onChange={(e) => {
-                      const cCode = e.target.value;
-                      setSelectedCountryCode(cCode);
-                      setSelectedStateCode("");
-                      setSelectedCityName("");
-                      const cObj = Country.getCountryByCode(cCode);
-                      setApplyForm((prev) => ({ ...prev, location: cObj ? cObj.name : "" }));
-                    }}
-                    style={{ width: "100%", padding: "10px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                    value={applyForm.experienceYears}
+                    onChange={(e) => setApplyForm({ ...applyForm, experienceYears: e.target.value })}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px", background: "#FFF" }}
                   >
-                    {Country.getAllCountries().map((c) => (
-                      <option key={c.isoCode} value={c.isoCode}>
-                        {c.flag} {c.name}
-                      </option>
-                    ))}
+                    <option value="Fresher">Fresher / Trainee</option>
+                    <option value="0-1 Years">0 - 1 Years</option>
+                    <option value="1-2 Years">1 - 2 Years</option>
+                    <option value="2-3 Years">2 - 3 Years</option>
+                    <option value="3-5 Years">3 - 5 Years</option>
+                    <option value="5-8 Years">5 - 8 Years</option>
+                    <option value="8+ Years">8+ Years (Senior / Lead)</option>
                   </select>
                 </div>
-
                 <div>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>State / Region</label>
-                  <select
-                    value={selectedStateCode}
-                    onChange={(e) => {
-                      const sCode = e.target.value;
-                      setSelectedStateCode(sCode);
-                      setSelectedCityName("");
-                      const cObj = Country.getCountryByCode(selectedCountryCode);
-                      const sObj = State.getStateByCodeAndCountry(sCode, selectedCountryCode);
-                      const locStr = `${sObj ? sObj.name + ", " : ""}${cObj ? cObj.name : ""}`;
-                      setApplyForm((prev) => ({ ...prev, location: locStr }));
-                    }}
-                    style={{ width: "100%", padding: "10px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
-                  >
-                    <option value="">Select State</option>
-                    {State.getStatesOfCountry(selectedCountryCode).map((s) => (
-                      <option key={s.isoCode} value={s.isoCode}>
-                        {s.name}
-                      </option>
-                    ))}
-                  </select>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Highest Qualification</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. B.Tech / M.Tech / B.E. / BCA"
+                    value={applyForm.highestQualification}
+                    onChange={(e) => setApplyForm({ ...applyForm, highestQualification: e.target.value })}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
+                  />
                 </div>
+              </div>
 
-                <div>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>City / District</label>
-                  {selectedStateCode ? (
+              {/* Current Location * Selectors */}
+              <div style={{ background: "#F8FAFC", padding: "14px", borderRadius: "14px", border: "1px solid #E2E8F0" }}>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "800", color: "#0F172A", marginBottom: "8px" }}>Current Location *</label>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "10px" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "11px", fontWeight: "700", color: "#64748B", marginBottom: "4px" }}>Country *</label>
                     <select
-                      value={selectedCityName}
+                      value={selectedCountryCode}
                       onChange={(e) => {
-                        const cName = e.target.value;
-                        setSelectedCityName(cName);
-                        const cObj = Country.getCountryByCode(selectedCountryCode);
-                        const sObj = State.getStateByCodeAndCountry(selectedStateCode, selectedCountryCode);
-                        const locStr = `${cName ? cName + ", " : ""}${sObj ? sObj.name + ", " : ""}${cObj ? cObj.name : ""}`;
-                        setApplyForm((prev) => ({ ...prev, location: locStr }));
+                        const cCode = e.target.value;
+                        setSelectedCountryCode(cCode);
+                        setSelectedStateCode("");
+                        setSelectedCityName("");
+                        const cObj = Country.getCountryByCode(cCode);
+                        setApplyForm((prev) => ({ ...prev, location: cObj ? cObj.name : "" }));
                       }}
-                      style={{ width: "100%", padding: "10px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                      style={{ width: "100%", padding: "8px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "12.5px", background: "#FFF" }}
                     >
-                      <option value="">Select City</option>
-                      {City.getCitiesOfState(selectedCountryCode, selectedStateCode).map((city, idx) => (
-                        <option key={`${city.name}-${idx}`} value={city.name}>
-                          {city.name}
+                      {Country.getAllCountries().map((c) => (
+                        <option key={c.isoCode} value={c.isoCode}>
+                          {c.flag} {c.name}
                         </option>
                       ))}
                     </select>
-                  ) : (
-                    <input
-                      type="text"
-                      placeholder="Enter City name"
-                      value={selectedCityName}
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "11px", fontWeight: "700", color: "#64748B", marginBottom: "4px" }}>State / Region</label>
+                    <select
+                      value={selectedStateCode}
                       onChange={(e) => {
-                        const cName = e.target.value;
-                        setSelectedCityName(cName);
+                        const sCode = e.target.value;
+                        setSelectedStateCode(sCode);
+                        setSelectedCityName("");
                         const cObj = Country.getCountryByCode(selectedCountryCode);
-                        const locStr = `${cName ? cName + ", " : ""}${cObj ? cObj.name : ""}`;
+                        const sObj = State.getStateByCodeAndCountry(sCode, selectedCountryCode);
+                        const locStr = `${sObj ? sObj.name + ", " : ""}${cObj ? cObj.name : ""}`;
                         setApplyForm((prev) => ({ ...prev, location: locStr }));
                       }}
-                      style={{ width: "100%", padding: "9px 12px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
-                    />
-                  )}
+                      style={{ width: "100%", padding: "8px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "12.5px", background: "#FFF" }}
+                    >
+                      <option value="">Select State</option>
+                      {State.getStatesOfCountry(selectedCountryCode).map((s) => (
+                        <option key={s.isoCode} value={s.isoCode}>
+                          {s.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "11px", fontWeight: "700", color: "#64748B", marginBottom: "4px" }}>City / District</label>
+                    {selectedStateCode ? (
+                      <select
+                        value={selectedCityName}
+                        onChange={(e) => {
+                          const cName = e.target.value;
+                          setSelectedCityName(cName);
+                          const cObj = Country.getCountryByCode(selectedCountryCode);
+                          const sObj = State.getStateByCodeAndCountry(selectedStateCode, selectedCountryCode);
+                          const locStr = `${cName ? cName + ", " : ""}${sObj ? sObj.name + ", " : ""}${cObj ? cObj.name : ""}`;
+                          setApplyForm((prev) => ({ ...prev, location: locStr }));
+                        }}
+                        style={{ width: "100%", padding: "8px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "12.5px", background: "#FFF" }}
+                      >
+                        <option value="">Select City</option>
+                        {City.getCitiesOfState(selectedCountryCode, selectedStateCode).map((city, idx) => (
+                          <option key={`${city.name}-${idx}`} value={city.name}>
+                            {city.name}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        placeholder="Enter City"
+                        value={selectedCityName}
+                        onChange={(e) => {
+                          const cName = e.target.value;
+                          setSelectedCityName(cName);
+                          const cObj = Country.getCountryByCode(selectedCountryCode);
+                          const locStr = `${cName ? cName + ", " : ""}${cObj ? cObj.name : ""}`;
+                          setApplyForm((prev) => ({ ...prev, location: locStr }));
+                        }}
+                        style={{ width: "100%", padding: "8px 10px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "12.5px", background: "#FFF" }}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Row 3: Total Experience & Notice Period */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              {/* Row 4: Current / Last Company & Notice Period Dropdown */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
                 <div>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Total Experience (Years)</label>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Current / Last Company</label>
                   <input
                     type="text"
-                    placeholder="e.g. 4.5 Years"
-                    value={applyForm.experienceYears}
-                    onChange={(e) => setApplyForm({ ...applyForm, experienceYears: e.target.value })}
-                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                    placeholder="e.g. Acme Tech Corp"
+                    value={applyForm.currentCompany}
+                    onChange={(e) => setApplyForm({ ...applyForm, currentCompany: e.target.value })}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
                   />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Notice Period / Availability</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Immediate / 15 Days / 30 Days"
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Notice Period / Availability *</label>
+                  <select
                     value={applyForm.noticePeriod}
                     onChange={(e) => setApplyForm({ ...applyForm, noticePeriod: e.target.value })}
-                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px", background: "#FFF" }}
+                  >
+                    <option value="Immediate">Immediate Joiner</option>
+                    <option value="15 Days">15 Days</option>
+                    <option value="30 Days">30 Days</option>
+                    <option value="45 Days">45 Days</option>
+                    <option value="60 Days">60 Days</option>
+                    <option value="90 Days">90 Days / Serving Notice</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Row 5: Current CTC & Expected CTC */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Current CTC</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. ₹ 8 LPA"
+                    value={applyForm.currentCtc}
+                    onChange={(e) => setApplyForm({ ...applyForm, currentCtc: e.target.value })}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Expected CTC</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. ₹ 12 LPA"
+                    value={applyForm.expectedCtc}
+                    onChange={(e) => setApplyForm({ ...applyForm, expectedCtc: e.target.value })}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
                   />
                 </div>
               </div>
 
-              {/* Row 4: LinkedIn & Portfolio URL */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                <div>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>LinkedIn Profile / GitHub</label>
-                  <input
-                    type="url"
-                    placeholder="https://linkedin.in/in/username"
-                    value={applyForm.linkedinUrl}
-                    onChange={(e) => setApplyForm({ ...applyForm, linkedinUrl: e.target.value })}
-                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Portfolio / Website (Optional)</label>
-                  <input
-                    type="url"
-                    placeholder="https://yourportfolio.com"
-                    value={applyForm.portfolioUrl}
-                    onChange={(e) => setApplyForm({ ...applyForm, portfolioUrl: e.target.value })}
-                    style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
-                  />
-                </div>
-              </div>
-
-              {/* Resume File Upload Field */}
-              <div style={{ background: "#F8FAFC", padding: "18px", borderRadius: "14px", border: "1.5px dashed #CBD5E1", textAlign: "center" }}>
+              {/* Resume / CV * File Upload */}
+              <div style={{ background: "#F8FAFC", padding: "16px", borderRadius: "14px", border: "1.5px dashed #CBD5E1", textAlign: "center" }}>
                 <label style={{ display: "block", fontSize: "13px", fontWeight: "800", color: "#0F172A", marginBottom: "4px" }}>
-                  Upload Resume / CV Document (.PDF, .DOC, .DOCX) *
+                  Resume / CV * (.PDF, .DOC, .DOCX)
                 </label>
-                <p style={{ fontSize: "12px", color: "#64748B", margin: "0 0 12px 0" }}>Upload your updated resume file for HR screening</p>
+                <p style={{ fontSize: "11.5px", color: "#64748B", margin: "0 0 10px 0" }}>Upload your updated resume file for HR screening</p>
 
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px" }}>
-                  <label style={{ background: "#00875A", color: "#FFF", padding: "10px 20px", borderRadius: "10px", fontSize: "13px", fontWeight: "700", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                  <label style={{ background: "#00875A", color: "#FFF", padding: "9px 18px", borderRadius: "8px", fontSize: "12.5px", fontWeight: "700", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}>
                     {isUploadingResume ? "Uploading Resume..." : "📄 Select & Upload Resume"}
                     <input
                       type="file"
@@ -962,38 +1023,62 @@ export default function CareersPage() {
                 </div>
 
                 {applyForm.resumeUrl && (
-                  <div style={{ marginTop: "12px", padding: "8px 14px", background: "#DCFCE7", color: "#166534", borderRadius: "8px", fontSize: "12px", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                  <div style={{ marginTop: "10px", padding: "6px 12px", background: "#DCFCE7", color: "#166534", borderRadius: "8px", fontSize: "12px", fontWeight: "700", display: "inline-flex", alignItems: "center", gap: "8px" }}>
                     <span>✓ Resume Uploaded Successfully!</span>
                     <a href={applyForm.resumeUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#15803D", textDecoration: "underline" }}>View File</a>
                   </div>
                 )}
               </div>
 
-              {/* Cover Letter */}
+              {/* Row 5: Portfolio / LinkedIn URL & GitHub Profile */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Portfolio / LinkedIn URL</label>
+                  <input
+                    type="url"
+                    placeholder="https://linkedin.com/in/username"
+                    value={applyForm.portfolioUrl}
+                    onChange={(e) => setApplyForm({ ...applyForm, portfolioUrl: e.target.value })}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>GitHub Profile</label>
+                  <input
+                    type="url"
+                    placeholder="https://github.com/username"
+                    value={applyForm.githubUrl}
+                    onChange={(e) => setApplyForm({ ...applyForm, githubUrl: e.target.value })}
+                    style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
+                  />
+                </div>
+              </div>
+
+              {/* Cover Letter / Message */}
               <div>
-                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Cover Letter / Brief Pitch (Optional)</label>
+                <label style={{ display: "block", fontSize: "12px", fontWeight: "700", color: "#334155", marginBottom: "6px" }}>Cover Letter / Message</label>
                 <textarea
                   rows={3}
-                  placeholder="Tell us why you are a great fit for this position..."
+                  placeholder="Tell us briefly about your software expertise or project background..."
                   value={applyForm.coverLetter}
                   onChange={(e) => setApplyForm({ ...applyForm, coverLetter: e.target.value })}
-                  style={{ width: "100%", padding: "11px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "14px" }}
+                  style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "10px", fontSize: "13.5px" }}
                 />
               </div>
 
               {/* Modal Actions */}
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", paddingTop: "12px", borderTop: "1px solid #E2E8F0" }}>
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", paddingTop: "10px", borderTop: "1px solid #E2E8F0" }}>
                 <button
                   type="button"
                   onClick={() => setIsApplyModalOpen(false)}
-                  style={{ padding: "11px 22px", background: "#E2E8F0", color: "#475569", border: "none", borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer" }}
+                  style={{ padding: "10px 20px", background: "#E2E8F0", color: "#475569", border: "none", borderRadius: "8px", fontWeight: "700", fontSize: "13.5px", cursor: "pointer" }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmittingApply || isUploadingResume}
-                  style={{ padding: "11px 24px", background: "#00875A", color: "#FFF", border: "none", borderRadius: "10px", fontWeight: "700", fontSize: "14px", cursor: "pointer", whiteSpace: "nowrap", boxShadow: "0 4px 14px rgba(0, 135, 90, 0.3)" }}
+                  style={{ padding: "10px 24px", background: "#00875A", color: "#FFF", border: "none", borderRadius: "8px", fontWeight: "700", fontSize: "13.5px", cursor: "pointer", whiteSpace: "nowrap", boxShadow: "0 4px 14px rgba(0, 135, 90, 0.3)" }}
                 >
                   {isSubmittingApply ? "Submitting..." : "Submit Application 🚀"}
                 </button>
