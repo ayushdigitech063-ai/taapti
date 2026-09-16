@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { API_BASE_URL } from "@/utils/api";
 
 const companyLinks = [
   { label: "About", href: "/about" },
@@ -21,7 +22,7 @@ export default function Footer() {
 
   const fetchContactDetails = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/contact-page").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/contact-page`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json.success && json.data && json.data.email) {

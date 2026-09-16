@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import ReactQuillEditor from "@/components/ReactQuillEditor";
+import { API_BASE_URL, API_ENDPOINTS } from "@/utils/api";
 
 interface SubItem {
   id: string;
@@ -294,7 +295,7 @@ export default function AdminDashboardPage() {
 
   const fetchPartnersData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/partners-section").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/partners-section`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -317,7 +318,7 @@ export default function AdminDashboardPage() {
     setIsSavingPartners(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/partners-section", {
+      const res = await fetch(`${API_BASE_URL}/api/partners-section`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(partnersSectionForm),
@@ -402,7 +403,7 @@ export default function AdminDashboardPage() {
 
   const fetchCaseStudiesData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/case-studies").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/case-studies`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -424,7 +425,7 @@ export default function AdminDashboardPage() {
     setIsSavingCaseStudies(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/case-studies", {
+      const res = await fetch(`${API_BASE_URL}/api/case-studies`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(caseStudiesForm),
@@ -463,7 +464,7 @@ export default function AdminDashboardPage() {
 
   const fetchTestimonialsData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/testimonials").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/testimonials`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -485,7 +486,7 @@ export default function AdminDashboardPage() {
     setIsSavingTestimonials(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/testimonials", {
+      const res = await fetch(`${API_BASE_URL}/api/testimonials`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(testimonialsForm),
@@ -528,7 +529,7 @@ export default function AdminDashboardPage() {
 
   const fetchCtaData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/cta").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/cta`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -554,7 +555,7 @@ export default function AdminDashboardPage() {
     setIsSavingCta(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/cta", {
+      const res = await fetch(`${API_BASE_URL}/api/cta`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(ctaForm),
@@ -613,7 +614,7 @@ export default function AdminDashboardPage() {
 
   const fetchServicesAdminData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/services").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/services`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -694,8 +695,8 @@ export default function AdminDashboardPage() {
     const token = localStorage.getItem("adminToken");
     const isEdit = !!editingServiceId;
     const url = isEdit
-      ? `http://localhost:5000/api/services/${editingServiceId}`
-      : "http://localhost:5000/api/services";
+      ? `${API_BASE_URL}/api/services/${editingServiceId}`
+      : `${API_BASE_URL}/api/services`;
     const method = isEdit ? "PUT" : "POST";
 
     try {
@@ -745,7 +746,7 @@ export default function AdminDashboardPage() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("adminToken");
       try {
-        const res = await fetch(`http://localhost:5000/api/services/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/services/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -804,7 +805,7 @@ export default function AdminDashboardPage() {
 
   const fetchIndustriesAdminData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/industries").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/industries`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -894,8 +895,8 @@ export default function AdminDashboardPage() {
     const token = localStorage.getItem("adminToken");
     const isEdit = !!editingIndustryId;
     const url = isEdit
-      ? `http://localhost:5000/api/industries/${editingIndustryId}`
-      : "http://localhost:5000/api/industries";
+      ? `${API_BASE_URL}/api/industries/${editingIndustryId}`
+      : `${API_BASE_URL}/api/industries`;
     const method = isEdit ? "PUT" : "POST";
 
     try {
@@ -945,7 +946,7 @@ export default function AdminDashboardPage() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("adminToken");
       try {
-        const res = await fetch(`http://localhost:5000/api/industries/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/industries/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -996,7 +997,7 @@ export default function AdminDashboardPage() {
 
   const fetchProjectsAdminData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/projects").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/projects`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         const items = Array.isArray(json) ? json : (json.data || []);
@@ -1066,8 +1067,8 @@ export default function AdminDashboardPage() {
     const token = localStorage.getItem("adminToken");
     const isEdit = !!editingProjectId;
     const url = isEdit
-      ? `http://localhost:5000/api/projects/${editingProjectId}`
-      : "http://localhost:5000/api/projects";
+      ? `${API_BASE_URL}/api/projects/${editingProjectId}`
+      : `${API_BASE_URL}/api/projects`;
     const method = isEdit ? "PUT" : "POST";
 
     try {
@@ -1117,7 +1118,7 @@ export default function AdminDashboardPage() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("adminToken");
       try {
-        const res = await fetch(`http://localhost:5000/api/projects/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/projects/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -1162,7 +1163,7 @@ export default function AdminDashboardPage() {
 
   const fetchProcessSectionData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/process-section").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/process-section`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -1186,7 +1187,7 @@ export default function AdminDashboardPage() {
     setIsSavingProcess(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/process-section", {
+      const res = await fetch(`${API_BASE_URL}/api/process-section`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(processSectionForm),
@@ -1235,7 +1236,7 @@ export default function AdminDashboardPage() {
 
   const fetchOurCompanyData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/our-company").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/our-company`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -1263,7 +1264,7 @@ export default function AdminDashboardPage() {
     setIsSavingOurCompany(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/our-company", {
+      const res = await fetch(`${API_BASE_URL}/api/our-company`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(ourCompanyForm),
@@ -1289,7 +1290,7 @@ export default function AdminDashboardPage() {
 
   const fetchServicesSectionData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/services-section").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/services-section`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -1315,7 +1316,7 @@ export default function AdminDashboardPage() {
     setIsSavingServicesSection(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/services-section", {
+      const res = await fetch(`${API_BASE_URL}/api/services-section`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -1351,7 +1352,7 @@ export default function AdminDashboardPage() {
 
   const fetchHeroData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/hero").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/hero`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -1387,7 +1388,7 @@ export default function AdminDashboardPage() {
     setIsSavingHero(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/hero", {
+      const res = await fetch(`${API_BASE_URL}/api/hero`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -1440,7 +1441,7 @@ export default function AdminDashboardPage() {
 
   const fetchGalleryData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/gallery");
+      const res = await fetch(`${API_BASE_URL}/api/gallery`);
       const data = await res.json();
       if (data && data.images) {
         setGalleryForm({
@@ -1463,7 +1464,7 @@ export default function AdminDashboardPage() {
     setIsSavingGallery(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/gallery", {
+      const res = await fetch(`${API_BASE_URL}/api/gallery`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -1502,7 +1503,7 @@ export default function AdminDashboardPage() {
 
   const fetchLeads = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/leads").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/leads`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json && json.data) {
@@ -1519,7 +1520,7 @@ export default function AdminDashboardPage() {
   const handleUpdateLead = async (id: string, updates: any) => {
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch(`http://localhost:5000/api/leads/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/leads/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(updates),
@@ -1548,7 +1549,7 @@ export default function AdminDashboardPage() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("adminToken");
       try {
-        const res = await fetch(`http://localhost:5000/api/leads/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/leads/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -1640,7 +1641,7 @@ export default function AdminDashboardPage() {
 
   const fetchAboutPageData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/about-page").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/about-page`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json.success && json.data) {
@@ -1700,7 +1701,7 @@ export default function AdminDashboardPage() {
     setIsSavingAboutPage(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/about-page", {
+      const res = await fetch(`${API_BASE_URL}/api/about-page`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(aboutPageForm),
@@ -1739,7 +1740,7 @@ export default function AdminDashboardPage() {
 
   const fetchContactPageData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/contact-page").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/contact-page`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -1765,7 +1766,7 @@ export default function AdminDashboardPage() {
     setIsSavingContactPage(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/contact-page", {
+      const res = await fetch(`${API_BASE_URL}/api/contact-page`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(contactPageForm),
@@ -1817,7 +1818,7 @@ export default function AdminDashboardPage() {
 
   const fetchCareersPageData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/careers/page").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/careers/page`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data) {
@@ -1844,7 +1845,7 @@ export default function AdminDashboardPage() {
     setIsSavingCareersPage(true);
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/careers/page", {
+      const res = await fetch(`${API_BASE_URL}/api/careers/page`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(careersPageForm),
@@ -1910,7 +1911,7 @@ export default function AdminDashboardPage() {
 
   const fetchBlogsAdminData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/blogs").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/blogs`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json.success && json.data) {
@@ -1971,8 +1972,8 @@ export default function AdminDashboardPage() {
     const token = localStorage.getItem("adminToken");
     const isEdit = !!editingBlogId;
     const url = isEdit
-      ? `http://localhost:5000/api/blogs/${editingBlogId}`
-      : "http://localhost:5000/api/blogs";
+      ? `${API_BASE_URL}/api/blogs/${editingBlogId}`
+      : `${API_BASE_URL}/api/blogs`;
     const method = isEdit ? "PUT" : "POST";
 
     try {
@@ -2020,7 +2021,7 @@ export default function AdminDashboardPage() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("adminToken");
       try {
-        const res = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/blogs/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -2064,7 +2065,7 @@ export default function AdminDashboardPage() {
 
   const fetchJobOpeningsAdminData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/careers/jobs").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/careers/jobs`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json.success && json.data) {
@@ -2077,7 +2078,7 @@ export default function AdminDashboardPage() {
   const fetchJobApplicationsAdminData = async () => {
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch("http://localhost:5000/api/careers/applications", {
+      const res = await fetch(`${API_BASE_URL}/api/careers/applications`, {
         headers: { Authorization: `Bearer ${token}` },
       }).catch(() => null);
       if (res && res.ok) {
@@ -2136,8 +2137,8 @@ export default function AdminDashboardPage() {
     const token = localStorage.getItem("adminToken");
     const isEdit = !!editingJobId;
     const url = isEdit
-      ? `http://localhost:5000/api/careers/jobs/${editingJobId}`
-      : "http://localhost:5000/api/careers/jobs";
+      ? `${API_BASE_URL}/api/careers/jobs/${editingJobId}`
+      : `${API_BASE_URL}/api/careers/jobs`;
     const method = isEdit ? "PUT" : "POST";
 
     const payload = {
@@ -2191,7 +2192,7 @@ export default function AdminDashboardPage() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("adminToken");
       try {
-        const res = await fetch(`http://localhost:5000/api/careers/jobs/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/careers/jobs/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -2216,7 +2217,7 @@ export default function AdminDashboardPage() {
   const handleUpdateApplicationStatus = async (id: string, status: string) => {
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await fetch(`http://localhost:5000/api/careers/applications/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/careers/applications/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status, isRead: true }),
@@ -2240,7 +2241,7 @@ export default function AdminDashboardPage() {
     if (result.isConfirmed) {
       const token = localStorage.getItem("adminToken");
       try {
-        const res = await fetch(`http://localhost:5000/api/careers/applications/${id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/careers/applications/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -2334,7 +2335,7 @@ export default function AdminDashboardPage() {
       if (result.isConfirmed) {
         const token = localStorage.getItem("adminToken");
         try {
-          await fetch("http://localhost:5000/api/auth/logout", {
+          await fetch(`${API_BASE_URL}/api/auth/logout`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -3153,7 +3154,7 @@ export default function AdminDashboardPage() {
                                   const fd = new FormData();
                                   fd.append("image", file);
                                   try {
-                                    const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                    const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                     const data = await res.json();
                                     if (data.success) {
                                       const updated = [...galleryForm.images];
@@ -3447,7 +3448,7 @@ export default function AdminDashboardPage() {
                                     const formData = new FormData();
                                     formData.append("image", file);
                                     try {
-                                      const res = await fetch("http://localhost:5000/api/upload", {
+                                      const res = await fetch(`${API_BASE_URL}/api/upload`, {
                                         method: "POST",
                                         body: formData,
                                       });
@@ -3547,7 +3548,7 @@ export default function AdminDashboardPage() {
                               const file = e.target.files?.[0]; if (!file) return;
                               const fd = new FormData(); fd.append("image", file);
                               try {
-                                const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                 const data = await res.json();
                                 if (data.success) { const updated = [...ourCompanyForm.topPhotos]; updated[idx] = { ...updated[idx], src: data.url }; setOurCompanyForm({ ...ourCompanyForm, topPhotos: updated }); Swal.fire({ icon: "success", title: "Uploaded!", timer: 1500, showConfirmButton: false }); }
                                 else Swal.fire("Error", data.message, "error");
@@ -3575,7 +3576,7 @@ export default function AdminDashboardPage() {
                               const file = e.target.files?.[0]; if (!file) return;
                               const fd = new FormData(); fd.append("image", file);
                               try {
-                                const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                 const data = await res.json();
                                 if (data.success) { const updated = [...ourCompanyForm.bottomPhotos]; updated[idx] = { ...updated[idx], src: data.url }; setOurCompanyForm({ ...ourCompanyForm, bottomPhotos: updated }); Swal.fire({ icon: "success", title: "Uploaded!", timer: 1500, showConfirmButton: false }); }
                                 else Swal.fire("Error", data.message, "error");
@@ -3645,7 +3646,7 @@ export default function AdminDashboardPage() {
                           const file = e.target.files?.[0]; if (!file) return;
                           const fd = new FormData(); fd.append("image", file);
                           try {
-                            const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                            const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                             const data = await res.json();
                             if (data.success) { setProcessSectionForm({ ...processSectionForm, centerLogoUrl: data.url }); Swal.fire({ icon: "success", title: "Logo Uploaded!", timer: 1500, showConfirmButton: false }); }
                             else Swal.fire("Error", data.message, "error");
@@ -3868,7 +3869,7 @@ export default function AdminDashboardPage() {
                                   const fd = new FormData();
                                   fd.append("image", file);
                                   try {
-                                    const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                    const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                     const data = await res.json();
                                     if (data.success) {
                                       const updated = [...partnersSectionForm.partners];
@@ -4064,7 +4065,7 @@ export default function AdminDashboardPage() {
                                   const fd = new FormData();
                                   fd.append("image", file);
                                   try {
-                                    const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                    const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                     const data = await res.json();
                                     if (data.success) {
                                       const updated = [...caseStudiesForm.caseStudies];
@@ -4249,7 +4250,7 @@ export default function AdminDashboardPage() {
                                   const fd = new FormData();
                                   fd.append("image", file);
                                   try {
-                                    const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                    const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                     const data = await res.json();
                                     if (data.success) {
                                       const updated = [...testimonialsForm.reviews];
@@ -4397,7 +4398,7 @@ export default function AdminDashboardPage() {
                               const fd = new FormData();
                               fd.append("image", file);
                               try {
-                                const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                 const data = await res.json();
                                 if (data.success) {
                                   setCtaForm({ ...ctaForm, bannerImage: data.url });
@@ -5617,7 +5618,7 @@ export default function AdminDashboardPage() {
                                       const fd = new FormData();
                                       fd.append("image", file);
                                       try {
-                                        const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                        const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                         const data = await res.json();
                                         if (data.success) {
                                           setServiceForm({ ...serviceForm, heroMediaUrl: data.url });
@@ -5947,7 +5948,7 @@ export default function AdminDashboardPage() {
                                       const fd = new FormData();
                                       fd.append("image", file);
                                       try {
-                                        const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                        const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                         const data = await res.json();
                                         if (data.success) {
                                           setIndustryForm({ ...industryForm, heroMediaUrl: data.url });
@@ -6308,7 +6309,7 @@ export default function AdminDashboardPage() {
                                     const fd = new FormData();
                                     fd.append("image", file);
                                     try {
-                                      const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                      const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                       const data = await res.json();
                                       if (data.success) {
                                         setProjectForm({ ...projectForm, image: data.url });
@@ -7179,7 +7180,7 @@ export default function AdminDashboardPage() {
                                       const fd = new FormData();
                                       fd.append("image", file);
                                       try {
-                                        const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                        const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                         const data = await res.json();
                                         if (data.success) {
                                           setBlogForm((prev) => ({ ...prev, coverImage: data.url }));
@@ -7220,7 +7221,7 @@ export default function AdminDashboardPage() {
                                       const fd = new FormData();
                                       fd.append("image", file);
                                       try {
-                                        const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+                                        const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
                                         const data = await res.json();
                                         if (data.success) {
                                           setBlogForm((prev) => ({ ...prev, bgImage: data.url }));
