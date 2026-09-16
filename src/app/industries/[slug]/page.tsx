@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import IndustryTemplateRenderer from "@/components/industries/templates/IndustryTemplateRenderer";
 
 import { API_BASE_URL } from "@/utils/api";
@@ -53,12 +51,8 @@ export default async function DynamicIndustryPage({ params }: PageProps) {
   }
 
   return (
-    <>
-      <Navbar />
-      <main>
-        <IndustryTemplateRenderer industry={industry} />
-      </main>
-      <Footer />
-    </>
+    <main style={{ minHeight: "100vh", background: "#FAFCFF" }}>
+      <IndustryTemplateRenderer industry={industry} />
+    </main>
   );
 }
