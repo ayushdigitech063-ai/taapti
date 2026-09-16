@@ -339,13 +339,6 @@ export default function CustomHealthcareServiceTemplate({
             </div>
           </div>
         </section>
-
-        <footer className="healthcare-footer">
-          <div className="container">
-            <span>HEALTHCARE TECHNOLOGY</span>
-            <span>© {new Date().getFullYear()} — ALL RIGHTS RESERVED</span>
-          </div>
-        </footer>
       </div>
 
       <EnquireModal
