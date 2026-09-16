@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { API_BASE_URL } from "@/utils/api";
 
 interface CaseStudyItem {
   id: string;
@@ -75,7 +76,7 @@ export default function CaseStudies() {
 
   const fetchCaseStudies = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/case-studies").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/case-studies`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json && json.success && json.data) {
@@ -107,13 +108,8 @@ export default function CaseStudies() {
       };
     }
 
-    const interval = setInterval(() => {
-      fetchCaseStudies();
-    }, 4000);
-
     return () => {
       if (channel) channel.close();
-      clearInterval(interval);
     };
   }, []);
 

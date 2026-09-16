@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import EnquireModal from "@/components/EnquireModal";
+import { API_BASE_URL } from "@/utils/api";
 
 const defaultServicesList = [
   {
@@ -65,7 +66,7 @@ export default function Services() {
 
   const fetchServicesData = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/services-section?_t=${Date.now()}`, {
+      const res = await fetch(`${API_BASE_URL}/api/services-section?_t=${Date.now()}`, {
         cache: "no-store",
       }).catch(() => null);
       if (res && res.ok) {
@@ -94,16 +95,12 @@ export default function Services() {
       bc = new BroadcastChannel("taapti_cms_updates");
       bc.onmessage = (event) => {
         if (event.data === "SERVICES_SECTION_UPDATED" || event.data === "CMS_UPDATED") {
-          console.log("⚡ Real-time Services section update received!");
           fetchServicesData();
         }
       };
     }
 
-    const interval = setInterval(fetchServicesData, 3000);
-
     return () => {
-      clearInterval(interval);
       if (bc) bc.close();
     };
   }, []);

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import EnquireModal from "@/components/EnquireModal";
+import { API_ENDPOINTS } from "@/utils/api";
 
 interface EditorialItem {
   num: string;
@@ -91,7 +92,7 @@ export default function Navbar() {
 
   const fetchServices = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/services?status=Published").catch(() => null);
+      const res = await fetch(`${API_ENDPOINTS.SERVICES}?status=Published`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data && data.data.length > 0) {
@@ -111,7 +112,7 @@ export default function Navbar() {
 
   const fetchIndustries = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/industries?status=Published").catch(() => null);
+      const res = await fetch(`${API_ENDPOINTS.INDUSTRIES}?status=Published`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data && data.data.length > 0) {
@@ -146,14 +147,8 @@ export default function Navbar() {
       };
     }
 
-    const interval = setInterval(() => {
-      fetchServices();
-      fetchIndustries();
-    }, 4000);
-
     return () => {
       if (channel) channel.close();
-      clearInterval(interval);
     };
   }, []);
 

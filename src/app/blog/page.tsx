@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { API_ENDPOINTS } from "@/utils/api";
 
 const blogPosts = [
   {
@@ -103,7 +104,7 @@ export default function BlogPage() {
 
   const fetchBlogs = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/blogs?status=Published").catch(() => null);
+      const res = await fetch(`${API_ENDPOINTS.BLOGS}?status=Published`).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
         if (data.success && data.data && data.data.length > 0) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/utils/api";
 
 interface GalleryImage {
   id: string;
@@ -69,7 +70,7 @@ export default function Gallery() {
 
   const fetchGallery = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/gallery").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/gallery`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json && json.images && json.images.length > 0) {
@@ -106,14 +107,9 @@ export default function Gallery() {
       };
     }
 
-    const interval = setInterval(() => {
-      fetchGallery();
-    }, 3000);
-
     return () => {
       if (sectionEl) observer.unobserve(sectionEl);
       if (channel) channel.close();
-      clearInterval(interval);
     };
   }, []);
 

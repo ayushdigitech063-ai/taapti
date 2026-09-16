@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/utils/api";
 
 const defaultReviews = [
   {
@@ -62,7 +63,7 @@ export default function Testimonials() {
 
   const fetchTestimonials = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/testimonials").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/testimonials`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json && json.success && json.data) {
@@ -94,13 +95,8 @@ export default function Testimonials() {
       };
     }
 
-    const interval = setInterval(() => {
-      fetchTestimonials();
-    }, 4000);
-
     return () => {
       if (channel) channel.close();
-      clearInterval(interval);
     };
   }, []);
 

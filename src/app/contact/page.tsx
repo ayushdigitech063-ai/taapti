@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { API_ENDPOINTS } from "@/utils/api";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ export default function ContactPage() {
 
   const fetchContactData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/contact-page").catch(() => null);
+      const res = await fetch(`${API_ENDPOINTS.SETTINGS.replace('/settings', '/contact-page')}`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json.success && json.data) {
@@ -78,7 +79,7 @@ export default function ContactPage() {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch("http://localhost:5000/api/leads", {
+      const res = await fetch(API_ENDPOINTS.CONTACT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

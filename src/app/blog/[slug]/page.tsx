@@ -122,9 +122,11 @@ const fallbackBlogs: Record<string, any> = {
   }
 };
 
+import { API_ENDPOINTS } from "@/utils/api";
+
 async function getBlogBySlug(slug: string) {
   try {
-    const res = await fetch(`http://localhost:5000/api/blogs/${slug}`, {
+    const res = await fetch(`${API_ENDPOINTS.BLOGS}/${slug}`, {
       cache: "no-store",
     }).catch(() => null);
 
@@ -143,7 +145,7 @@ async function getBlogBySlug(slug: string) {
 async function getAllPublishedBlogs() {
   let dbBlogs: any[] = [];
   try {
-    const res = await fetch(`http://localhost:5000/api/blogs?status=Published`, {
+    const res = await fetch(`${API_ENDPOINTS.BLOGS}?status=Published`, {
       cache: "no-store",
     }).catch(() => null);
 

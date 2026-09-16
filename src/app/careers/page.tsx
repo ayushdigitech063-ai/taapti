@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { Country, State, City } from "country-state-city";
+import { API_ENDPOINTS, API_BASE_URL } from "@/utils/api";
 
 const benefits = [
   {
@@ -193,7 +194,7 @@ export default function CareersPage() {
 
   const fetchJobs = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/careers/jobs?status=Open").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/careers/jobs?status=Open`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json.success && json.data && json.data.length > 0) {
@@ -216,7 +217,7 @@ export default function CareersPage() {
 
   const fetchPageContent = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/careers/page").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/careers/page`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json.success && json.data) {
@@ -324,7 +325,7 @@ export default function CareersPage() {
         ...applyForm,
       };
 
-      const res = await fetch("http://localhost:5000/api/careers/apply", {
+      const res = await fetch(API_ENDPOINTS.APPLICATIONS, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

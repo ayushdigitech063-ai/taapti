@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import EnquireModal from "@/components/EnquireModal";
+import { API_BASE_URL } from "@/utils/api";
 
 export default function CTA() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,7 +26,7 @@ export default function CTA() {
 
   const fetchCta = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/cta").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/cta`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json && json.success && json.data) {
@@ -65,13 +66,8 @@ export default function CTA() {
       };
     }
 
-    const interval = setInterval(() => {
-      fetchCta();
-    }, 4000);
-
     return () => {
       if (channel) channel.close();
-      clearInterval(interval);
     };
   }, []);
 

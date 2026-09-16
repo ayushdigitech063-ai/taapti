@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, Fragment } from "react";
+import { API_BASE_URL } from "@/utils/api";
 
 const defaultPartners = [
   { name: "USP", category: "Logistics & Supply Chain", description: "Enterprise software solution and tracking engine optimization.", logoText: "USP", accentColor: "#3b82f6", image: "/partners/usp.jpg" },
@@ -33,7 +34,7 @@ export default function Partners() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/partners-section?_t=${Date.now()}`, {
+      const res = await fetch(`${API_BASE_URL}/api/partners-section?_t=${Date.now()}`, {
         cache: "no-store",
       }).catch(() => null);
       if (res && res.ok) {

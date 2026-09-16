@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Globe from "@/components/Globe/Globe";
 import EnquireModal from "@/components/EnquireModal";
+import { API_BASE_URL } from "@/utils/api";
 
 const defaultStats = [
   { value: "50+", label: "Projects Delivered" },
@@ -30,7 +31,7 @@ export default function Hero() {
   useEffect(() => {
     const fetchHero = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/hero").catch(() => null);
+        const res = await fetch(`${API_BASE_URL}/api/hero`).catch(() => null);
         if (res && res.ok) {
           const data = await res.json();
           if (data.success && data.data) {
@@ -45,23 +46,18 @@ export default function Hero() {
     // Initial fetch
     fetchHero();
 
-    // 1. Listen for real-time BroadcastChannel message from Super Admin
+    // BroadcastChannel real-time sync when updated from Admin
     let bc: BroadcastChannel | null = null;
     if (typeof window !== "undefined" && "BroadcastChannel" in window) {
       bc = new BroadcastChannel("taapti_cms_updates");
       bc.onmessage = (event) => {
         if (event.data && event.data.type === "HERO_UPDATED") {
-          console.log("⚡ Real-time Hero update received via BroadcastChannel!");
           fetchHero();
         }
       };
     }
 
-    // 2. Fallback auto-poll every 3 seconds for instant automatic update without refresh
-    const pollInterval = setInterval(fetchHero, 3000);
-
     return () => {
-      clearInterval(pollInterval);
       if (bc) bc.close();
     };
   }, []);
