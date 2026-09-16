@@ -12,10 +12,69 @@ const jakartaSans = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const baseUrl = "https://taapti.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Taapti Technologies",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "Taapti Technologies | Custom Software Engineering & AI Solutions Company",
+    template: "%s | Taapti Technologies",
+  },
   description:
-    "Taapti Technologies — Software engineering and AI solutions for ambitious businesses.",
+    "Taapti Technologies is a premier software engineering & AI development agency. We build scalable custom web applications, enterprise software, AI & RAG solutions, and cloud architectures for growing businesses.",
+  keywords: [
+    "Taapti Technologies",
+    "Software Engineering",
+    "Custom Software Development",
+    "AI Development Agency",
+    "RAG Solutions",
+    "Web Application Development",
+    "Cloud Architecture",
+    "Next.js Development",
+    "React Native Development",
+    "Enterprise Software",
+    "DevOps Services",
+  ],
+  authors: [{ name: "Taapti Technologies", url: baseUrl }],
+  publisher: "Taapti Technologies",
+  alternates: {
+    canonical: baseUrl,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: baseUrl,
+    siteName: "Taapti Technologies",
+    title: "Taapti Technologies | Custom Software Engineering & AI Solutions",
+    description:
+      "Build scalable custom web applications, enterprise software, AI & RAG solutions, and cloud architectures for growing businesses with Taapti Technologies.",
+    images: [
+      {
+        url: `${baseUrl}/logo-icon.png`,
+        width: 1200,
+        height: 630,
+        alt: "Taapti Technologies Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Taapti Technologies | Custom Software Engineering & AI Solutions",
+    description:
+      "Build scalable custom web applications, enterprise software, AI & RAG solutions, and cloud architectures for growing businesses.",
+    images: [`${baseUrl}/logo-icon.png`],
+  },
 };
 
 export default function RootLayout({
