@@ -2,9 +2,11 @@ import { notFound } from "next/navigation";
 import ServiceTemplateRenderer from "@/components/services/templates/ServiceTemplateRenderer";
 import { Metadata } from "next";
 
+import { API_BASE_URL } from "@/utils/api";
+
 async function fetchServiceBySlug(slug: string) {
   try {
-    const res = await fetch(`http://localhost:5000/api/services/slug/${slug}`, {
+    const res = await fetch(`${API_BASE_URL}/api/services/slug/${slug}`, {
       next: { revalidate: 10 },
     }).catch(() => null);
 

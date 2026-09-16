@@ -4,13 +4,15 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import IndustryTemplateRenderer from "@/components/industries/templates/IndustryTemplateRenderer";
 
+import { API_BASE_URL } from "@/utils/api";
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 async function getIndustryBySlug(slug: string) {
   try {
-    const res = await fetch(`http://localhost:5000/api/industries/slug/${slug}`, {
+    const res = await fetch(`${API_BASE_URL}/api/industries/slug/${slug}`, {
       cache: "no-store",
     }).catch(() => null);
 
