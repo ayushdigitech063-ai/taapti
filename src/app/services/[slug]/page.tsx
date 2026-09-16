@@ -42,6 +42,9 @@ export async function generateMetadata({
   };
 }
 
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
 export default async function DynamicServicePage({
   params,
 }: {
@@ -54,5 +57,13 @@ export default async function DynamicServicePage({
     notFound();
   }
 
-  return <ServiceTemplateRenderer service={service} />;
+  return (
+    <>
+      <Navbar />
+      <main style={{ minHeight: "100vh", background: "#FAFCFF" }}>
+        <ServiceTemplateRenderer service={service} />
+      </main>
+      <Footer />
+    </>
+  );
 }
