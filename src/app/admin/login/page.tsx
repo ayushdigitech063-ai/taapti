@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 import Image from "next/image";
+import { API_ENDPOINTS } from "@/utils/api";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
@@ -27,7 +28,7 @@ export default function AdminLoginPage() {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(API_ENDPOINTS.LOGIN, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

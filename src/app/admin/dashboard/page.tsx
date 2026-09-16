@@ -2290,13 +2290,8 @@ export default function AdminDashboardPage() {
       };
     }
 
-    const interval = setInterval(() => {
-      fetchLeads();
-    }, 4000);
-
     return () => {
       if (channel) channel.close();
-      clearInterval(interval);
     };
   }, []);
 
