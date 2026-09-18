@@ -11,7 +11,7 @@ const jakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
 });
-
+// lkwehfjkshgksjdhgdkjlh
 const baseUrl = "https://taapti.vercel.app";
 
 export const metadata: Metadata = {
