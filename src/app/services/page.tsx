@@ -1243,7 +1243,7 @@ export default function ServicesPage() {
                   <p className="srv-card-desc">{service.description}</p>
 
                   <div className="srv-card-chips">
-                    {service.capabilities.map((cap) => (
+                    {service.capabilities.map((cap: string) => (
                       <span key={cap} className="srv-chip">
                         {cap}
                       </span>
