@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { API_BASE_URL } from "@/utils/api";
 
 const stats = [
   { value: "50+", label: "Production Apps Shipped", desc: "Across Fintech, Healthcare & SaaS" },
@@ -133,7 +134,7 @@ export default function AboutPage() {
 
   const fetchAboutData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/about-page").catch(() => null);
+      const res = await fetch(`${API_BASE_URL}/api/about-page`).catch(() => null);
       if (res && res.ok) {
         const json = await res.json();
         if (json.success && json.data) {
@@ -178,7 +179,7 @@ export default function AboutPage() {
         style={{
           position: "relative",
           background: "linear-gradient(120deg, #f0f7ff 0%, #e0f0ff 45%, #eff6ff 80%, #f8fafc 100%)",
-          padding: "140px 0 100px",
+          padding: "140px 0 90px",
           overflow: "hidden",
           borderBottom: "1px solid #e2e8f0",
         }}

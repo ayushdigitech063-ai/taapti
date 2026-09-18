@@ -313,12 +313,12 @@ export default function CustomHealthcareServiceTemplate({
 
               <div className="cta-content">
                 <div className="section-label light">03 — LET'S CONNECT</div>
-                <h2>
+                <h2 style={{ color: "#0F172A" }}>
                   Ready to build
                   <br />
-                  <span>better healthcare?</span>
+                  <span style={{ color: "#00875A" }}>better healthcare?</span>
                 </h2>
-                <p>
+                <p style={{ color: "#475569" }}>
                   Let's create secure, scalable, and meaningful digital
                   experiences for the healthcare industry.
                 </p>
@@ -327,14 +327,25 @@ export default function CustomHealthcareServiceTemplate({
                   onClick={() => setIsModalOpen(true)}
                   className="cta-btn"
                 >
-                  Start a Conversation <span>↗</span>
+                  <span>Start a Conversation</span>
+                  <span className="cta-btn-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                  </span>
                 </button>
               </div>
 
               <div className="cta-symbol">
                 <div className="cta-ring ring-one" />
                 <div className="cta-ring ring-two" />
-                <div className="cta-plus">✚</div>
+                <div className="cta-plus">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00875A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
@@ -485,16 +496,18 @@ export default function CustomHealthcareServiceTemplate({
         }
 
         .primary-btn {
-          background: var(--teal);
-          color: #06201f;
-          border: 1px solid var(--teal);
-          box-shadow: 0 12px 35px rgba(45, 212, 191, 0.15);
+          background: #00875A;
+          color: #FFFFFF;
+          border: 1px solid #00875A;
+          box-shadow: 0 8px 24px rgba(0, 135, 90, 0.28);
         }
 
         .primary-btn:hover {
-          background: #5eead4;
+          background: #006C48;
+          color: #FFFFFF;
+          border-color: #006C48;
           transform: translateY(-2px);
-          box-shadow: 0 15px 40px rgba(45, 212, 191, 0.25);
+          box-shadow: 0 12px 28px rgba(0, 135, 90, 0.4);
         }
 
         .primary-btn span,
@@ -504,14 +517,16 @@ export default function CustomHealthcareServiceTemplate({
         }
 
         .secondary-btn {
-          color: #d8e5e8;
-          border: 1px solid rgba(148, 163, 184, 0.2);
-          background: rgba(255, 255, 255, 0.025);
+          color: #0F172A;
+          border: 1px solid #CBD5E1;
+          background: #FFFFFF;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.04);
         }
 
         .secondary-btn:hover {
-          border-color: rgba(45, 212, 191, 0.5);
-          background: rgba(45, 212, 191, 0.06);
+          border-color: #00875A;
+          color: #00875A;
+          background: #F4FBF7;
         }
 
         .hero-trust {
@@ -530,14 +545,15 @@ export default function CustomHealthcareServiceTemplate({
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 31px;
-          height: 31px;
+          width: 34px;
+          height: 34px;
           margin-left: -7px;
           border-radius: 50%;
-          background: #173744;
-          border: 2px solid #06141c;
-          color: var(--teal);
+          background: #E3FCEF;
+          border: 2px solid #FFFFFF;
+          color: #00875A;
           font-size: 13px;
+          font-weight: 800;
         }
 
         .trust-avatars span:first-child {
@@ -546,15 +562,15 @@ export default function CustomHealthcareServiceTemplate({
 
         .hero-trust strong {
           display: block;
-          font-size: 12px;
-          color: #d6e4e7;
+          font-size: 13px;
+          color: #0F172A;
           font-weight: 700;
         }
 
         .hero-trust p {
-          color: #718994;
-          font-size: 11px;
-          margin: 5px 0 0;
+          color: #64748B;
+          font-size: 12px;
+          margin: 3px 0 0;
         }
 
         /* DASHBOARD VISUAL */
@@ -569,7 +585,7 @@ export default function CustomHealthcareServiceTemplate({
 
         .visual-orbit {
           position: absolute;
-          border: 1px solid rgba(45, 212, 191, 0.1);
+          border: 1px dashed rgba(0, 135, 90, 0.15);
           border-radius: 50%;
           pointer-events: none;
         }
@@ -582,7 +598,7 @@ export default function CustomHealthcareServiceTemplate({
         .orbit-two {
           width: 430px;
           height: 430px;
-          border-color: rgba(45, 212, 191, 0.08);
+          border-color: rgba(0, 135, 90, 0.12);
         }
 
         .medical-dashboard {
@@ -593,10 +609,10 @@ export default function CustomHealthcareServiceTemplate({
           position: relative;
           z-index: 2;
           background: #FFFFFF;
-          border: 1px solid #CBD5E1;
+          border: 1px solid #E2E8F0;
           box-shadow:
-            0 20px 60px rgba(0, 0, 0, 0.08),
-            0 1px 3px rgba(0, 0, 0, 0.05);
+            0 20px 50px rgba(0, 0, 0, 0.06),
+            0 2px 8px rgba(0, 0, 0, 0.03);
           transform: perspective(1200px) rotateY(-5deg) rotateX(2deg);
         }
 
@@ -623,68 +639,73 @@ export default function CustomHealthcareServiceTemplate({
           width: 31px;
           height: 31px;
           border-radius: 9px;
-          background: var(--teal);
-          color: #06302e;
+          background: #00875A;
+          color: #FFFFFF;
           font-weight: 900;
         }
 
         .dashboard-brand strong {
           display: block;
           font-size: 14px;
+          color: #0F172A;
           letter-spacing: -0.5px;
         }
 
         .dashboard-brand strong span {
-          color: var(--teal);
+          color: #00875A;
         }
 
         .dashboard-brand small {
           display: block;
-          color: #6f8b95;
-          font-size: 8px;
-          margin-top: 3px;
+          color: #64748B;
+          font-size: 10px;
+          margin-top: 2px;
         }
 
         .dashboard-status {
           display: flex;
           align-items: center;
           gap: 6px;
-          color: #86a5aa;
-          font-size: 9px;
+          color: #00875A;
+          font-size: 11px;
+          font-weight: 700;
         }
 
         .dashboard-status span {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #4ade80;
-          box-shadow: 0 0 8px #4ade80;
+          background: #00875A;
+          box-shadow: 0 0 8px rgba(0, 135, 90, 0.4);
         }
 
         .dashboard-heading {
-          margin: 35px 0 20px;
+          margin: 25px 0 16px;
         }
 
         .dashboard-heading small,
         .chart-heading small {
           display: block;
-          color: #6d8993;
-          font-size: 10px;
-          margin-bottom: 6px;
+          color: #64748B;
+          font-size: 11px;
+          margin-bottom: 4px;
         }
 
         .dashboard-heading h3 {
-          font-size: 16px;
+          font-size: 17px;
+          color: #0F172A;
           margin: 0;
-          font-weight: 700;
+          font-weight: 800;
           letter-spacing: -0.4px;
         }
 
         .dashboard-date {
-          color: #8ca9b1;
-          font-size: 10px;
-          padding: 8px 11px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          color: #475569;
+          font-size: 11px;
+          font-weight: 700;
+          padding: 6px 12px;
+          border: 1px solid #E2E8F0;
+          background: #F8FAFC;
           border-radius: 6px;
         }
 
@@ -708,55 +729,59 @@ export default function CustomHealthcareServiceTemplate({
           align-items: center;
           justify-content: center;
           border-radius: 8px;
-          margin-bottom: 13px;
+          margin-bottom: 11px;
           font-size: 12px;
         }
 
         .stat-icon.blue {
-          background: rgba(56, 189, 248, 0.12);
-          color: #38bdf8;
+          background: #EFF6FF;
+          color: #1D6FEB;
         }
 
         .stat-icon.green {
-          background: rgba(45, 212, 191, 0.12);
-          color: var(--teal);
+          background: #E3FCEF;
+          color: #00875A;
         }
 
         .dashboard-stat small {
           display: block;
-          color: #78949d;
-          font-size: 9px;
-          margin-bottom: 6px;
+          color: #64748B;
+          font-size: 11px;
+          margin-bottom: 4px;
         }
 
         .dashboard-stat strong {
-          font-size: 23px;
-          letter-spacing: -1px;
+          font-size: 22px;
+          color: #0F172A;
+          letter-spacing: -0.5px;
           display: inline-block;
-          margin-right: 8px;
+          margin-right: 6px;
         }
 
         .positive {
-          color: #4ade80;
-          font-size: 9px;
+          color: #00875A;
+          font-size: 10px;
+          font-weight: 700;
         }
 
         .dashboard-chart {
           margin-top: 13px;
-          padding: 17px;
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          padding: 16px;
+          border: 1px solid #E2E8F0;
           border-radius: 12px;
-          background: rgba(255, 255, 255, 0.025);
+          background: #F8FAFC;
         }
 
         .chart-heading strong {
-          font-size: 12px;
+          font-size: 13px;
+          color: #0F172A;
           font-weight: 700;
         }
 
         .chart-heading > span {
-          color: #66828d;
-          font-size: 9px;
+          color: #64748B;
+          font-size: 11px;
+          font-weight: 600;
         }
 
         .chart-area {
@@ -776,7 +801,7 @@ export default function CustomHealthcareServiceTemplate({
         .chart-lines span {
           width: 100%;
           height: 1px;
-          background: rgba(255, 255, 255, 0.055);
+          background: #E2E8F0;
         }
 
         .chart-svg {
@@ -790,15 +815,16 @@ export default function CustomHealthcareServiceTemplate({
         .chart-labels {
           display: flex;
           justify-content: space-between;
-          color: #5d7984;
-          font-size: 8px;
+          color: #64748B;
+          font-size: 10px;
+          font-weight: 600;
           margin-top: 10px;
         }
 
         .dashboard-bottom {
           margin-top: 15px;
           padding-top: 15px;
-          border-top: 1px solid rgba(255, 255, 255, 0.06);
+          border-top: 1px solid #E2E8F0;
         }
 
         .mini-patient {
@@ -813,29 +839,31 @@ export default function CustomHealthcareServiceTemplate({
           align-items: center;
           justify-content: center;
           border-radius: 50%;
-          background: #183d49;
+          background: #E3FCEF;
           font-size: 15px;
         }
 
         .mini-patient strong {
           display: block;
-          font-size: 10px;
-          color: #c8dadd;
+          font-size: 11px;
+          color: #0F172A;
+          font-weight: 700;
         }
 
         .mini-patient small {
           display: block;
-          color: #68848e;
-          font-size: 8px;
-          margin-top: 3px;
+          color: #64748B;
+          font-size: 10px;
+          margin-top: 2px;
         }
 
         .verified-badge {
-          font-size: 8px;
-          color: #4ade80;
-          background: rgba(74, 222, 128, 0.08);
-          padding: 6px 8px;
-          border-radius: 5px;
+          font-size: 10px;
+          font-weight: 700;
+          color: #00875A;
+          background: #E3FCEF;
+          padding: 6px 10px;
+          border-radius: 6px;
         }
 
         .floating-card {
@@ -844,7 +872,7 @@ export default function CustomHealthcareServiceTemplate({
           display: flex;
           align-items: center;
           gap: 10px;
-          padding: 13px 15px;
+          padding: 13px 16px;
           background: #FFFFFF;
           border: 1px solid #CBD5E1;
           border-radius: 12px;
@@ -870,23 +898,24 @@ export default function CustomHealthcareServiceTemplate({
           width: 35px;
           height: 35px;
           border-radius: 9px;
-          background: rgba(45, 212, 191, 0.1);
-          color: var(--teal);
+          background: #E3FCEF;
+          color: #00875A;
           font-size: 16px;
         }
 
         .floating-card strong {
           display: block;
-          color: #d9e8e9;
-          font-size: 10px;
+          color: #0F172A;
+          font-size: 12px;
+          font-weight: 800;
           white-space: nowrap;
         }
 
         .floating-card small {
           display: block;
-          color: #6d8993;
-          font-size: 8px;
-          margin-top: 4px;
+          color: #64748B;
+          font-size: 10px;
+          margin-top: 2px;
           white-space: nowrap;
         }
 
@@ -894,12 +923,13 @@ export default function CustomHealthcareServiceTemplate({
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 17px;
-          height: 17px;
+          width: 18px;
+          height: 18px;
           border-radius: 50%;
-          background: rgba(74, 222, 128, 0.12);
-          color: #4ade80;
-          font-size: 9px;
+          background: #E3FCEF;
+          color: #00875A;
+          font-size: 10px;
+          font-weight: 800;
           margin-left: 5px;
         }
 
@@ -908,26 +938,26 @@ export default function CustomHealthcareServiceTemplate({
           align-items: center;
           gap: 25px;
           padding: 27px 0;
-          border-top: 1px solid rgba(255, 255, 255, 0.07);
-          color: #55717c;
-          font-size: 9px;
+          border-top: 1px solid #E2E8F0;
+          color: #00875A;
+          font-size: 11px;
           letter-spacing: 1.5px;
-          font-weight: 700;
+          font-weight: 800;
         }
 
         .strip-line {
           height: 1px;
           width: 60px;
-          background: rgba(255, 255, 255, 0.12);
+          background: #CBD5E1;
         }
 
         .strip-items {
           display: flex;
           gap: 25px;
-          color: #76929b;
+          color: #475569;
           letter-spacing: 0;
-          font-size: 11px;
-          font-weight: 500;
+          font-size: 13px;
+          font-weight: 600;
         }
 
         /* OVERVIEW */
@@ -1148,20 +1178,21 @@ export default function CustomHealthcareServiceTemplate({
         .healthcare-cta {
           position: relative;
           overflow: hidden;
-          min-height: 390px;
-          padding: 70px;
-          border-radius: 20px;
-          background: #00875A;
+          min-height: 380px;
+          padding: 60px;
+          border-radius: 28px;
+          background: linear-gradient(135deg, #060b13 0%, #0a1322 50%, #060a12 100%);
           color: #FFFFFF;
-          border: 1px solid #006C48;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 20px 50px rgba(6, 11, 19, 0.35);
         }
 
         .cta-pattern {
           position: absolute;
           inset: 0;
-          opacity: 0.18;
+          opacity: 0.15;
           background-image: radial-gradient(
-            rgba(255, 255, 255, 0.2) 1px,
+            rgba(255, 255, 255, 0.25) 1px,
             transparent 1px
           );
           background-size: 24px 24px;
@@ -1179,55 +1210,74 @@ export default function CustomHealthcareServiceTemplate({
         }
 
         .section-label.light {
-          color: #65daca;
-          margin-bottom: 23px;
+          color: #00875A;
+          background: rgba(0, 135, 90, 0.12);
+          border: 1px solid rgba(0, 135, 90, 0.25);
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 999px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          margin-bottom: 20px;
         }
 
         .cta-content h2 {
-          font-size: clamp(34px, 4vw, 53px);
-          line-height: 1.1;
-          letter-spacing: -2px;
-          margin: 0 0 20px;
+          font-size: clamp(34px, 4vw, 48px);
+          line-height: 1.15;
+          letter-spacing: -0.03em;
+          font-weight: 800;
+          color: #FFFFFF !important;
+          margin: 0 0 16px;
         }
 
         .cta-content h2 span {
-          color: #65939c;
+          color: #00875A !important;
         }
 
         .cta-content p {
-          color: #89a8b0;
-          font-size: 14px;
-          line-height: 1.8;
-          max-width: 430px;
-          margin: 0 0 30px;
+          color: #CBD5E1 !important;
+          font-size: 15px;
+          line-height: 1.7;
+          max-width: 480px;
+          margin: 0 0 28px;
         }
 
         .cta-btn {
           display: inline-flex;
           align-items: center;
-          gap: 35px;
-          padding: 15px 20px;
-          border-radius: 8px;
-          border: 1px solid var(--teal);
-          background: var(--teal);
-          color: #06201f;
-          font-size: 13px;
-          font-weight: 800;
+          gap: 12px;
+          padding: 14px 28px;
+          border-radius: 999px;
+          border: none;
+          background: #00875A;
+          color: #FFFFFF;
+          font-size: 14px;
+          font-weight: 700;
           cursor: pointer;
           font-family: inherit;
+          box-shadow: 0 8px 24px rgba(0, 135, 90, 0.28);
           transition: all 0.25s ease;
         }
 
         .cta-btn:hover {
-          background: #5eead4;
+          background: #006C48;
+          color: #FFFFFF;
           transform: translateY(-2px);
+          box-shadow: 0 12px 28px rgba(0, 135, 90, 0.4);
+        }
+
+        .cta-btn-icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .cta-symbol {
           position: absolute;
-          width: 400px;
-          height: 400px;
-          right: -45px;
+          width: 380px;
+          height: 380px;
+          right: -30px;
           top: 50%;
           transform: translateY(-50%);
           display: flex;
@@ -1237,7 +1287,7 @@ export default function CustomHealthcareServiceTemplate({
 
         .cta-ring {
           position: absolute;
-          border: 1px solid rgba(45, 212, 191, 0.15);
+          border: 1px solid rgba(0, 135, 90, 0.25);
           border-radius: 50%;
         }
 
@@ -1249,21 +1299,21 @@ export default function CustomHealthcareServiceTemplate({
         .ring-two {
           width: 210px;
           height: 210px;
-          border-color: rgba(45, 212, 191, 0.25);
+          border-color: rgba(0, 135, 90, 0.35);
         }
 
         .cta-plus {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 80px;
-          height: 80px;
-          border-radius: 25px;
-          background: rgba(45, 212, 191, 0.1);
-          border: 1px solid rgba(45, 212, 191, 0.3);
-          color: var(--teal);
-          font-size: 35px;
-          box-shadow: 0 0 70px rgba(45, 212, 191, 0.1);
+          width: 70px;
+          height: 70px;
+          border-radius: 20px;
+          background: rgba(0, 135, 90, 0.15);
+          border: 1px solid rgba(0, 135, 90, 0.35);
+          color: #00875A;
+          font-size: 32px;
+          box-shadow: 0 0 50px rgba(0, 135, 90, 0.2);
         }
 
         .healthcare-footer {

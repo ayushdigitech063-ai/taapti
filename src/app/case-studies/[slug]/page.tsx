@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { API_BASE_URL } from "@/utils/api";
 import EnquireModalWrapper from "./EnquireModalWrapper";
 
 interface PageProps {
@@ -11,7 +12,7 @@ interface PageProps {
 
 async function getCaseStudyBySlug(slug: string) {
   try {
-    const res = await fetch(`http://localhost:5000/api/projects/slug/${slug}`, {
+    const res = await fetch(`${API_BASE_URL}/api/projects/slug/${slug}`, {
       cache: "no-store",
     }).catch(() => null);
 

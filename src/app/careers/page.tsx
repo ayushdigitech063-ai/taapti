@@ -287,7 +287,7 @@ export default function CareersPage() {
     fd.append("image", file); // api/upload takes image/file
 
     try {
-      const res = await fetch("http://localhost:5000/api/upload", { method: "POST", body: fd });
+      const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
       const data = await res.json();
       if (data.success && data.url) {
         setApplyForm((prev) => ({ ...prev, resumeUrl: data.url }));
@@ -368,7 +368,7 @@ export default function CareersPage() {
         style={{
           position: "relative",
           background: "linear-gradient(120deg, #f0f7ff 0%, #e0f0ff 45%, #eff6ff 80%, #f8fafc 100%)",
-          padding: "140px 0 100px",
+          padding: "140px 0 90px",
           borderBottom: "1px solid #e2e8f0",
           overflow: "hidden",
         }}
@@ -440,7 +440,7 @@ export default function CareersPage() {
               }}
             >
               {pageContent?.heroTitleNormal || "Build high-impact software."}{" "}
-              <span style={{ color: "#10243E", display: "block" }}>
+              <span style={{ color: "#00875A", display: "block" }}>
                 {pageContent?.heroTitleHighlight || "Accelerate your career."}
               </span>
             </h1>

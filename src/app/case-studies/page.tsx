@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { API_BASE_URL } from "@/utils/api";
 
 export default function CaseStudiesPage() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -12,7 +13,7 @@ export default function CaseStudiesPage() {
   useEffect(() => {
     async function fetchCaseStudies() {
       try {
-        const res = await fetch("http://localhost:5000/api/projects?status=Published");
+        const res = await fetch(`${API_BASE_URL}/api/projects?status=Published`);
         if (res.ok) {
           const json = await res.json();
           const items = Array.isArray(json) ? json : (json.data || []);
@@ -148,7 +149,7 @@ export default function CaseStudiesPage() {
               }}
             >
               Work that creates{" "}
-              <span style={{ color: "#10243E", display: "inline-block" }}>
+              <span style={{ color: "#00875A", display: "inline-block" }}>
                 real impact.
               </span>
             </h1>
@@ -271,7 +272,7 @@ export default function CaseStudiesPage() {
             <div className="case-studies-cta__left">
               <span className="case-studies-cta__eyebrow">HAVE A SIMILAR CHALLENGE?</span>
 
-              <h2 className="case-studies-cta__title">
+              <h2 className="case-studies-cta__title" style={{ color: "#F8FAFC" }}>
                 Let's build something <br />
                 <span className="case-studies-cta__blue">meaningful together.</span>
               </h2>

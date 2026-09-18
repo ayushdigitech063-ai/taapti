@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { API_BASE_URL } from "@/utils/api";
 
 const defaultSteps = [
   { number: 1, title: "Scope definition", description: "Mapping project boundaries and establishing clear success metrics.", angle: -67.5 },
@@ -30,7 +31,7 @@ export default function Process() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/process-section?_t=${Date.now()}`, {
+      const res = await fetch(`${API_BASE_URL}/api/process-section?_t=${Date.now()}`, {
         cache: "no-store",
       }).catch(() => null);
       if (res && res.ok) {

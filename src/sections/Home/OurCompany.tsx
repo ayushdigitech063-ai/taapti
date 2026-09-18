@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "@/utils/api";
 
 const defaultTopPhotos = [
   { src: "/about/team1.jpg", alt: "Taapti software engineering team at office" },
@@ -34,7 +35,7 @@ export default function OurCompany() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/our-company?_t=${Date.now()}`, {
+      const res = await fetch(`${API_BASE_URL}/api/our-company?_t=${Date.now()}`, {
         cache: "no-store",
       }).catch(() => null);
       if (res && res.ok) {

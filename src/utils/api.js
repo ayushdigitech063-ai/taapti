@@ -1,6 +1,10 @@
 // Central API Base URL Configuration
-// Change this single variable or set NEXT_PUBLIC_API_URL environment variable to switch API endpoints
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://taap-backend.onrender.com";
+// Change the NEXT_PUBLIC_USE_LOCAL_API variable in .env.local to switch between local and live endpoints
+const isLocal = process.env.NEXT_PUBLIC_USE_LOCAL_API === 'true';
+
+export const API_BASE_URL = isLocal 
+  ? process.env.NEXT_PUBLIC_LOCAL_API_URL || "http://localhost:5000"
+  : process.env.NEXT_PUBLIC_LIVE_API_URL || "https://taap-backend.onrender.com";
 
 // Endpoints Helper Map
 export const API_ENDPOINTS = {

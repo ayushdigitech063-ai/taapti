@@ -185,14 +185,14 @@ export default function BlogPage() {
           >
             <path
               d="M750 -100 C 950 150, 1150 450, 1600 650"
-              stroke="#2563eb"
+              stroke="#10243E"
               strokeWidth="1.5"
-              strokeOpacity="0.4"
+              strokeOpacity="0.25"
             />
-            <circle cx="1130" cy="130" r="6" fill="#2563eb" />
+            <circle cx="1130" cy="130" r="6" fill="#00875A" />
             <path
               d="M600 -50 Q 1000 250 1500 450"
-              stroke="#60a5fa"
+              stroke="#00875A"
               strokeWidth="1"
               strokeDasharray="4 4"
               strokeOpacity="0.3"

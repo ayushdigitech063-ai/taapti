@@ -83,8 +83,8 @@ export default function CTA() {
               <span style={{ color: "#00875A" }}>{data.eyebrow}</span>
             </div>
 
-            <h2 className="cta-title">
-              {data.titleNormal} <span className="cta-title-highlight" style={{ color: "#10243E" }}>{data.titleHighlight}</span>
+            <h2 className="cta-title" style={{ color: "#F8FAFC" }}>
+              {data.titleNormal} <span className="cta-title-highlight" style={{ color: "#00875A" }}>{data.titleHighlight}</span>
             </h2>
 
             <p className="cta-desc">
@@ -193,9 +193,9 @@ export default function CTA() {
                     <div className="cta-card-line short"></div>
                     
                     <div className="cta-card-action-btn">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
                       </svg>
                     </div>
                   </div>

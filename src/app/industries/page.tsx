@@ -78,27 +78,96 @@ export default function IndustriesPage() {
   return (
     <main>
       {/* Hero (EXACT BG IMAGE DESIGN) */}
-      <section className="ind-hero-section">
-        {/* Full Background Graphic Image */}
-        <div className="ind-hero-bg-layer" aria-hidden="true">
-          <img
-            src="/industries_hero_bg.png"
-            alt="Industries Hero Background"
-            className="ind-hero-bg-img"
-          />
+      <section
+        style={{
+          position: "relative",
+          background: "linear-gradient(120deg, #f0f7ff 0%, #e0f0ff 45%, #eff6ff 80%, #f8fafc 100%)",
+          padding: "140px 0 90px",
+          borderBottom: "1px solid #e2e8f0",
+          overflow: "hidden",
+        }}
+      >
+        {/* Soft Decorative Background SVG Curved Lines */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1 }}>
+          <svg
+            viewBox="0 0 1440 600"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ width: "100%", height: "100%", opacity: 0.85 }}
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M750 -100 C 950 150, 1150 450, 1600 650"
+              stroke="#10243E"
+              strokeWidth="1.5"
+              strokeOpacity="0.25"
+            />
+            <circle cx="1130" cy="130" r="6" fill="#00875A" />
+            <path
+              d="M600 -50 Q 1000 250 1500 450"
+              stroke="#00875A"
+              strokeWidth="1"
+              strokeDasharray="4 4"
+              strokeOpacity="0.3"
+            />
+          </svg>
         </div>
 
-        <div className="container ind-hero-container">
-          {/* Left Text Content */}
-          <div className="ind-hero-content reveal-left">
-            <span className="ind-hero-eyebrow">INDUSTRIES</span>
+        <div className="container" style={{ position: "relative", zIndex: 2 }}>
+          <div style={{ maxWidth: "780px" }} className="animate-from-left">
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "7px 16px",
+                borderRadius: "999px",
+                background: "#ffffff",
+                border: "1px solid #a7f3d0",
+                boxShadow: "0 4px 15px rgba(0,135,90,0.06)",
+                fontSize: "13px",
+                fontWeight: "700",
+                color: "#00875A",
+                marginBottom: "24px",
+              }}
+            >
+              <span
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  backgroundColor: "#00875A",
+                  boxShadow: "0 0 8px #00875A",
+                }}
+              />
+              INDUSTRIES
+            </div>
 
-            <h1 className="ind-hero-title">
+            <h1
+              style={{
+                fontSize: "clamp(38px, 5vw, 64px)",
+                fontWeight: "800",
+                lineHeight: "1.12",
+                letterSpacing: "-0.035em",
+                color: "#0a0d14",
+                marginBottom: "24px",
+              }}
+            >
               Technology built for <br />
-              <span className="ind-hero-title-blue">real-world industries.</span>
+              <span style={{ color: "#00875A", display: "inline-block" }}>
+                real-world industries.
+              </span>
             </h1>
 
-            <p className="ind-hero-desc">
+            <p
+              style={{
+                fontSize: "clamp(16px, 1.2vw, 19px)",
+                lineHeight: "1.7",
+                color: "#475569",
+                marginBottom: "36px",
+                maxWidth: "680px",
+              }}
+            >
               We help businesses across different industries solve complex technology challenges and build reliable digital products that support long-term growth.
             </p>
           </div>

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { API_BASE_URL } from "@/utils/api";
 
 function TypewriterCodeVisual({ service }: { service: (typeof coreServices)[0] }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -554,7 +555,7 @@ function TechStackGrid() {
       name: "Python",
       svg: (
         <svg className="srv-tech-icon-svg" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2c-4 0-4 2-4 4v2h8V6c0-2 0-4-4-4zm0 20c4 0 4-2 4-4v-2H8v2c0 2 0 4 4 4z" fill="#3b82f6"/>
+          <path d="M12 2c-4 0-4 2-4 4v2h8V6c0-2 0-4-4-4zm0 20c4 0 4-2 4-4v-2H8v2c0 2 0 4 4 4z" fill="#00875A"/>
           <path d="M6 8c-2 0-4 0-4 4s2 4 4 4h2V8H6zm12 0h-2v8h2c2 0 4 0 4-4s-2-4-4-4z" fill="#eab308"/>
         </svg>
       ),
@@ -642,8 +643,8 @@ function TechStackGrid() {
       name: "Kubernetes",
       svg: (
         <svg className="srv-tech-icon-svg" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2l8.5 5v10L12 22l-8.5-5V7L12 2z" stroke="#2563eb" strokeWidth="2"/>
-          <circle cx="12" cy="12" r="3" fill="#2563eb"/>
+          <path d="M12 2l8.5 5v10L12 22l-8.5-5V7L12 2z" stroke="#00875A" strokeWidth="2"/>
+          <circle cx="12" cy="12" r="3" fill="#00875A"/>
         </svg>
       ),
     },
@@ -683,7 +684,7 @@ function TechStackGrid() {
       name: "TypeScript",
       svg: (
         <svg className="srv-tech-icon-svg" viewBox="0 0 24 24" fill="none">
-          <rect width="24" height="24" rx="4" fill="#2563eb"/>
+          <rect width="24" height="24" rx="4" fill="#00875A"/>
           <text x="5" y="16" fontSize="11" fontWeight="bold" fill="#ffffff">TS</text>
         </svg>
       ),
@@ -931,7 +932,7 @@ export default function ServicesPage() {
 
   const fetchServicesData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/services?status=Published");
+      const res = await fetch(`${API_BASE_URL}/api/services?status=Published`);
       if (res.ok) {
         const json = await res.json();
         if (json.success && json.data) {
@@ -966,6 +967,19 @@ export default function ServicesPage() {
     setCmapKey((prev) => prev + 1);
   };
 
+  const servicesToRender = dynamicServices.length > 0 
+    ? dynamicServices.map((s, idx) => ({
+        id: String(idx + 1).padStart(2, "0"),
+        slug: s.slug || `service-${idx}`,
+        title: s.name || s.title,
+        description: s.shortDescription || s.fullDescription || "",
+        capabilities: s.features && s.features.length > 0 
+          ? s.features.map((f: any) => f.title) 
+          : ["Custom Software Development", "Scalable Architecture", "API Integration", "Cloud Deployment"],
+        ctaText: s.ctaText || `Explore ${s.name || s.title}`,
+      }))
+    : coreServices;
+
   return (
     <main className="srv-page">
       {/* 1. SERVICES HERO (Matching Brand Light Hero Style) */}
@@ -989,14 +1003,14 @@ export default function ServicesPage() {
           >
             <path
               d="M750 -100 C 950 150, 1150 450, 1600 650"
-              stroke="#2563eb"
+              stroke="#10243E"
               strokeWidth="1.5"
-              strokeOpacity="0.4"
+              strokeOpacity="0.25"
             />
-            <circle cx="1130" cy="130" r="6" fill="#2563eb" />
+            <circle cx="1130" cy="130" r="6" fill="#00875A" />
             <path
               d="M600 -50 Q 1000 250 1500 450"
-              stroke="#60a5fa"
+              stroke="#00875A"
               strokeWidth="1"
               strokeDasharray="4 4"
               strokeOpacity="0.3"
@@ -1014,11 +1028,11 @@ export default function ServicesPage() {
                 padding: "7px 16px",
                 borderRadius: "999px",
                 background: "#ffffff",
-                border: "1px solid #bfdbfe",
-                boxShadow: "0 4px 15px rgba(37,99,235,0.06)",
+                border: "1px solid #a7f3d0",
+                boxShadow: "0 4px 15px rgba(0,135,90,0.06)",
                 fontSize: "13px",
                 fontWeight: "700",
-                color: "#1d4ed8",
+                color: "#00875A",
                 marginBottom: "24px",
               }}
             >
@@ -1027,8 +1041,8 @@ export default function ServicesPage() {
                   width: "8px",
                   height: "8px",
                   borderRadius: "50%",
-                  backgroundColor: "#2563eb",
-                  boxShadow: "0 0 8px #2563eb",
+                  backgroundColor: "#00875A",
+                  boxShadow: "0 0 8px #00875A",
                 }}
               />
               Our Core Services & Capabilities
@@ -1045,7 +1059,7 @@ export default function ServicesPage() {
               }}
             >
               Engineering solutions{" "}
-              <span style={{ color: "#2563eb", display: "block" }}>
+              <span style={{ color: "#00875A", display: "block" }}>
                 built for impact.
               </span>
             </h1>
@@ -1070,8 +1084,8 @@ export default function ServicesPage() {
                   height: "52px",
                   padding: "0 30px",
                   borderRadius: "999px",
-                  background: "linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%)",
-                  boxShadow: "0 8px 20px rgba(29,78,216,0.3)",
+                  background: "#00875A",
+                  boxShadow: "0 8px 20px rgba(0,135,90,0.3)",
                 }}
               >
                 Schedule Technical Call <span>→</span>
@@ -1118,14 +1132,14 @@ export default function ServicesPage() {
 
             {/* Connecting Curved Lines SVG */}
             <svg className="srv-cmap-svg-lines" viewBox="0 0 1000 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 330 180 C 420 180, 440 250, 500 300" stroke="#3b82f6" strokeWidth="2" opacity="0.6" strokeDasharray="4 4" />
-              <path d="M 670 180 C 580 180, 560 250, 500 300" stroke="#3b82f6" strokeWidth="2" opacity="0.6" strokeDasharray="4 4" />
-              <path d="M 330 420 C 420 420, 440 350, 500 300" stroke="#3b82f6" strokeWidth="2" opacity="0.6" strokeDasharray="4 4" />
-              <path d="M 670 420 C 580 420, 560 350, 500 300" stroke="#3b82f6" strokeWidth="2" opacity="0.6" strokeDasharray="4 4" />
-              <circle cx="330" cy="180" r="4" fill="#2563eb" />
-              <circle cx="670" cy="180" r="4" fill="#2563eb" />
-              <circle cx="330" cy="420" r="4" fill="#2563eb" />
-              <circle cx="670" cy="420" r="4" fill="#2563eb" />
+              <path d="M 330 180 C 420 180, 440 250, 500 300" stroke="#00875A" strokeWidth="2" opacity="0.6" strokeDasharray="4 4" />
+              <path d="M 670 180 C 580 180, 560 250, 500 300" stroke="#00875A" strokeWidth="2" opacity="0.6" strokeDasharray="4 4" />
+              <path d="M 330 420 C 420 420, 440 350, 500 300" stroke="#00875A" strokeWidth="2" opacity="0.6" strokeDasharray="4 4" />
+              <path d="M 670 420 C 580 420, 560 350, 500 300" stroke="#00875A" strokeWidth="2" opacity="0.6" strokeDasharray="4 4" />
+              <circle cx="330" cy="180" r="4" fill="#00875A" />
+              <circle cx="670" cy="180" r="4" fill="#00875A" />
+              <circle cx="330" cy="420" r="4" fill="#00875A" />
+              <circle cx="670" cy="420" r="4" fill="#00875A" />
             </svg>
 
             {/* 4 Connected Capability Cards with Key Replay & Sequential Delay */}
@@ -1215,7 +1229,7 @@ export default function ServicesPage() {
           </div>
 
           <div className="srv-core-grid-3col">
-            {coreServices.slice(0, visibleCount).map((service) => (
+            {servicesToRender.slice(0, visibleCount).map((service) => (
               <div key={service.id} className="srv-card-vertical reveal-up">
                 {/* Top Section: Animated Code Terminal Visual */}
                 <div className="srv-card-top-visual">
@@ -1246,14 +1260,14 @@ export default function ServicesPage() {
           </div>
 
           {/* VIEW ALL SERVICES BUTTON */}
-          {visibleCount < coreServices.length && (
+          {visibleCount < servicesToRender.length && (
             <div className="srv-view-all-wrapper text-center">
               <button
                 type="button"
                 className="btn btn-primary srv-view-all-btn"
-                onClick={() => setVisibleCount(coreServices.length)}
+                onClick={() => setVisibleCount(servicesToRender.length)}
               >
-                <span>View All Services ({coreServices.length})</span>
+                <span>View All Services ({servicesToRender.length})</span>
                 <span className="arrow">↓</span>
               </button>
             </div>
@@ -1406,7 +1420,7 @@ export default function ServicesPage() {
 
               <h2 className="srv-cta-title">
                 Let's build what <br />
-                <span className="srv-cta-highlight">that matters.</span>
+                <span className="srv-cta-highlight">That matters.</span>
               </h2>
 
               <p className="srv-cta-desc">
@@ -1436,8 +1450,8 @@ export default function ServicesPage() {
               <div className="srv-cta-handwriting srv-cta-handwriting-top">
                 <span>From idea to impact</span>
                 <svg className="srv-cta-arrow-svg" viewBox="0 0 40 40" fill="none">
-                  <path d="M 5 10 Q 25 5, 30 25" stroke="#60a5fa" strokeWidth="1.5" strokeDasharray="3 3" fill="none"/>
-                  <path d="M 24 20 L 30 25 L 32 18" stroke="#60a5fa" strokeWidth="1.5" fill="none"/>
+                  <path d="M 5 10 Q 25 5, 30 25" stroke="#34d399" strokeWidth="1.5" strokeDasharray="3 3" fill="none"/>
+                  <path d="M 24 20 L 30 25 L 32 18" stroke="#34d399" strokeWidth="1.5" fill="none"/>
                 </svg>
               </div>
 
@@ -1502,8 +1516,8 @@ export default function ServicesPage() {
               {/* Bottom Handwritten Annotation */}
               <div className="srv-cta-handwriting srv-cta-handwriting-bottom">
                 <svg className="srv-cta-arrow-svg-bot" viewBox="0 0 50 30" fill="none">
-                  <path d="M 5 25 Q 25 28, 45 10" stroke="#60a5fa" strokeWidth="1.5" strokeDasharray="3 3" fill="none"/>
-                  <path d="M 38 12 L 45 10 L 44 18" stroke="#60a5fa" strokeWidth="1.5" fill="none"/>
+                  <path d="M 5 25 Q 25 28, 45 10" stroke="#34d399" strokeWidth="1.5" strokeDasharray="3 3" fill="none"/>
+                  <path d="M 38 12 L 45 10 L 44 18" stroke="#34d399" strokeWidth="1.5" fill="none"/>
                 </svg>
                 <span>Let's build together</span>
               </div>
@@ -1515,4 +1529,4 @@ export default function ServicesPage() {
   );
 }
 
-
+
