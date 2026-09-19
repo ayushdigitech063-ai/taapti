@@ -293,6 +293,10 @@ export default function AdminDashboardPage() {
   });
   const [isSavingPartners, setIsSavingPartners] = useState(false);
 
+  // Modals State
+  const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
+  const [newPartnerData, setNewPartnerData] = useState({ name: "", category: "", description: "", logoText: "LOGO", accentColor: "#2563eb", image: "" });
+
   const fetchPartnersData = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/partners-section`).catch(() => null);
@@ -461,6 +465,10 @@ export default function AdminDashboardPage() {
     ],
   });
   const [isSavingTestimonials, setIsSavingTestimonials] = useState(false);
+
+  // Review Modal State
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [newReviewData, setNewReviewData] = useState({ name: "", date: "Just now", avatar: "", avatarBg: "#2563eb", initial: "C", rating: 5, review: "" });
 
   const fetchTestimonialsData = async () => {
     try {
@@ -1438,6 +1446,10 @@ export default function AdminDashboardPage() {
     ]
   });
   const [isSavingGallery, setIsSavingGallery] = useState(false);
+
+  // Photo Modal State
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+  const [newPhotoData, setNewPhotoData] = useState({ id: "", url: "", title: "", category: "", size: "small" });
 
   const fetchGalleryData = async () => {
     try {
@@ -3086,15 +3098,7 @@ export default function AdminDashboardPage() {
                         type="button"
                         className="cmd-top-action-btn primary"
                         style={{ padding: "6px 14px", fontSize: "12px" }}
-                        onClick={() => {
-                          const newImg = {
-                            id: `g_${Date.now()}`,
-                            url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
-                            title: "New Event Photo",
-                            category: "Culture",
-                          };
-                          setGalleryForm({ ...galleryForm, images: [...galleryForm.images, newImg] });
-                        }}
+                        onClick={() => setIsPhotoModalOpen(true)}
                       >
                         + Add New Photo
                       </button>
@@ -3787,15 +3791,7 @@ export default function AdminDashboardPage() {
                       </label>
                       <button
                         type="button"
-                        onClick={() => {
-                          setPartnersSectionForm({
-                            ...partnersSectionForm,
-                            partners: [
-                              ...partnersSectionForm.partners,
-                              { name: "New Partner", category: "Tech Industry", description: "Company description...", logoText: "LOGO", accentColor: "#2563eb", image: "" },
-                            ],
-                          });
-                        }}
+                        onClick={() => setIsPartnerModalOpen(true)}
                         style={{ padding: "6px 12px", background: "#00875A", color: "#FFF", borderRadius: "6px", fontSize: "12px", fontWeight: "700", cursor: "pointer", border: "none" }}
                       >
                         + Add Partner
@@ -4168,15 +4164,7 @@ export default function AdminDashboardPage() {
                       </label>
                       <button
                         type="button"
-                        onClick={() => {
-                          setTestimonialsForm({
-                            ...testimonialsForm,
-                            reviews: [
-                              ...testimonialsForm.reviews,
-                              { name: "New Client", date: "Just now", avatar: "", avatarBg: "#2563eb", initial: "C", rating: 5, review: "Great service and engineering quality!" },
-                            ],
-                          });
-                        }}
+                        onClick={() => setIsReviewModalOpen(true)}
                         style={{ padding: "6px 12px", background: "#00875A", color: "#FFF", borderRadius: "6px", fontSize: "12px", fontWeight: "700", cursor: "pointer", border: "none" }}
                       >
                         + Add Review
@@ -7738,6 +7726,155 @@ export default function AdminDashboardPage() {
           )}
         </main>
       </div>
+
+      {/* PARTNER MODAL */}
+      {isPartnerModalOpen && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#FFF", padding: "24px", borderRadius: "12px", width: "400px", maxWidth: "90%", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700" }}>Add New Partner</h3>
+            <input type="text" placeholder="Partner Name" value={newPartnerData.name} onChange={(e) => setNewPartnerData({ ...newPartnerData, name: e.target.value })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            <input type="text" placeholder="Category" value={newPartnerData.category} onChange={(e) => setNewPartnerData({ ...newPartnerData, category: e.target.value })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            <textarea placeholder="Description" rows={3} value={newPartnerData.description} onChange={(e) => setNewPartnerData({ ...newPartnerData, description: e.target.value })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <input type="color" value={newPartnerData.accentColor} onChange={(e) => setNewPartnerData({ ...newPartnerData, accentColor: e.target.value })} style={{ width: "38px", height: "38px", padding: "0", border: "1px solid #CBD5E1", borderRadius: "6px", cursor: "pointer", background: "none" }} title="Choose Accent Color" />
+              <input type="text" placeholder="Accent Color (e.g. #2563eb)" value={newPartnerData.accentColor} onChange={(e) => setNewPartnerData({ ...newPartnerData, accentColor: e.target.value })} style={{ flex: 1, padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            </div>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <input type="text" placeholder="Image URL (or upload)" value={newPartnerData.image} onChange={(e) => setNewPartnerData({ ...newPartnerData, image: e.target.value })} style={{ flex: 1, padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+              <label style={{ display: "flex", alignItems: "center", background: "#EFF6FF", color: "#2563EB", padding: "0 12px", borderRadius: "6px", fontSize: "12px", fontWeight: "700", cursor: "pointer", border: "1px solid #BFDBFE" }}>
+                Upload
+                <input type="file" accept="image/*" style={{ display: "none" }} onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const fd = new FormData();
+                  fd.append("image", file);
+                  try {
+                    const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
+                    const data = await res.json();
+                    if (data.success) {
+                      setNewPartnerData({ ...newPartnerData, image: data.url });
+                      Swal.fire({ icon: "success", title: "Image Uploaded!", timer: 1500, showConfirmButton: false });
+                    } else Swal.fire("Error", data.message, "error");
+                  } catch {
+                    Swal.fire("Error", "Upload failed", "error");
+                  }
+                }} />
+              </label>
+            </div>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "12px" }}>
+              <button type="button" onClick={() => setIsPartnerModalOpen(false)} style={{ padding: "8px 16px", background: "#E2E8F0", borderRadius: "6px", border: "none", cursor: "pointer" }}>Cancel</button>
+              <button type="button" onClick={() => {
+                if (!newPartnerData.name.trim()) return;
+                setPartnersSectionForm({ ...partnersSectionForm, partners: [...partnersSectionForm.partners, newPartnerData] });
+                setNewPartnerData({ name: "", category: "", description: "", logoText: "LOGO", accentColor: "#2563eb", image: "" });
+                setIsPartnerModalOpen(false);
+              }} style={{ padding: "8px 16px", background: "#00875A", color: "#FFF", borderRadius: "6px", border: "none", cursor: "pointer", fontWeight: "bold" }}>Add Partner</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* REVIEW MODAL */}
+      {isReviewModalOpen && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#FFF", padding: "24px", borderRadius: "12px", width: "400px", maxWidth: "90%", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700" }}>Add New Review</h3>
+            <input type="text" placeholder="Client Name" value={newReviewData.name} onChange={(e) => setNewReviewData({ ...newReviewData, name: e.target.value, initial: e.target.value.charAt(0).toUpperCase() })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            <input type="text" placeholder="Date (e.g. 2 weeks ago)" value={newReviewData.date} onChange={(e) => setNewReviewData({ ...newReviewData, date: e.target.value })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            <textarea placeholder="Review text" rows={3} value={newReviewData.review} onChange={(e) => setNewReviewData({ ...newReviewData, review: e.target.value })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            <input type="number" min="1" max="5" placeholder="Rating (1-5)" value={newReviewData.rating} onChange={(e) => setNewReviewData({ ...newReviewData, rating: Number(e.target.value) })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            <div style={{ display: "flex", gap: "8px" }}>
+              <input type="text" placeholder="Avatar URL (optional)" value={newReviewData.avatar} onChange={(e) => setNewReviewData({ ...newReviewData, avatar: e.target.value })} style={{ flex: 1, padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+              <label style={{ display: "flex", alignItems: "center", background: "#EFF6FF", color: "#2563EB", padding: "0 12px", borderRadius: "6px", fontSize: "12px", fontWeight: "700", cursor: "pointer", border: "1px solid #BFDBFE" }}>
+                Upload
+                <input type="file" accept="image/*" style={{ display: "none" }} onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const fd = new FormData();
+                  fd.append("image", file);
+                  try {
+                    const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
+                    const data = await res.json();
+                    if (data.success) {
+                      setNewReviewData({ ...newReviewData, avatar: data.url });
+                      Swal.fire({ icon: "success", title: "Avatar Uploaded!", timer: 1500, showConfirmButton: false });
+                    } else Swal.fire("Error", data.message, "error");
+                  } catch {
+                    Swal.fire("Error", "Upload failed", "error");
+                  }
+                }} />
+              </label>
+            </div>
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <input type="color" value={newReviewData.avatarBg} onChange={(e) => setNewReviewData({ ...newReviewData, avatarBg: e.target.value })} style={{ width: "38px", height: "38px", padding: "0", border: "1px solid #CBD5E1", borderRadius: "6px", cursor: "pointer", background: "none" }} title="Choose Avatar Bg Color" />
+              <input type="text" placeholder="Avatar Bg Color (if no image)" value={newReviewData.avatarBg} onChange={(e) => setNewReviewData({ ...newReviewData, avatarBg: e.target.value })} style={{ flex: 1, padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            </div>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "12px" }}>
+              <button type="button" onClick={() => setIsReviewModalOpen(false)} style={{ padding: "8px 16px", background: "#E2E8F0", borderRadius: "6px", border: "none", cursor: "pointer" }}>Cancel</button>
+              <button type="button" onClick={() => {
+                if (!newReviewData.name.trim() || !newReviewData.review.trim()) return;
+                setTestimonialsForm({ ...testimonialsForm, reviews: [...testimonialsForm.reviews, newReviewData] });
+                setNewReviewData({ name: "", date: "Just now", avatar: "", avatarBg: "#2563eb", initial: "C", rating: 5, review: "" });
+                setIsReviewModalOpen(false);
+              }} style={{ padding: "8px 16px", background: "#00875A", color: "#FFF", borderRadius: "6px", border: "none", cursor: "pointer", fontWeight: "bold" }}>Add Review</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PHOTO MODAL */}
+      {isPhotoModalOpen && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#FFF", padding: "24px", borderRadius: "12px", width: "400px", maxWidth: "90%", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "700" }}>Add New Photo</h3>
+            <input type="text" placeholder="Image Title" value={newPhotoData.title} onChange={(e) => setNewPhotoData({ ...newPhotoData, title: e.target.value })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            <input type="text" placeholder="Category (e.g. Culture)" value={newPhotoData.category} onChange={(e) => setNewPhotoData({ ...newPhotoData, category: e.target.value })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+            <div style={{ display: "flex", gap: "8px" }}>
+              <input type="text" placeholder="Image URL (or upload)" value={newPhotoData.url} onChange={(e) => setNewPhotoData({ ...newPhotoData, url: e.target.value })} style={{ flex: 1, padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }} />
+              <label style={{ display: "flex", alignItems: "center", background: "#EFF6FF", color: "#2563EB", padding: "0 12px", borderRadius: "6px", fontSize: "12px", fontWeight: "700", cursor: "pointer", border: "1px solid #BFDBFE" }}>
+                Upload
+                <input type="file" accept="image/*" style={{ display: "none" }} onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const fd = new FormData();
+                  fd.append("image", file);
+                  try {
+                    const res = await fetch(`${API_BASE_URL}/api/upload`, { method: "POST", body: fd });
+                    const data = await res.json();
+                    if (data.success) {
+                      setNewPhotoData({ ...newPhotoData, url: data.url });
+                      Swal.fire({ icon: "success", title: "Photo Uploaded!", timer: 1500, showConfirmButton: false });
+                    } else Swal.fire("Error", data.message, "error");
+                  } catch {
+                    Swal.fire("Error", "Upload failed", "error");
+                  }
+                }} />
+              </label>
+            </div>
+            <select value={newPhotoData.size} onChange={(e) => setNewPhotoData({ ...newPhotoData, size: e.target.value })} style={{ padding: "8px", border: "1px solid #CBD5E1", borderRadius: "6px" }}>
+              <option value="small">Small</option>
+              <option value="large">Large</option>
+              <option value="tall">Tall</option>
+              <option value="wide">Wide</option>
+            </select>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "12px" }}>
+              <button type="button" onClick={() => setIsPhotoModalOpen(false)} style={{ padding: "8px 16px", background: "#E2E8F0", borderRadius: "6px", border: "none", cursor: "pointer" }}>Cancel</button>
+              <button type="button" onClick={() => {
+                const newImg = {
+                  id: `g_${Date.now()}`,
+                  url: newPhotoData.url || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+                  title: newPhotoData.title || "New Event Photo",
+                  category: newPhotoData.category || "Culture",
+                  size: newPhotoData.size || "small",
+                };
+                setGalleryForm({ ...galleryForm, images: [...galleryForm.images, newImg] });
+                setNewPhotoData({ id: "", url: "", title: "", category: "", size: "small" });
+                setIsPhotoModalOpen(false);
+              }} style={{ padding: "8px 16px", background: "#00875A", color: "#FFF", borderRadius: "6px", border: "none", cursor: "pointer", fontWeight: "bold" }}>Add Photo</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
