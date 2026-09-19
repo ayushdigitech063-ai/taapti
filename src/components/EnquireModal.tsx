@@ -84,7 +84,7 @@ export default function EnquireModal({ isOpen, onClose, serviceTitle = "Software
         Swal.fire({
           icon: "success",
           title: "Enquiry Submitted! 🚀",
-          text: "Thank you! Our engineering team will reach out to you shortly.",
+          text: "Thank you! Our engineering team will contact you within 30 minutes.",
           confirmButtonColor: "#0B3B82",
         });
 
@@ -113,7 +113,7 @@ export default function EnquireModal({ isOpen, onClose, serviceTitle = "Software
         <div className="srv-modal-header">
           <span className="srv-modal-badge">QUICK ENQUIRY</span>
           <h3>Enquire for {serviceTitle}</h3>
-          <p>Leave your details and our team will get in touch with you within 2 hours.</p>
+          <p>Leave your details and our team will get in touch with you within 30 minutes.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="srv-modal-form">

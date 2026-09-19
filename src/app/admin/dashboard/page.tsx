@@ -7768,6 +7768,13 @@ export default function AdminDashboardPage() {
                 setPartnersSectionForm({ ...partnersSectionForm, partners: [...partnersSectionForm.partners, newPartnerData] });
                 setNewPartnerData({ name: "", category: "", description: "", logoText: "LOGO", accentColor: "#2563eb", image: "" });
                 setIsPartnerModalOpen(false);
+                Swal.fire({
+                  icon: "success",
+                  title: "Partner Added! 🤝",
+                  text: `Your partner "${newPartnerData.name}" has been added successfully.`,
+                  timer: 2000,
+                  showConfirmButton: false,
+                });
               }} style={{ padding: "8px 16px", background: "#00875A", color: "#FFF", borderRadius: "6px", border: "none", cursor: "pointer", fontWeight: "bold" }}>Add Partner</button>
             </div>
           </div>

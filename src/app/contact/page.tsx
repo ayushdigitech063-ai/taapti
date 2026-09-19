@@ -97,7 +97,7 @@ export default function ContactPage() {
         Swal.fire({
           icon: "success",
           title: "Message Sent Successfully! 🚀",
-          text: "Thank you for reaching out! Our engineering leadership team will contact you within 2 hours.",
+          text: "Thank you for reaching out! Our engineering leadership team will contact you within 30 minutes.",
           confirmButtonColor: "#00875A",
         });
 
