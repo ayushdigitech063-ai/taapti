@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { API_ENDPOINTS } from "@/utils/api";
 
 const blogPosts = [
@@ -418,7 +419,7 @@ export default function BlogPage() {
                       {/* Top Image Banner */}
                       <div style={{ height: "200px", background: "linear-gradient(135deg, #0b0f19 0%, #1e293b 100%)", position: "relative", overflow: "hidden" }}>
                         {post.coverImage ? (
-                          <img src={post.coverImage} alt={post.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                          <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: "cover" }} />
                         ) : (
                           <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "radial-gradient(circle, #1e293b 0%, #0f172a 100%)", color: "#94a3b8", fontSize: "38px" }}>
                             💻

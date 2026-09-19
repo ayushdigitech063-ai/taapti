@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, Fragment } from "react";
 import { API_BASE_URL } from "@/utils/api";
 
@@ -129,19 +130,14 @@ export default function Partners() {
                   {/* CARD IMAGE */}
                   <div className="partner-card__logo-main">
                     <div className="partner-card__img-box">
-                      {partner.image?.startsWith("http") ? (
-                        <img
+                      {partner.image && (
+                        <Image
                           src={partner.image}
                           alt={`${partner.name} logo`}
+                          fill
+                          unoptimized
                           className="partner-card__img"
-                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                        />
-                      ) : (
-                        <img
-                          src={partner.image}
-                          alt={`${partner.name} logo`}
-                          className="partner-card__img"
-                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          style={{ objectFit: "cover" }}
                         />
                       )}
                       <div className="partner-card__img-overlay"></div>

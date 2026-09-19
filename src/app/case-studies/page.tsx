@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { API_BASE_URL } from "@/utils/api";
 
 export default function CaseStudiesPage() {

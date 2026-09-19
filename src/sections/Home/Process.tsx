@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { API_BASE_URL } from "@/utils/api";
 
@@ -116,9 +117,12 @@ export default function Process() {
             aria-label="Replay process animation sequence"
           >
             {sectionData.centerLogoUrl && sectionData.centerLogoUrl.startsWith("http") ? (
-              <img
+              <Image
                 src={sectionData.centerLogoUrl}
                 alt="Company Logo"
+                width={100}
+                height={100}
+                unoptimized
                 style={{ width: "72%", height: "72%", objectFit: "contain", borderRadius: "4px" }}
               />
             ) : (

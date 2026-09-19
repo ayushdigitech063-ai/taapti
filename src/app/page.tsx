@@ -1,18 +1,18 @@
+import dynamic from "next/dynamic";
 import Hero from "@/sections/Home/Hero";
 import Services from "@/sections/Home/Services";
 import OurCompany from "@/sections/Home/OurCompany";
-import Process from "@/sections/Home/Process";
-import Partners from "@/sections/Home/Partners";
-import CaseStudies from "@/sections/Home/CaseStudies";
-import Testimonials from "@/sections/Home/Testimonials";
-import Gallery from "@/sections/Home/Gallery";
-import CTA from "@/sections/Home/CTA";
-import ScrollReveal from "@/components/ScrollReveal";
+
+const Process = dynamic(() => import("@/sections/Home/Process"));
+const Partners = dynamic(() => import("@/sections/Home/Partners"));
+const CaseStudies = dynamic(() => import("@/sections/Home/CaseStudies"));
+const Testimonials = dynamic(() => import("@/sections/Home/Testimonials"));
+const Gallery = dynamic(() => import("@/sections/Home/Gallery"));
+const CTA = dynamic(() => import("@/sections/Home/CTA"));
 
 export default function Home() {
   return (
     <main>
-      <ScrollReveal />
       <Hero />
       <Services />
       <OurCompany />

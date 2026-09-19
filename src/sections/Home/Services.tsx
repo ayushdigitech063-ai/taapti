@@ -191,11 +191,14 @@ export default function Services() {
                 <div className="service-card__left-image">
                   <div className="service-card__left-image-inner">
                     {service.image?.startsWith("http") ? (
-                      <img
+                      <Image
                         src={service.image}
                         alt={service.title}
+                        fill
+                        unoptimized
+                        sizes="(max-width: 768px) 100vw, 220px"
                         className="service-card__img"
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        style={{ objectFit: "cover" }}
                       />
                     ) : (
                       <Image

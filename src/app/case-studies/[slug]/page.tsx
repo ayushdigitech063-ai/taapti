@@ -1,8 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { API_BASE_URL } from "@/utils/api";
 import EnquireModalWrapper from "./EnquireModalWrapper";
 
@@ -53,8 +51,6 @@ export default async function CaseStudyDetailPage({ params }: PageProps) {
   }
 
   return (
-    <>
-      <Navbar />
       <main className="cs-detail-page">
         {/* HERO BANNER */}
         <section className="service-detail-hero cs-hero">
@@ -193,7 +189,5 @@ export default async function CaseStudyDetailPage({ params }: PageProps) {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
   );
 }

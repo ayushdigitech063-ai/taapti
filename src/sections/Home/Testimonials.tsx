@@ -168,10 +168,13 @@ export default function Testimonials() {
                     <div className="google-review-card__user">
                       {review.avatar ? (
                         <div className="google-review-card__avatar" style={{ position: "relative", width: "44px", height: "44px", borderRadius: "50%", overflow: "hidden" }}>
-                          <img
+                          <Image
                             src={review.avatar}
                             alt={review.name}
-                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                            width={44}
+                            height={44}
+                            unoptimized
+                            style={{ objectFit: "cover" }}
                           />
                         </div>
                       ) : (

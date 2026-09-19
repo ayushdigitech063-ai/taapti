@@ -152,11 +152,14 @@ export default function OurCompany() {
                   className={`our-company__slide ${index === activePhotoIndex % sectionData.topPhotos.length ? "our-company__slide--active" : ""}`}
                 >
                   {photo.src?.startsWith("http") ? (
-                    <img
+                    <Image
                       src={photo.src}
                       alt={photo.alt}
+                      fill
+                      unoptimized
+                      sizes="(max-width: 768px) 100vw, 360px"
                       className="our-company__img"
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{ objectFit: "cover" }}
                     />
                   ) : (
                     <Image
@@ -179,11 +182,14 @@ export default function OurCompany() {
                   className={`our-company__slide ${index === activePhotoIndex % sectionData.bottomPhotos.length ? "our-company__slide--active" : ""}`}
                 >
                   {photo.src?.startsWith("http") ? (
-                    <img
+                    <Image
                       src={photo.src}
                       alt={photo.alt}
+                      fill
+                      unoptimized
+                      sizes="(max-width: 768px) 100vw, 360px"
                       className="our-company__img"
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{ objectFit: "cover" }}
                     />
                   ) : (
                     <Image

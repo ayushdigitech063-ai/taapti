@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { API_BASE_URL } from "@/utils/api";
 
@@ -54,7 +55,7 @@ export default function Footer() {
         <div className="footer__top">
           <div className="footer__brand">
             <Link href="/" className="footer__logo">
-              <img src="/logo-icon.png" alt="Taapti Icon" className="footer__logo-icon" />
+              <Image src="/logo-icon.png" alt="Taapti Icon" width={42} height={42} className="footer__logo-icon" />
             </Link>
 
             <p>
