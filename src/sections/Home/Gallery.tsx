@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { API_BASE_URL } from "@/utils/api";
 
 interface GalleryImage {
@@ -157,7 +158,7 @@ export default function Gallery() {
               onClick={() => setLightboxImage(img)}
             >
               <div className="gallery-img-wrapper">
-                <img src={img.url} alt={img.title} className="gallery-img" />
+                <Image src={img.url} alt={img.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="gallery-img" style={{ objectFit: 'cover' }} />
                 <div className="gallery-overlay">
                   <span className="gallery-cat-tag">{img.category}</span>
                   <h4 className="gallery-title">{img.title}</h4>
@@ -180,7 +181,7 @@ export default function Gallery() {
             >
               ✕
             </button>
-            <img src={lightboxImage.url} alt={lightboxImage.title} />
+            <Image src={lightboxImage.url} alt={lightboxImage.title} width={1200} height={800} style={{ width: '100%', height: 'auto', maxHeight: '70vh', objectFit: 'cover' }} />
             <div className="gallery-lightbox-caption">
               <span className="gallery-cat-tag">{lightboxImage.category}</span>
               <h3>{lightboxImage.title}</h3>

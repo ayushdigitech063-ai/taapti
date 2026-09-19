@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import EnquireModal from "@/components/EnquireModal";
 import { API_ENDPOINTS } from "@/utils/api";
@@ -215,7 +216,7 @@ export default function Navbar() {
             setActiveDropdown(null);
           }}
         >
-          <img src="/logo-icon.png" alt="Taapti Icon" className="navbar__logo-icon" />
+          <Image src="/logo-icon.png" alt="Taapti Icon" width={42} height={42} className="navbar__logo-icon" priority />
         </Link>
 
         {/* DESKTOP NAVIGATION WITH DROPDOWNS */}

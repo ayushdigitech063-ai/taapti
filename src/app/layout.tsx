@@ -98,7 +98,7 @@ export default function RootLayout({
         <link rel="icon" href="/logo-icon.png" type="image/png" />
         <link rel="shortcut icon" href="/logo-icon.png" type="image/png" />
       </head>
-      <body className={jakartaSans.className}>
+      <body className={jakartaSans.className} suppressHydrationWarning>
         <Preloader />
         <ScrollReveal />
         <Navbar />

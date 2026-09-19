@@ -33,15 +33,15 @@ const arcs = [
   },
 ];
 
-function RotatingGlobe() {
+function RotatingGlobe({ inView }: { inView: boolean }) {
   const groupRef = useRef<Group>(null);
   const [globeObj, setGlobeObj] = useState<ThreeGlobe | null>(null);
 
   useEffect(() => {
     try {
       const globe = new ThreeGlobe()
-        .globeImageUrl("https://unpkg.com/three-globe/example/img/earth-day.jpg")
-        .bumpImageUrl("https://unpkg.com/three-globe/example/img/earth-topology.png")
+        .globeImageUrl("/globe/earth-day.jpg")
+        .bumpImageUrl("/globe/earth-topology.png")
         .atmosphereColor("#3d8cff")
         .atmosphereAltitude(0.1)
         .showAtmosphere(true)
@@ -71,6 +71,7 @@ function RotatingGlobe() {
   }, []);
 
   useFrame((_, delta) => {
+    if (!inView) return;
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.02;
     }
@@ -83,9 +84,10 @@ function RotatingGlobe() {
   );
 }
 
-export default function GlobeScene() {
+export default function GlobeScene({ inView = true }: { inView?: boolean }) {
   return (
     <Canvas
+      frameloop={inView ? "always" : "demand"}
       camera={{
         position: [0, 0, 385],
         fov: 35,
@@ -104,7 +106,7 @@ export default function GlobeScene() {
         intensity={1.0}
       />
 
-      <RotatingGlobe />
+      <RotatingGlobe inView={inView} />
     </Canvas>
   );
 }

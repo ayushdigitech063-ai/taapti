@@ -42,10 +42,30 @@ class GlobeErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryStat
 
 export default function Globe() {
   const [mounted, setMounted] = useState(false);
+  const [inView, setInView] = useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted || !containerRef.current) return;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setInView(entry.isIntersecting);
+      },
+      { rootMargin: "200px" } // Render just before coming into view
+    );
+    
+    observer.observe(containerRef.current);
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, [mounted]);
 
   if (!mounted) {
     return (
@@ -56,9 +76,9 @@ export default function Globe() {
   }
 
   return (
-    <div className="globe-3d">
+    <div className="globe-3d" ref={containerRef}>
       <GlobeErrorBoundary fallback={<TechGlobe />}>
-        <GlobeScene />
+        <GlobeScene inView={inView} />
       </GlobeErrorBoundary>
     </div>
   );

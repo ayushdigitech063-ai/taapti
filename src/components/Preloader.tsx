@@ -44,7 +44,6 @@ export default function Preloader() {
             alt="TAAPTI Logo"
             width={52}
             height={52}
-            priority
             style={{ objectFit: "contain" }}
           />
         </div>

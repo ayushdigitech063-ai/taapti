@@ -227,9 +227,6 @@ export default function CaseStudiesPage() {
                     {study.category}
                   </span>
 
-                  <span className="case-study-page-card__visual-arrow">
-                    ↗
-                  </span>
                 </Link>
 
                 <div className="case-study-page-card__content">

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { API_BASE_URL } from "@/utils/api";
 
@@ -169,7 +170,7 @@ export default function CaseStudies() {
                   {/* CARD VISUAL WITH CUSTOM IMAGE SUPPORT */}
                   <div className="tp-card__visual tp-card__visual--phone" style={{ position: "relative", overflow: "hidden", minHeight: "220px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {cs.image ? (
-                      <img src={cs.image} alt={cs.title} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "12px" }} />
+                      <Image src={cs.image} alt={cs.title} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: "cover", borderRadius: "12px" }} />
                     ) : (
                       <>
                         <div className="tp-phone-glow"></div>
@@ -260,7 +261,7 @@ export default function CaseStudies() {
                   {/* WATCH MOCKUP VISUAL WITH CUSTOM IMAGE SUPPORT */}
                   <div className="tp-card__visual tp-card__visual--watch" style={{ position: "relative", overflow: "hidden", minHeight: "220px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {cs.image ? (
-                      <img src={cs.image} alt={cs.title} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "12px" }} />
+                      <Image src={cs.image} alt={cs.title} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: "cover", borderRadius: "12px" }} />
                     ) : (
                       <div className="tp-watch-wrapper">
                         <div className="tp-watch">
@@ -322,7 +323,7 @@ export default function CaseStudies() {
                   {/* CREDIT CARD & GLOBE MOCKUP VISUAL WITH CUSTOM IMAGE SUPPORT */}
                   <div className="tp-card__visual tp-card__visual--saas" style={{ position: "relative", overflow: "hidden", minHeight: "220px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {cs.image ? (
-                      <img src={cs.image} alt={cs.title} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "12px" }} />
+                      <Image src={cs.image} alt={cs.title} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: "cover", borderRadius: "12px" }} />
                     ) : (
                       <>
                         <div className="tp-globe-bg">
