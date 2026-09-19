@@ -101,72 +101,76 @@ p {
   color: var(--muted);
 }
 
-.btn {
-  border-radius: 999px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  min-height: 50px;
-  padding: 0 24px;
-  font-size: 15px;
-  font-weight: 600;
-  transition: transform .25s, background-color .25s, border-color .25s, color .25s;
-  display: inline-flex;
+/* GLOBAL BUTTON STANDARDIZATION (Matches Autovyn design) */
+.btn-primary,
+.tp-btn-pill,
+.cta-btn-primary,
+.srv-btn--primary,
+.primary-btn,
+.srv-hero-enquire-btn,
+.cta-btn {
+  background: #00875A !important;
+  color: #FFFFFF !important;
+  border-radius: 999px !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 52px !important;
+  padding: 0 28px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 8px 24px rgba(0, 135, 90, 0.28) !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
+.btn-primary:hover,
+.tp-btn-pill:hover,
+.cta-btn-primary:hover,
+.srv-btn--primary:hover,
+.primary-btn:hover,
+.srv-hero-enquire-btn:hover,
+.cta-btn:hover {
+  background: #006C48 !important;
+  box-shadow: 0 12px 28px rgba(0, 135, 90, 0.4) !important;
+  transform: translateY(-2px) !important;
 }
 
-.btn-primary {
-  background: #00875A;
-  color: var(--white);
-  box-shadow: 0 8px 24px rgba(0, 135, 90, 0.28);
+.btn-outline,
+.cta-btn-outline,
+.srv-btn--outline,
+.secondary-btn,
+.srv-btn--outline-dark {
+  background: transparent !important;
+  color: var(--black) !important;
+  border-radius: 999px !important;
+  border: 1px solid #E2E8F0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 52px !important;
+  padding: 0 28px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
 }
 
-.btn-primary:hover {
-  background: #006C48;
-  box-shadow: 0 12px 28px rgba(0, 135, 90, 0.4);
-}
-
-.tp-btn-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: #00875A;
-  color: var(--white);
-  font-size: 15px;
-  font-weight: 700;
-  padding: 14px 32px;
-  border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(0, 135, 90, 0.28);
-  transition: all 0.25s ease;
-  text-decoration: none;
-}
-
-.tp-btn-pill:hover {
-  background: #006C48;
-  box-shadow: 0 12px 28px rgba(0, 135, 90, 0.4);
-  transform: translateY(-2px);
-}
-
-.tp-btn-arrow {
-  transition: transform 0.2s ease;
-}
-
-.tp-btn-pill:hover .tp-btn-arrow {
-  transform: translateX(4px);
-}
-
-.btn-outline {
-  border: 1px solid var(--border);
-  color: var(--black);
-  background: none;
-}
-
-.btn-outline:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+.btn-outline:hover,
+.cta-btn-outline:hover,
+.srv-btn--outline:hover,
+.secondary-btn:hover,
+.srv-btn--outline-dark:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  transform: translateY(-2px) !important;
+  background: transparent !important;
 }
 
 .section {
