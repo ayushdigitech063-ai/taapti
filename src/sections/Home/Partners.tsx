@@ -71,16 +71,16 @@ export default function Partners() {
     return () => { if (bc) bc.close(); };
   }, []);
 
+  const slideGroups = Math.ceil(sectionData.partners.length / 3);
+
   // Auto-slider timer
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % sectionData.partners.length);
+      setActiveSlide((prev) => (prev + 1) % slideGroups);
     }, 4000);
     return () => clearInterval(interval);
-  }, [isPaused, sectionData.partners.length]);
-
-  const slideGroups = Math.ceil(sectionData.partners.length / 3);
+  }, [isPaused, slideGroups]);
 
   return (
     <section className="section partners-section">
@@ -121,7 +121,7 @@ export default function Partners() {
             <div
               className="partners-slider-track"
               style={{
-                transform: `translateX(-${(activeSlide % slideGroups) * 100}%)`,
+                transform: `translateX(calc(-${activeSlide * 100}% - ${activeSlide * 24}px))`,
               }}
             >
               {sectionData.partners.map((partner, index) => (
@@ -176,8 +176,8 @@ export default function Partners() {
             {Array.from({ length: slideGroups }).map((_, idx) => (
               <button
                 key={idx}
-                onClick={() => setActiveSlide(idx * 3)}
-                className={`partners-dot ${Math.floor(activeSlide / 3) === idx ? "active" : ""}`}
+                onClick={() => setActiveSlide(idx)}
+                className={`partners-dot ${activeSlide === idx ? "active" : ""}`}
                 aria-label={`Go to slide group ${idx + 1}`}
               ></button>
             ))}

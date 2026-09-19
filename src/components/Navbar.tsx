@@ -244,7 +244,7 @@ export default function Navbar() {
                 e.preventDefault();
                 setActiveDropdown(activeDropdown === "Services" ? null : "Services");
               }}
-              style={{ background: "none", border: "none", font: "inherit", cursor: "pointer" }}
+              style={{ background: "none", border: "none", fontFamily: "inherit", cursor: "pointer" }}
             >
               <span>Services</span>
               <svg
@@ -316,7 +316,7 @@ export default function Navbar() {
                 e.preventDefault();
                 setActiveDropdown(activeDropdown === "Industries" ? null : "Industries");
               }}
-              style={{ background: "none", border: "none", font: "inherit", cursor: "pointer" }}
+              style={{ background: "none", border: "none", fontFamily: "inherit", cursor: "pointer" }}
             >
               <span>Industries</span>
               <svg
