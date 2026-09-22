@@ -216,7 +216,7 @@ export default function Navbar() {
             setActiveDropdown(null);
           }}
         >
-          <Image src="/logo-icon.png" alt="Taapti Icon" width={42} height={42} className="navbar__logo-icon" priority />
+          <Image src="/logo-icon.svg" alt="Taapti Icon" width={42} height={42} className="navbar__logo-icon" priority />
         </Link>
 
         {/* DESKTOP NAVIGATION WITH DROPDOWNS */}

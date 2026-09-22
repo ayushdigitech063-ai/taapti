@@ -5003,8 +5003,16 @@ export default function AdminDashboardPage() {
               {/* 1. ABOUT HERO & MISSION */}
               {activeTab === "about-hero" && (
                 <div style={{ paddingTop: "20px", display: "flex", flexDirection: "column", gap: "18px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#FFF", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
                     <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0F172A", margin: 0 }}>Section 1: Hero & Mission</h3>
+                    <button
+                      type="button"
+                      onClick={handleSaveAboutPage}
+                      disabled={isSavingAboutPage}
+                      style={{ background: "#00875A", color: "#FFF", padding: "8px 18px", borderRadius: "8px", border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}
+                    >
+                      {isSavingAboutPage ? "Publishing..." : "💾 Save & Publish About Page"}
+                    </button>
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "16px" }}>
                     <div style={{ background: "#F8FAFC", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
@@ -5056,8 +5064,16 @@ export default function AdminDashboardPage() {
               {/* 2. ENGINEERING METRICS & SLAS */}
               {activeTab === "about-stats" && (
                 <div style={{ paddingTop: "20px", display: "flex", flexDirection: "column", gap: "18px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#FFF", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
                     <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0F172A", margin: 0 }}>Section 2: Engineering Metrics & SLAs</h3>
+                    <button
+                      type="button"
+                      onClick={handleSaveAboutPage}
+                      disabled={isSavingAboutPage}
+                      style={{ background: "#00875A", color: "#FFF", padding: "8px 18px", borderRadius: "8px", border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}
+                    >
+                      {isSavingAboutPage ? "Publishing..." : "💾 Save & Publish About Page"}
+                    </button>
                   </div>
                   <div style={{ background: "#F8FAFC", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
                     <label style={{ display: "block", fontSize: "13px", fontWeight: "700", color: "#0F172A", marginBottom: "12px" }}>
@@ -5106,8 +5122,16 @@ export default function AdminDashboardPage() {
               {/* 3. WHO WE ARE & BENCHMARK */}
               {activeTab === "about-partner" && (
                 <div style={{ paddingTop: "20px", display: "flex", flexDirection: "column", gap: "18px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#FFF", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
                     <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0F172A", margin: 0 }}>Section 3: Technical Partner vs Agency & Benchmark</h3>
+                    <button
+                      type="button"
+                      onClick={handleSaveAboutPage}
+                      disabled={isSavingAboutPage}
+                      style={{ background: "#00875A", color: "#FFF", padding: "8px 18px", borderRadius: "8px", border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}
+                    >
+                      {isSavingAboutPage ? "Publishing..." : "💾 Save & Publish About Page"}
+                    </button>
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "16px" }}>
                     <div style={{ background: "#F8FAFC", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
@@ -5205,8 +5229,16 @@ export default function AdminDashboardPage() {
               {/* 4. CORE ARCHITECTURAL VALUES */}
               {activeTab === "about-values" && (
                 <div style={{ paddingTop: "20px", display: "flex", flexDirection: "column", gap: "18px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#FFF", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
                     <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0F172A", margin: 0 }}>Section 4: Core Architectural Values</h3>
+                    <button
+                      type="button"
+                      onClick={handleSaveAboutPage}
+                      disabled={isSavingAboutPage}
+                      style={{ background: "#00875A", color: "#FFF", padding: "8px 18px", borderRadius: "8px", border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}
+                    >
+                      {isSavingAboutPage ? "Publishing..." : "💾 Save & Publish About Page"}
+                    </button>
                   </div>
                   <div style={{ background: "#F8FAFC", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
                     <label style={{ display: "block", fontSize: "13px", fontWeight: "700", color: "#0F172A", marginBottom: "12px" }}>
@@ -5258,8 +5290,16 @@ export default function AdminDashboardPage() {
               {/* 5. ENGINEERING CAPABILITIES */}
               {activeTab === "about-capabilities" && (
                 <div style={{ paddingTop: "20px", display: "flex", flexDirection: "column", gap: "18px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#FFF", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
                     <h3 style={{ fontSize: "16px", fontWeight: "800", color: "#0F172A", margin: 0 }}>Section 5: Engineering Capabilities Grid</h3>
+                    <button
+                      type="button"
+                      onClick={handleSaveAboutPage}
+                      disabled={isSavingAboutPage}
+                      style={{ background: "#00875A", color: "#FFF", padding: "8px 18px", borderRadius: "8px", border: "none", fontWeight: "700", fontSize: "13px", cursor: "pointer" }}
+                    >
+                      {isSavingAboutPage ? "Publishing..." : "💾 Save & Publish About Page"}
+                    </button>
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "16px" }}>
                     <div style={{ background: "#F8FAFC", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
@@ -5288,6 +5328,16 @@ export default function AdminDashboardPage() {
                         />
                       </div>
                     </div>
+                  </div>
+
+                  <div style={{ background: "#F8FAFC", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: "700", color: "#0F172A", marginBottom: "6px" }}>Capabilities Section Sub-Heading / Description</label>
+                    <textarea
+                      rows={2}
+                      value={aboutPageForm.capabilities.description}
+                      onChange={(e) => setAboutPageForm({ ...aboutPageForm, capabilities: { ...aboutPageForm.capabilities, description: e.target.value } })}
+                      style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "13px", background: "#FFF" }}
+                    />
                   </div>
 
                   <div style={{ background: "#F8FAFC", padding: "16px 20px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
@@ -5397,6 +5447,28 @@ export default function AdminDashboardPage() {
                         style={{ width: "100%", padding: "10px 14px", border: "1px solid #CBD5E1", borderRadius: "8px", fontSize: "14px", background: "#FFF" }}
                       />
                     </div>
+                  </div>
+
+                  {/* Save Button for About Page */}
+                  <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "16px", paddingTop: "16px", borderTop: "1px solid #E2E8F0" }}>
+                    <button
+                      type="button"
+                      onClick={handleSaveAboutPage}
+                      disabled={isSavingAboutPage}
+                      style={{
+                        background: "linear-gradient(135deg, #00875A 0%, #006644 100%)",
+                        color: "#FFF",
+                        padding: "12px 28px",
+                        borderRadius: "10px",
+                        border: "none",
+                        fontWeight: "800",
+                        fontSize: "14px",
+                        cursor: "pointer",
+                        boxShadow: "0 4px 14px rgba(0, 135, 90, 0.3)",
+                      }}
+                    >
+                      {isSavingAboutPage ? "Publishing About Page..." : "💾 Save & Publish About Page Content"}
+                    </button>
                   </div>
                 </div>
               )}

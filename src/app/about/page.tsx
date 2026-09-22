@@ -151,7 +151,7 @@ export default function AboutPage() {
     if (typeof window !== "undefined" && "BroadcastChannel" in window) {
       channel = new BroadcastChannel("taapti_cms_updates");
       channel.onmessage = (event) => {
-        if (event.data === "ABOUT_PAGE_UPDATED") {
+        if (event.data === "ABOUT_PAGE_UPDATED" || event.data === "CMS_UPDATED") {
           fetchAboutData();
         }
       };

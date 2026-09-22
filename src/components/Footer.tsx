@@ -55,7 +55,7 @@ export default function Footer() {
         <div className="footer__top">
           <div className="footer__brand">
             <Link href="/" className="footer__logo">
-              <Image src="/logo-icon.png" alt="Taapti Icon" width={42} height={42} className="footer__logo-icon" />
+              <Image src="/logo-icon.svg" alt="Taapti Icon" width={42} height={42} className="footer__logo-icon" />
             </Link>
 
             <p>
