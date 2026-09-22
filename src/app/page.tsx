@@ -9,7 +9,7 @@ const CaseStudies = dynamic(() => import("@/sections/Home/CaseStudies"));
 const Testimonials = dynamic(() => import("@/sections/Home/Testimonials"));
 const Gallery = dynamic(() => import("@/sections/Home/Gallery"));
 const CTA = dynamic(() => import("@/sections/Home/CTA"));
-
+// skghdflishiu
 export default function Home() {
   return (
     <main>
